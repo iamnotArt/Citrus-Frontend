@@ -1,5 +1,6 @@
 package com.example.citrusapp.Components
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,24 +12,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PagerIndicator(pageCount: Int, currentPage: Int) {
+fun PagerIndicator(
+    pageCount: Int,
+    currentPage: Int,
+    modifier: Modifier = Modifier
+) {
     Row(
         horizontalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         repeat(pageCount) { index ->
-            val targetColor = if (index == currentPage)
-                MaterialTheme.colorScheme.primary
-            else
-                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+            val isSelected = index == currentPage
 
-            val animatedColor by animateColorAsState(targetValue = targetColor, label = "")
+            val size by animateDpAsState(
+                targetValue = if (isSelected) 10.8.dp else 8.dp,
+                label = "DotSize"
+            )
+
+            val color by animateColorAsState(
+                targetValue = if (isSelected)
+                    MaterialTheme.colorScheme.primary
+                else
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                label = "DotColor"
+            )
 
             Box(
                 modifier = Modifier
-                    .padding(4.dp)
-                    .size(10.dp)
-                    .background(color = animatedColor, shape = CircleShape)
+                    .padding(horizontal = 4.dp)
+                    .size(size)
+                    .background(color = color, shape = CircleShape)
             )
         }
     }
