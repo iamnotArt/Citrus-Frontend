@@ -9,6 +9,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
@@ -16,8 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.citrusapp.Components.PagerIndicator
 import com.example.citrusapp.R
+import com.example.citrusapp.ui.theme.blue_green
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -48,13 +53,10 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
     )
 
     Column(
-        modifier = modifier
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
                 painter = painterResource(id = R.drawable.citruslogo),
                 contentDescription = "Citrus Logo",
@@ -62,7 +64,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
                     .padding(top = 8.dp, start = 4.dp)
                     .height(36.dp),
                 colorFilter = ColorFilter.tint(
-                    if (isDarkTheme) Color.White else Color.Black
+                    if (isDarkTheme) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground
                 )
             )
 
@@ -73,15 +75,28 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
             )
         }
 
-        HorizontalPager(
-            state = pagerState,
+        Box(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-        ) { index ->
-            val realIndex = index % realPageCount
-            val (title, description) = pages[realIndex]
-            OnboardingPage(title = title, description = description)
+        ) {
+            // Blob image behind
+            BlobBackground(
+                pagerState = pagerState,
+                realPageCount = realPageCount,
+                modifier = Modifier
+                    .matchParentSize()
+                    .graphicsLayer { clip = false }
+            )
+
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.fillMaxSize()
+            ) { index ->
+                val realIndex = index % realPageCount
+                val (title, description) = pages[realIndex]
+                OnboardingPage(title = title, description = description)
+            }
         }
 
         Column(
@@ -97,6 +112,10 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
                 onClick = {
                     // TODO: Navigate to Login
                 },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = blue_green,
+                    contentColor = Color.White
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp)
@@ -107,19 +126,18 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
             Text(
                 text = "Don't have an account?",
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier
-                    .padding(top = 8.dp)
+                modifier = Modifier.padding(top = 8.dp)
             )
             Text(
                 text = "Signup",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
+                color = blue_green,
                 modifier = Modifier
                     .padding(top = 4.dp, bottom = 40.dp)
                     .clickable(
                         onClick = {
-                            // TODO: Handle signup click (e.g. navigate to Signup screen)
+                            // TODO: Navigate to Signup
                         },
                         role = Role.Button
                     )
@@ -128,16 +146,16 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
                         indication = rememberRipple(bounded = true)
                     )
             )
-
         }
-
     }
 }
 
 @Composable
 fun OnboardingPage(title: String, description: String) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .graphicsLayer { clip = false },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -153,3 +171,44 @@ fun OnboardingPage(title: String, description: String) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun BlobBackground(
+    pagerState: PagerState,
+    realPageCount: Int,
+    modifier: Modifier = Modifier
+) {
+    BoxWithConstraints(modifier = modifier) {
+        val containerWidth = maxWidth
+
+        val totalWidth = containerWidth * (realPageCount - 1)
+
+        val currentPage = pagerState.currentPage % realPageCount
+        val pageOffset = pagerState.currentPageOffsetFraction
+        val scrollPosition = (currentPage + pageOffset) * containerWidth.value
+
+        val centerPageOffset = containerWidth.value
+
+        val isDarkTheme = isSystemInDarkTheme()
+
+        Image(
+            painter = painterResource(id = R.drawable.blob),
+            contentDescription = null,
+            contentScale = ContentScale.FillHeight,
+            colorFilter = ColorFilter.tint(
+                if (isDarkTheme) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground
+            ),
+            modifier = Modifier
+                .size(450.dp)
+                .fillMaxHeight()
+                .width(totalWidth + containerWidth)
+                .graphicsLayer {
+                    translationX = -scrollPosition + centerPageOffset
+                }
+                .align(Alignment.Center)
+                .alpha(0.4f)
+
+
+        )
+    }
+}

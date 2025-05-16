@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
 fun PagerIndicator(
@@ -31,11 +32,12 @@ fun PagerIndicator(
 
             val color by animateColorAsState(
                 targetValue = if (isSelected)
-                    MaterialTheme.colorScheme.primary
+                    blue_green
                 else
-                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                    blue_green.copy(alpha = 0.5f),
                 label = "DotColor"
             )
+
 
             Box(
                 modifier = Modifier
