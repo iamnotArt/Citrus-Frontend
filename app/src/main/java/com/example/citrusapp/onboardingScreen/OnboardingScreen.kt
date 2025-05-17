@@ -34,7 +34,7 @@ import com.example.citrusapp.ui.theme.blue_green
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnboardingScreen(modifier: Modifier = Modifier) {
+fun OnboardingScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit) {
     val realPageCount = 3
     val fakePageCount = 1000
     val startIndex = (fakePageCount / 2) - ((fakePageCount / 2) % realPageCount)
@@ -48,9 +48,9 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
     AutoScrollPager(pagerState)
 
     val pages = listOf(
-        Triple(R.drawable.screen1, "Welcome to Citrus", "Your all-in-one companion for Northwest Samar State University life! Designed with students in mind, Citrus will help you stay connected, organized, and informed. Whether you're looking for the latest campus events, need to track your class schedule, or search for career opportunities, Citrus has got you covered!"),
-        Triple(R.drawable.screen2, "Stay Organized and Informed", "With Citrus, you'll never miss out on important dates or deadlines. Manage your class schedules, stay on top of upcoming events, and receive real-time updates about announcements, policies, and library resources. Plus, use the to-do list and custom deadlines to keep your academic journey on track."),
-        Triple(R.drawable.screen3, "Connect, Grow, and Find Opportunities", "Networking is key to success! Citrus helps you connect with peers, alumni, and potential mentors through our Find Works feature. Whether you're looking for a job, internship, or guidance on your career path, the Citrus community is here to support you every step of the way!")
+        Triple(R.drawable.screen1, "Welcome to Citrus", "Your all-in-one companion for Northwest Samar State University life! Whether you're looking for the latest campus news and events, need to track your class schedule and more, Citrus has got you covered!"),
+        Triple(R.drawable.screen2, "Stay Organized and Informed", "Manage classes, track events, get real-time updates, and stay organized with to-do lists and custom deadlines."),
+        Triple(R.drawable.screen3, "Connect, Grow, and Find Opportunities", "Networking is key to success! Citrus helps you connect with peers, alumni, and potential mentors through our Find Works feature and more!")
     )
 
     Column(
@@ -106,20 +106,20 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
 
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = "Already have an account?",
                 fontSize = 14.sp,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 4.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Button(
                 onClick = {
-                    // TODO: Navigate to Login
+                    onLoginClick() // TODO: Navigate to Login
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = blue_green,
@@ -128,6 +128,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp)
+                    .padding(start = 12.dp, end = 12.dp)
             ) {
                 Text(text = "Login")
             }
@@ -183,7 +184,7 @@ fun OnboardingPage(
                 painter = painterResource(id = blobRes),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(350.dp),
+                    .size(300.dp),
                 contentScale = ContentScale.Fit,
                 colorFilter = ColorFilter.tint(blue_green)
             )
@@ -192,7 +193,7 @@ fun OnboardingPage(
                 painter = painterResource(id = imageRes),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(340.dp)
+                    .size(300.dp)
                     .padding(start = 32.dp, end = 32.dp),
                 contentScale = ContentScale.Fit
             )
@@ -201,7 +202,7 @@ fun OnboardingPage(
             text = title,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                .padding(start = 16.dp, end = 16.dp),
             style = MaterialTheme.typography.bodyLarge.copy(
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
@@ -218,7 +219,7 @@ fun OnboardingPage(
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 32.dp, end = 32.dp, bottom = 32.dp)
+                .padding(start = 32.dp, end = 32.dp, bottom = 16.dp)
         )
 
 
