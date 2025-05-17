@@ -25,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.citrusapp.Components.PagerIndicator
@@ -47,9 +48,9 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
     AutoScrollPager(pagerState)
 
     val pages = listOf(
-        Pair("Welcome", "Track your expenses with ease."),
-        Pair("Analyze", "View insights and breakdowns."),
-        Pair("Control", "Stay on top of your budget.")
+        Triple(R.drawable.screen1, "Welcome to Citrus", "Your all-in-one companion for Northwest Samar State University life! Designed with students in mind, Citrus will help you stay connected, organized, and informed. Whether you're looking for the latest campus events, need to track your class schedule, or search for career opportunities, Citrus has got you covered!"),
+        Triple(R.drawable.screen2, "Stay Organized and Informed", "With Citrus, you'll never miss out on important dates or deadlines. Manage your class schedules, stay on top of upcoming events, and receive real-time updates about announcements, policies, and library resources. Plus, use the to-do list and custom deadlines to keep your academic journey on track."),
+        Triple(R.drawable.screen3, "Connect, Grow, and Find Opportunities", "Networking is key to success! Citrus helps you connect with peers, alumni, and potential mentors through our Find Works feature. Whether you're looking for a job, internship, or guidance on your career path, the Citrus community is here to support you every step of the way!")
     )
 
     Column(
@@ -80,7 +81,6 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            // Blob image behind
             BlobBackground(
                 pagerState = pagerState,
                 realPageCount = realPageCount,
@@ -94,8 +94,13 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxSize()
             ) { index ->
                 val realIndex = index % realPageCount
-                val (title, description) = pages[realIndex]
-                OnboardingPage(title = title, description = description)
+                val (imageRes, title, description) = pages[realIndex]
+                val blobRes = when (realIndex) {
+                    0 -> R.drawable.blob1
+                    1 -> R.drawable.blob2
+                    else -> R.drawable.blob
+                }
+                OnboardingPage(imageRes = imageRes, title = title, description = description, blobRes = blobRes)
             }
         }
 
@@ -106,7 +111,11 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Already have an account?")
+            Text(
+                text = "Already have an account?",
+                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium
+            )
             Spacer(modifier = Modifier.height(8.dp))
             Button(
                 onClick = {
@@ -125,7 +134,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = "Don't have an account?",
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
                 modifier = Modifier.padding(top = 8.dp)
             )
             Text(
@@ -151,7 +160,12 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun OnboardingPage(title: String, description: String) {
+fun OnboardingPage(
+    imageRes: Int,
+    title: String,
+    description: String,
+    blobRes: Int
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -159,15 +173,55 @@ fun OnboardingPage(title: String, description: String) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(id = blobRes),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(350.dp),
+                contentScale = ContentScale.Fit,
+                colorFilter = ColorFilter.tint(blue_green)
+            )
+
+            Image(
+                painter = painterResource(id = imageRes),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(340.dp)
+                    .padding(start = 32.dp, end = 32.dp),
+                contentScale = ContentScale.Fit
+            )
+        }
         Text(
             text = title,
-            style = MaterialTheme.typography.headlineMedium
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp),
+            style = MaterialTheme.typography.bodyLarge.copy(
+                fontSize = 26.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            ),
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = description,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge.copy(
+                fontSize = 14.sp,
+                lineHeight = 16.sp
+            ),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 32.dp, end = 32.dp, bottom = 32.dp)
         )
+
+
     }
 }
 
@@ -180,7 +234,6 @@ fun BlobBackground(
 ) {
     BoxWithConstraints(modifier = modifier) {
         val containerWidth = maxWidth
-
         val totalWidth = containerWidth * (realPageCount - 1)
 
         val currentPage = pagerState.currentPage % realPageCount
@@ -189,15 +242,11 @@ fun BlobBackground(
 
         val centerPageOffset = containerWidth.value
 
-        val isDarkTheme = isSystemInDarkTheme()
-
         Image(
             painter = painterResource(id = R.drawable.blob),
             contentDescription = null,
-            contentScale = ContentScale.FillHeight,
-            colorFilter = ColorFilter.tint(
-                if (isDarkTheme) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground
-            ),
+            contentScale = ContentScale.FillWidth,
+            colorFilter = ColorFilter.tint(blue_green),
             modifier = Modifier
                 .size(450.dp)
                 .fillMaxHeight()
@@ -206,9 +255,8 @@ fun BlobBackground(
                     translationX = -scrollPosition + centerPageOffset
                 }
                 .align(Alignment.Center)
-                .alpha(0.4f)
-
-
+                .alpha(0.3f)
         )
+
     }
 }
