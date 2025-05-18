@@ -1,20 +1,31 @@
 package com.example.citrusapp.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -26,6 +37,14 @@ fun LoginScreen(onBoardingClick: () -> Unit) {
     val isDarkTheme = isSystemInDarkTheme()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    var hasSubmittedEmail by remember { mutableStateOf(false) }
+    val isEmailValid = remember(email) {
+        email.matches(Regex("^[A-Za-z0-9._%+-]+@(gmail|yahoo)\\.com$"))
+    }
+
+    val passwordFocusRequester = remember { FocusRequester() }
+    var passwordVisible by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -87,21 +106,52 @@ fun LoginScreen(onBoardingClick: () -> Unit) {
 
             Spacer(modifier = Modifier.height(50.dp))
 
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text("Email") },
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp),
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_email),
-                        contentDescription = "Email Icon"
+                    .padding(start = 16.dp, end = 16.dp)
+            ) {
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = {
+                        email = it
+                        // Optional: reset error state on new input
+                        if (hasSubmittedEmail) hasSubmittedEmail = false
+                    },
+                    label = { Text("Email") },
+                    isError = hasSubmittedEmail && !isEmailValid,
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            hasSubmittedEmail = true
+                            if (isEmailValid) {
+                                passwordFocusRequester.requestFocus()
+                            }
+                        }
+                    ),
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_email),
+                            contentDescription = "Email Icon"
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+
+                if (hasSubmittedEmail && !isEmailValid) {
+                    Text(
+                        text = "Please enter a valid email.",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(start = 16.dp, top = 4.dp)
                     )
                 }
-            )
+            }
 
             Spacer(modifier = Modifier.height(18.dp))
 
@@ -109,61 +159,154 @@ fun LoginScreen(onBoardingClick: () -> Unit) {
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("Password") },
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp),
+                    .padding(top = 8.dp, start = 16.dp, end = 16.dp)
+                    .focusRequester(passwordFocusRequester),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_password),
                         contentDescription = "Password Icon"
                     )
+                },
+                trailingIcon = {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(
+                            painter = painterResource(
+                                id = if (passwordVisible) R.drawable.ic_visibility_off else R.drawable.ic_visibility
+                            ),
+                            contentDescription = if (passwordVisible) "Hide password" else "Show password"
+                        )
+                    }
                 }
             )
+
+
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    var rememberMeChecked by remember { mutableStateOf(false) }
+
+                    Checkbox(
+                        checked = rememberMeChecked,
+                        onCheckedChange = { rememberMeChecked = it }
+                    )
+                    Text(text = "Remember me", fontSize = 14.sp)
+                }
+
+                Text(
+                    text = "Forgot Password?",
+                    fontSize = 14.sp,
+                    modifier = Modifier.clickable {
+                        // TODO: Forgot password logic
+                    }
+                )
+            }
 
         }
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 12.dp, end = 12.dp),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
                 onClick = {
-                    // TODO: Handle login
+                    // TODO: Navigate to Login
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .padding(start = 16.dp, end = 16.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = blue_green,
                     contentColor = Color.White
-                )
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp)
+                    .padding(start = 12.dp, end = 12.dp)
             ) {
-                Text("Login")
+                Text(text = "Login")
             }
 
             Spacer(modifier = Modifier.height(18.dp))
 
-            Button(
-                onClick = {
-                    // TODO: Handle login
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .padding(start = 16.dp, end = 16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = blue_green,
-                    contentColor = Color.White
-                )
-            ) {
-                Text("LoginHALLO")
-            }
-        }
+            Text(
+                text = "OR",
+                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 4.dp)
+            )
 
+            Spacer(modifier = Modifier.height(18.dp))
+
+            Row{
+                Image(
+                    painter = painterResource(id = R.drawable.fingerprint),
+                    contentDescription = "Fingerprint",
+                    modifier = Modifier
+                        .height(32.dp)
+                        .padding(end = 8.dp)
+                )
+                Text(
+                    text = "Login with Fingerprint",
+                    fontSize = 14.sp,
+                    modifier = Modifier
+                        .padding(top = 4.dp, end = 18.dp)
+                        .clickable(
+                            onClick = {
+                            // TODO: Fingerprint Login
+                            }
+                        )
+                )
+            }
+
+            Spacer(modifier = Modifier.height(18.dp))
+
+            Text(
+                text = "Don't have an account?",
+                fontSize = 14.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+            Text(
+                text = "Signup",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                color = blue_green,
+                modifier = Modifier
+                    .padding(top = 4.dp)
+                    .clickable(
+                        onClick = {
+                            // TODO: Navigate to Signup
+                        },
+                        role = Role.Button
+                    )
+                    .indication(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(bounded = true)
+                    )
+            )
+            Spacer(modifier = Modifier.height(18.dp))
+
+            Text(
+                text = "Developed by DCODE",
+                fontSize = 14.sp,
+                modifier = Modifier
+                    .alpha(0.5f)
+            )
+        }
     }
 }
