@@ -226,7 +226,6 @@ fun OnboardingPage(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BlobBackground(
     pagerState: PagerState,
