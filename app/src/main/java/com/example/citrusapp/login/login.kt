@@ -24,6 +24,8 @@ import com.example.citrusapp.ui.theme.blue_green
 @Composable
 fun LoginScreen(onBoardingClick: () -> Unit) {
     val isDarkTheme = isSystemInDarkTheme()
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -34,15 +36,15 @@ fun LoginScreen(onBoardingClick: () -> Unit) {
             alpha = 0.5f
         )
 
-        // Back Button + "Login with" + Logo (Top-Left Corner Stack)
         Column(
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(start = 28.dp, top = 16.dp)
         ) {
             IconButton(
                 onClick = { onBoardingClick() },
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier
+                    .height(46.dp)
+                    .padding(start = 16.dp, top = 18.dp)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
@@ -60,46 +62,38 @@ fun LoginScreen(onBoardingClick: () -> Unit) {
                 ),
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
-                        .padding(start = 24.dp, top = 16.dp)
+                    .padding(start = 34.dp, top = 16.dp)
 
             )
             Row {
                 Image(
-                painter = painterResource(id = R.drawable.citruslogo),
-                contentDescription = "Citrus Logo",
-                modifier = Modifier
-                    .height(62.dp)
-                    .padding(start = 24.dp, top = 16.dp),
-                colorFilter = ColorFilter.tint(
-                    if (isDarkTheme) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground
+                    painter = painterResource(id = R.drawable.citruslogo),
+                    contentDescription = "Citrus Logo",
+                    modifier = Modifier
+                        .height(62.dp)
+                        .padding(start = 34.dp, top = 10.dp),
+                    colorFilter = ColorFilter.tint(
+                        if (isDarkTheme) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground
+                    )
                 )
-            )
                 Image(
                     painter = painterResource(id = R.drawable.schoollogo),
                     contentDescription = "School Logo",
                     modifier = Modifier
                         .height(68.dp)
-                        .padding(start = 8.dp, top = 12.dp)
+                        .padding(start = 8.dp, top = 10.dp)
                 )
             }
-        }
 
-        // Foreground Login Form
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 12.dp, end = 12.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            var email by remember { mutableStateOf("") }
-            var password by remember { mutableStateOf("") }
+            Spacer(modifier = Modifier.height(50.dp))
 
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
                 leadingIcon = {
                     Icon(
@@ -109,14 +103,16 @@ fun LoginScreen(onBoardingClick: () -> Unit) {
                 }
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(18.dp))
 
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("Password") },
                 visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp),
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_password),
@@ -125,15 +121,23 @@ fun LoginScreen(onBoardingClick: () -> Unit) {
                 }
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+        }
 
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 12.dp, end = 12.dp),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Button(
                 onClick = {
                     // TODO: Handle login
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp),
+                    .height(50.dp)
+                    .padding(start = 16.dp, end = 16.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = blue_green,
                     contentColor = Color.White
@@ -141,6 +145,25 @@ fun LoginScreen(onBoardingClick: () -> Unit) {
             ) {
                 Text("Login")
             }
+
+            Spacer(modifier = Modifier.height(18.dp))
+
+            Button(
+                onClick = {
+                    // TODO: Handle login
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .padding(start = 16.dp, end = 16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = blue_green,
+                    contentColor = Color.White
+                )
+            ) {
+                Text("LoginHALLO")
+            }
         }
+
     }
 }
