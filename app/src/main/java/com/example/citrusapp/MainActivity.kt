@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.citrusapp.login.LoginScreen
 import com.example.citrusapp.onboardingScreen.OnboardingScreen
+import com.example.citrusapp.signup.SignupScreen
 import com.example.citrusapp.ui.theme.CitrusAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -38,12 +39,20 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable("onboarding") {
                             OnboardingScreen(
-                                onLoginClick = { navController.navigate("login") }
+                                onLoginClick = { navController.navigate("login") {popUpTo("onboarding") {inclusive = true}} },
+                                signupClick = { navController.navigate("signup") {popUpTo("onboarding") {inclusive = true}} }
+
                             )
                         }
                         composable("login") {
                             LoginScreen(
-                                onBoardingClick = { navController.navigate("onboarding") }
+                                onBoardingClick = { navController.navigate("onboarding") {popUpTo("login") {inclusive = true}} },
+                                signupClick = { navController.navigate("signup") {popUpTo("login") {inclusive = true}} }
+                            )
+                        }
+                        composable("signup") {
+                            SignupScreen(
+                                loginClick = { navController.navigate("login") {popUpTo("signup") {inclusive = true}} }
                             )
                         }
                     }

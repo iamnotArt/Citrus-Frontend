@@ -28,12 +28,11 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
-fun LoginScreen(onBoardingClick: () -> Unit) {
+fun LoginScreen(onBoardingClick: () -> Unit, signupClick: () -> Unit) {
     val isDarkTheme = isSystemInDarkTheme()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -290,7 +289,7 @@ fun LoginScreen(onBoardingClick: () -> Unit) {
                     .padding(top = 4.dp)
                     .clickable(
                         onClick = {
-                            // TODO: Navigate to Signup
+                                signupClick() // TODO: Navigate to Signup
                         },
                         role = Role.Button
                     )

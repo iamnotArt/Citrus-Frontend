@@ -32,9 +32,8 @@ import com.example.citrusapp.Components.PagerIndicator
 import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnboardingScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit) {
+fun OnboardingScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit, signupClick: () -> Unit) {
     val realPageCount = 3
     val fakePageCount = 1000
     val startIndex = (fakePageCount / 2) - ((fakePageCount / 2) % realPageCount)
@@ -49,7 +48,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit) {
 
     val pages = listOf(
         Triple(R.drawable.screen1, "Welcome to Citrus", "Your all-in-one companion for Northwest Samar State University life! Whether you're looking for the latest campus news and events, need to track your class schedule and more, Citrus has got you covered!"),
-        Triple(R.drawable.screen2, "Stay Organized and Informed", "Manage classes, track events, get real-time updates, and stay organized with to-do lists and custom deadlines."),
+        Triple(R.drawable.screen2, "Stay Informed", "Manage classes, track events, get real-time updates, and stay organized with to-do lists and custom deadlines."),
         Triple(R.drawable.screen3, "Connect, Grow, and Find Opportunities", "Networking is key to success! Citrus helps you connect with peers, alumni, and potential mentors through our Find Works feature and more!")
     )
 
@@ -147,7 +146,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit) {
                     .padding(top = 4.dp, bottom = 40.dp)
                     .clickable(
                         onClick = {
-                            // TODO: Navigate to Signup
+                            signupClick() // TODO: Navigate to Signup
                         },
                         role = Role.Button
                     )
