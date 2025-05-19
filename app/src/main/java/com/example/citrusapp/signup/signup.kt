@@ -44,7 +44,7 @@ fun SignupScreen(loginClick: () -> Unit) {
                 IconButton(
                     onClick = { loginClick() },
                     modifier = Modifier
-                        .size(46.dp)
+                        .height(46.dp)
                         .padding(start = 16.dp, top = 18.dp)
                 ) {
                     Icon(
@@ -60,7 +60,7 @@ fun SignupScreen(loginClick: () -> Unit) {
                     contentDescription = "Citrus Logo",
                     modifier = Modifier
                         .height(44.dp)
-                        .padding(top = 7.5.dp, end = 40.dp)
+                        .padding(top = 7.5.dp, end = 58.dp)
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
