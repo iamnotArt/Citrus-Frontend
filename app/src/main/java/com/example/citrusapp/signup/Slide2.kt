@@ -16,8 +16,8 @@ fun SlideTwo() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Budget Smart")
+        Text("Slide 2")
         Spacer(modifier = Modifier.height(8.dp))
-        Text("Set limits and reach your goals.")
+
     }
 }

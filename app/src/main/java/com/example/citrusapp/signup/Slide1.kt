@@ -16,8 +16,8 @@ fun SlideOne() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Welcome to Citrus")
+        Text("Slide 1")
         Spacer(modifier = Modifier.height(8.dp))
-        Text("Track your spending effortlessly.")
+
     }
 }

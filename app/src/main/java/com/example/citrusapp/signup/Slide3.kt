@@ -16,8 +16,7 @@ fun SlideThree() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Visual Insights")
+        Text("Slide 3")
         Spacer(modifier = Modifier.height(8.dp))
-        Text("Analyze your habits with clean charts.")
     }
 }
