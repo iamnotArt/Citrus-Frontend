@@ -1,7 +1,6 @@
 package com.example.citrusapp.onboardingScreen
 
 import AutoScrollPager
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
