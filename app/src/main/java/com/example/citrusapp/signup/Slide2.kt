@@ -2,6 +2,7 @@ package com.example.citrusapp.signup.slides
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -12,6 +13,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -37,6 +39,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
@@ -51,12 +55,20 @@ fun SlideTwo() {
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
-    val maxLength = 20
-    val letterOnlyRegex = Regex("^[a-zA-Z ]*$")
-
     val focusManager = LocalFocusManager.current
     val passwordFocusRequester = remember { FocusRequester() }
     val confirmPasswordFocusRequester = remember { FocusRequester() }
+
+    var showGmailError by remember { mutableStateOf(false) }
+    val strictEmailRegex = Regex("^[A-Za-z0-9+_.-]+@(gmail\\.com|yahoo\\.com)$")
+
+    // New: show error if confirm password doesn't match password
+    val showConfirmPasswordError = remember(password, confirmPassword) {
+        confirmPassword.isNotEmpty() && confirmPassword != password
+    }
+    var passwordVisible by remember { mutableStateOf(false) }
+    var confirmPasswordVisible by remember { mutableStateOf(false) }
+
 
     Box(
         modifier = Modifier
@@ -90,6 +102,7 @@ fun SlideTwo() {
             )
         }
 
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -100,7 +113,7 @@ fun SlideTwo() {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(280.dp)
+                    .height(300.dp)
                     .padding(horizontal = 16.dp)
                     .alpha(0.7f)
                     .background(
@@ -111,18 +124,25 @@ fun SlideTwo() {
                 contentAlignment = Alignment.Center
             ) {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     OutlinedTextField(
                         value = gmail,
                         onValueChange = {
-                            if (it.length <= maxLength && it.matches(letterOnlyRegex)) {
-                                gmail = it
-                            }
+                            gmail = it
+                            showGmailError = false
                         },
                         label = { Text("Email") },
+                        isError = showGmailError,
+                        supportingText = {
+                            Text(
+                                text = if (showGmailError) "Please enter a valid email address" else " ",
+                                color = if (showGmailError) MaterialTheme.colorScheme.error else Color.Transparent,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.height(20.dp)
+                            )
+                        },
                         singleLine = true,
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -135,22 +155,27 @@ fun SlideTwo() {
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                         keyboardActions = KeyboardActions(
                             onNext = {
-                                passwordFocusRequester.requestFocus()
+                                if (!strictEmailRegex.matches(gmail)) {
+                                    showGmailError = true
+                                } else {
+                                    passwordFocusRequester.requestFocus()
+                                }
                             }
                         )
+
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Spacer(modifier = Modifier.height(4.dp))
 
                     OutlinedTextField(
                         value = password,
                         onValueChange = {
-                            if (it.length <= maxLength && it.matches(letterOnlyRegex)) {
-                                password = it
-                            }
+                            password = it
                         },
                         label = { Text("Password") },
                         singleLine = true,
+                        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                         modifier = Modifier
                             .fillMaxWidth()
                             .focusRequester(passwordFocusRequester),
@@ -165,20 +190,39 @@ fun SlideTwo() {
                             onNext = {
                                 confirmPasswordFocusRequester.requestFocus()
                             }
-                        )
+                        ),
+                        supportingText = {
+                            // Example: you can show password strength or error here, for now keeping space reserved
+                            Text(
+                                text = if (password.isNotEmpty()) "Password strength: ${getPasswordStrength(password).first}" else " ",
+                                color = if (password.isNotEmpty()) getPasswordStrength(password).second else Color.Transparent,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.height(20.dp)
+                            )
+                        },
+                        trailingIcon = {
+                            IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                                Icon(
+                                    painter = painterResource(
+                                        id = if (passwordVisible) R.drawable.ic_visibility_off else R.drawable.ic_visibility
+                                    ),
+                                    contentDescription = if (passwordVisible) "Hide password" else "Show password"
+                                )
+                            }
+                        }
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
 
                     OutlinedTextField(
                         value = confirmPassword,
                         onValueChange = {
-                            if (it.length <= maxLength && it.matches(letterOnlyRegex)) {
-                                confirmPassword = it
-                            }
-                        },
-                        label = { Text("Confirm your Password") },
+                            confirmPassword = it
+                        }
+                        ,
+                        label = { Text("Confirm Password") },
                         singleLine = true,
+                        visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                         modifier = Modifier
                             .fillMaxWidth()
                             .focusRequester(confirmPasswordFocusRequester),
@@ -193,13 +237,34 @@ fun SlideTwo() {
                             onDone = {
                                 focusManager.clearFocus()
                             }
-                        )
+                        ),
+                        isError = showConfirmPasswordError,
+                        supportingText = {
+                            Text(
+                                text = if (showConfirmPasswordError) "Passwords do not match" else " ",
+                                color = if (showConfirmPasswordError)
+                                    MaterialTheme.colorScheme.error
+                                else Color.Transparent,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.height(20.dp)
+                            )
+                        },
+                        trailingIcon = {
+                            IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+                                Icon(
+                                    painter = painterResource(
+                                        id = if (confirmPasswordVisible) R.drawable.ic_visibility_off else R.drawable.ic_visibility
+                                    ),
+                                    contentDescription = if (confirmPasswordVisible) "Hide password" else "Show password"
+                                )
+                            }
+                        }
                     )
-
-                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }
+
+
 
         Column(
             modifier = Modifier
@@ -274,3 +339,25 @@ fun SlideTwo() {
         }
     }
 }
+
+fun getPasswordStrength(password: String): Triple<String, Color, Float> {
+    val length = password.length
+    val letterCount = password.count { it.isLetter() }
+    val digitCount = password.count { it.isDigit() }
+    val symbolCount = password.count { !it.isLetterOrDigit() }
+
+    val strong = (letterCount >= 10 && digitCount == 0 && symbolCount == 0) ||
+            (letterCount >= 8 && digitCount >= 2) ||
+            (letterCount >= 9 && digitCount >= 1) ||
+            (letterCount >= 5 && digitCount >= 2 && symbolCount >= 1) ||
+            (length > 9)
+
+    val medium = !strong && length >= 8 && letterCount >= 5 && (digitCount >= 1 || symbolCount >= 1)
+
+    return when {
+        strong -> Triple("Strong", Color(0xFF2E7D32), 1f)      // Full green bar
+        medium -> Triple("Medium", Color(0xFFF9A825), 0.6f)   // Yellow bar (60%)
+        else -> Triple("Weak", Color.Red, 0.3f)               // Red bar (30%)
+    }
+}
+

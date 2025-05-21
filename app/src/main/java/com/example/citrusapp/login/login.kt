@@ -137,18 +137,14 @@ fun LoginScreen(onBoardingClick: () -> Unit, signupClick: () -> Unit) {
                             contentDescription = "Email Icon"
                         )
                     },
+                    supportingText = {
+                        if (hasSubmittedEmail && !isEmailValid) {
+                            Text("Please enter a valid email.")
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                 )
-
-                if (hasSubmittedEmail && !isEmailValid) {
-                    Text(
-                        text = "Please enter a valid email.",
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(start = 16.dp, top = 4.dp)
-                    )
-                }
             }
 
             Spacer(modifier = Modifier.height(18.dp))
