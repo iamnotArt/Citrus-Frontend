@@ -12,7 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
@@ -21,6 +23,27 @@ fun SlideTwo() {
         modifier = Modifier
             .fillMaxSize()
     ) {
+
+        // ✅ Top Title and Description
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .align(Alignment.TopCenter) // This works now!
+                .padding(top = 48.dp)
+        ) {
+            Text(
+                text = "Welcome to Citrus!",
+                fontWeight = FontWeight.Bold,
+                fontSize = 36.sp,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                text = "Let’s get started by entering your name",
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+            )
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()

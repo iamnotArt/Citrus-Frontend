@@ -1,5 +1,6 @@
 package com.example.citrusapp.signup
 
+import SlideOne
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
@@ -15,16 +16,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.citrusapp.Components.PagerIndicator
 import com.example.citrusapp.R
-import com.example.citrusapp.signup.slides.SlideOne
 import com.example.citrusapp.signup.slides.SlideThree
 import com.example.citrusapp.signup.slides.SlideTwo
-import kotlinx.coroutines.launch
 
 @Composable
 fun SignupScreen(loginClick: () -> Unit) {
     val pageCount = 3
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { pageCount })
-    val scope = rememberCoroutineScope()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
