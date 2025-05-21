@@ -2,15 +2,18 @@ package com.example.citrusapp.signup
 
 import SlideOne
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -23,6 +26,7 @@ import com.example.citrusapp.signup.slides.SlideTwo
 fun SignupScreen(loginClick: () -> Unit) {
     val pageCount = 3
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { pageCount })
+    val isDarkTheme = isSystemInDarkTheme()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -58,7 +62,10 @@ fun SignupScreen(loginClick: () -> Unit) {
                     contentDescription = "Citrus Logo",
                     modifier = Modifier
                         .height(44.dp)
-                        .padding(top = 7.5.dp, end = 58.dp)
+                        .padding(top = 7.5.dp, end = 58.dp),
+                    colorFilter = ColorFilter.tint(
+                        if (isDarkTheme) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground
+                    )
                 )
 
                 Spacer(modifier = Modifier.weight(1f))

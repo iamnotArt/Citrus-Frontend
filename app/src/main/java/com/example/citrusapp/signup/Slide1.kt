@@ -73,7 +73,7 @@ fun SlideOne() {
                     .fillMaxWidth()
                     .height(250.dp)
                     .padding(horizontal = 16.dp)
-                    .alpha(0.7f)
+                    .alpha(0.6f)
                     .background(
                         color = MaterialTheme.colorScheme.surface,
                         shape = RoundedCornerShape(24.dp)
