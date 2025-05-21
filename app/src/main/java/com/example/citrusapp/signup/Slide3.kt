@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.citrusapp.ui.theme.blue_green
@@ -29,18 +30,24 @@ fun SlideThree() {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .align(Alignment.TopCenter) // This works now!
-                .padding(top = 48.dp)
+                .padding(top = 30.dp)
         ) {
             Text(
-                text = "Welcome to Citrus!",
+                text = "Verify Your Email",
                 fontWeight = FontWeight.Bold,
-                fontSize = 36.sp,
-                color = MaterialTheme.colorScheme.onBackground
+                fontSize = 34.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
             )
             Text(
-                text = "Let’s get started by entering your name",
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                text = "Almost there! We've sent a Verification code to your email. Enter it below to activate your account.",
+                fontSize = 14.sp,
+                lineHeight = 16.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(horizontal = 12.dp, vertical = 4.dp)
+
             )
         }
 
@@ -72,7 +79,7 @@ fun SlideThree() {
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 112.dp),
+                .padding(bottom = 60.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(

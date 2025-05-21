@@ -1,14 +1,20 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -17,36 +23,44 @@ import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
 fun SlideOne() {
-    // State for text fields
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
+
+    val maxLength = 20
+    val letterOnlyRegex = Regex("^[a-zA-Z ]*$")
+
+    val focusManager = LocalFocusManager.current
+    val lastNameFocusRequester = remember { FocusRequester() }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        // Top Title and Description
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 48.dp)
+                .padding(top = 30.dp)
         ) {
             Text(
                 text = "Profile Details",
                 fontWeight = FontWeight.Bold,
-                fontSize = 36.sp
+                fontSize = 34.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(horizontal = 12.dp),
             )
             Text(
                 text = "Tell us your name so people can know who you are!",
                 fontSize = 14.sp,
                 lineHeight = 16.sp,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .padding(horizontal = 12.dp, vertical = 4.dp)
             )
         }
 
-        // Center content with two text fields
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -68,39 +82,81 @@ fun SlideOne() {
                 contentAlignment = Alignment.Center
             ) {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     OutlinedTextField(
                         value = firstName,
-                        onValueChange = { firstName = it },
+                        onValueChange = {
+                            if (it.length <= maxLength && it.matches(letterOnlyRegex)) {
+                                firstName = it
+                            }
+                        },
                         label = { Text("First Name") },
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth(),
                         leadingIcon = {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_pencil),
-                                contentDescription = "Email Icon"
+                                contentDescription = "First Name Icon"
                             )
-                        }
+                        },
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(
+                            onNext = {
+                                lastNameFocusRequester.requestFocus()
+                            }
+                        )
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "${firstName.length} / $maxLength",
+                        modifier = Modifier
+                            .align(Alignment.End)
+                            .padding(end = 8.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                    )
+
 
                     OutlinedTextField(
                         value = lastName,
-                        onValueChange = { lastName = it },
+                        onValueChange = {
+                            if (it.length <= maxLength && it.matches(letterOnlyRegex)) {
+                                lastName = it
+                            }
+                        },
                         label = { Text("Last Name") },
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .focusRequester(lastNameFocusRequester),
                         leadingIcon = {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_pencil),
-                                contentDescription = "Email Icon"
+                                contentDescription = "Last Name Icon"
                             )
-                        }
+                        },
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                focusManager.clearFocus()
+                            }
+                        )
                     )
+
+                    Text(
+                        text = "${lastName.length} / $maxLength",
+                        modifier = Modifier
+                            .align(Alignment.End)
+                            .padding(end = 8.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                    )
+
                 }
             }
         }
@@ -110,7 +166,7 @@ fun SlideOne() {
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 112.dp),
+                .padding(bottom = 60.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -119,7 +175,7 @@ fun SlideOne() {
                 textAlign = TextAlign.Center,
                 lineHeight = 16.sp,
                 modifier = Modifier
-                .padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
+                .padding(bottom = 12.dp, start = 8.dp, end = 8.dp),
             )
             Button(
                 onClick = {

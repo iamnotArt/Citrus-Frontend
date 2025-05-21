@@ -114,7 +114,6 @@ fun LoginScreen(onBoardingClick: () -> Unit, signupClick: () -> Unit) {
                     value = email,
                     onValueChange = {
                         email = it
-                        // Optional: reset error state on new input
                         if (hasSubmittedEmail) hasSubmittedEmail = false
                     },
                     label = { Text("Email") },
