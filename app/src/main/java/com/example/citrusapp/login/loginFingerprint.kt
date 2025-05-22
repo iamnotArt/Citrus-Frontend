@@ -106,7 +106,7 @@ fun FingerprintScreen(mainLoginClick: () -> Unit, signupClick: () -> Unit) {
         )
 
         Text(
-            text = "Enter your existing email and password that you wanted to be automatically logged in using your fingerprint. NOTE that you can still change the account that is saved later in your 'logged in' account settings.",
+            text = "Enter your existing email and password that you want to be automatically logged in using your fingerprint. NOTE that you can still change the account that is saved later in your 'logged in' account settings.",
             style = MaterialTheme.typography.bodyLarge.copy(
                 fontSize = 14.sp,
                 lineHeight = 16.sp
