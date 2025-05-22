@@ -69,6 +69,10 @@ fun SlideTwo() {
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
 
+    var emailError by remember { mutableStateOf(false) }
+    var passwordError by remember { mutableStateOf(false) }
+    var confirmPasswordError by remember { mutableStateOf(false) }
+
 
     Box(
         modifier = Modifier
@@ -115,7 +119,7 @@ fun SlideTwo() {
                     .fillMaxWidth()
                     .height(300.dp)
                     .padding(horizontal = 16.dp)
-                    .alpha(0.7f)
+                    .alpha(0.6f)
                     .background(
                         color = MaterialTheme.colorScheme.surface,
                         shape = RoundedCornerShape(24.dp)
@@ -141,6 +145,11 @@ fun SlideTwo() {
                                 color = if (showGmailError) MaterialTheme.colorScheme.error else Color.Transparent,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.height(20.dp)
+                            )
+
+                            Text(
+                                text = if (emailError) "Email field cannot be empty." else " ",
+                                color = if (emailError) MaterialTheme.colorScheme.error else Color.Transparent
                             )
                         },
                         singleLine = true,
@@ -194,10 +203,25 @@ fun SlideTwo() {
                         supportingText = {
                             // Example: you can show password strength or error here, for now keeping space reserved
                             Text(
-                                text = if (password.isNotEmpty()) "Password strength: ${getPasswordStrength(password).first}" else " ",
-                                color = if (password.isNotEmpty()) getPasswordStrength(password).second else Color.Transparent,
+                                text = buildAnnotatedString {
+                                    if (password.isNotEmpty()) {
+                                        append("Password strength: ")
+                                        withStyle(style = SpanStyle(color = getPasswordStrength(password).second)) {
+                                            append(getPasswordStrength(password).first)
+                                        }
+                                    } else {
+                                        append(" ") // Keeps the space reserved
+                                    }
+                                },
                                 style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurface, // Default color for "Password strength:"
                                 modifier = Modifier.height(20.dp)
+                            )
+
+
+                            Text(
+                                text = if (passwordError) "Password field cannot be empty." else " ",
+                                color = if (passwordError) MaterialTheme.colorScheme.error else Color.Transparent
                             )
                         },
                         trailingIcon = {
@@ -248,6 +272,11 @@ fun SlideTwo() {
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.height(20.dp)
                             )
+
+                            Text(
+                                text = if (confirmPasswordError) "Confirm password field cannot be empty." else " ",
+                                color = if (confirmPasswordError) MaterialTheme.colorScheme.error else Color.Transparent
+                            )
                         },
                         trailingIcon = {
                             IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
@@ -274,14 +303,13 @@ fun SlideTwo() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val context = LocalContext.current
-            val primaryColor = MaterialTheme.colorScheme.primary
             val defaultTextColor = MaterialTheme.colorScheme.onBackground
 
             val annotatedText = buildAnnotatedString {
                 append("By signing up, you agree to our ")
 
                 pushStringAnnotation(tag = "URL", annotation = "https://youtu.be/dQw4w9WgXcQ?si=1NVPIUDQlT5gn_cX")
-                withStyle(style = SpanStyle(color = primaryColor, textDecoration = TextDecoration.Underline)) {
+                withStyle(style = SpanStyle(color = blue_green, textDecoration = TextDecoration.Underline)) {
                     append("Terms of Service")
                 }
                 pop()
@@ -289,7 +317,7 @@ fun SlideTwo() {
                 append(" and ")
 
                 pushStringAnnotation(tag = "URL", annotation = "https://youtu.be/dQw4w9WgXcQ?si=1NVPIUDQlT5gn_cX")
-                withStyle(style = SpanStyle(color = primaryColor, textDecoration = TextDecoration.Underline)) {
+                withStyle(style = SpanStyle(color = blue_green, textDecoration = TextDecoration.Underline)) {
                     append("Privacy Policy")
                 }
                 pop()
@@ -323,7 +351,17 @@ fun SlideTwo() {
 
             Button(
                 onClick = {
-                    // TODO: Navigate to Slide3
+                    val emailEmpty = gmail.isBlank()
+                    val passwordEmpty = password.isBlank()
+                    val confirmPasswordEmpty = confirmPassword.isBlank()
+
+                    emailError = emailEmpty
+                    passwordError = passwordEmpty
+                    confirmPasswordError = confirmPasswordEmpty
+
+                    if (!emailEmpty && !passwordEmpty && !confirmPasswordEmpty) {
+                        // TODO: Proceed with navigation or logic
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = blue_green,
@@ -336,6 +374,8 @@ fun SlideTwo() {
             ) {
                 Text(text = "Next")
             }
+
+
         }
     }
 }

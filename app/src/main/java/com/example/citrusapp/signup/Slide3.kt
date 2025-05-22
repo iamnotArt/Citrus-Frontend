@@ -98,7 +98,6 @@ fun SlideThree() {
                     .padding(bottom = 40.dp)
             )
 
-
             // OTP Input Row
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),

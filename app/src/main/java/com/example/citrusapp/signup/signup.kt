@@ -23,7 +23,7 @@ import com.example.citrusapp.signup.slides.SlideThree
 import com.example.citrusapp.signup.slides.SlideTwo
 
 @Composable
-fun SignupScreen(loginClick: () -> Unit) {
+fun SignupScreen(loginClick: () -> Unit, loginClick1: () -> Unit) {
     val pageCount = 3
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { pageCount })
     val isDarkTheme = isSystemInDarkTheme()
@@ -90,7 +90,9 @@ fun SignupScreen(loginClick: () -> Unit) {
                     .weight(1f)
             ) { page ->
                 when (page) {
-                    0 -> SlideOne()
+                    0 -> SlideOne(
+                        loginClick1 = { loginClick1() } // Pass the loginClick1 function to SlideOne
+                    )
                     1 -> SlideTwo()
                     2 -> SlideThree()
                 }

@@ -1,5 +1,6 @@
 package com.example.citrusapp
 
+import SlideOne
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -52,8 +53,10 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("signup") {
                             SignupScreen(
-                                loginClick = { navController.navigate("login") {popUpTo("signup") {inclusive = true}} }
+                                loginClick = { navController.navigate("login") {popUpTo("signup") {inclusive = true}} },
+                                loginClick1 = { navController.navigate("login") {popUpTo("signup") {inclusive = true}} }
                             )
+
                         }
                     }
                 }

@@ -1,8 +1,12 @@
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,6 +17,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -22,9 +27,12 @@ import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
-fun SlideOne() {
+fun SlideOne(loginClick1: () -> Unit) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
+
+    var firstNameError by remember { mutableStateOf(false) }
+    var lastNameError by remember { mutableStateOf(false) }
 
     val maxLength = 20
     val letterOnlyRegex = Regex("^[a-zA-Z ]*$")
@@ -52,7 +60,7 @@ fun SlideOne() {
                     .padding(horizontal = 12.dp),
             )
             Text(
-                text = "Tell us your name so people can know who you are!",
+                text = "Tell us your name so people can know who you are! We'll only use your name to create a unique identity within the app, so please make sure it's accurate.",
                 fontSize = 14.sp,
                 lineHeight = 16.sp,
                 textAlign = TextAlign.Center,
@@ -86,77 +94,102 @@ fun SlideOne() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    OutlinedTextField(
-                        value = firstName,
-                        onValueChange = {
-                            if (it.length <= maxLength && it.matches(letterOnlyRegex)) {
-                                firstName = it
-                            }
-                        },
-                        label = { Text("First Name") },
-                        singleLine = true,
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_pencil),
-                                contentDescription = "First Name Icon"
+                    Box(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        OutlinedTextField(
+                            value = firstName,
+                            onValueChange = {
+                                if (it.length <= maxLength && it.matches(letterOnlyRegex)) {
+                                    firstName = it
+                                    firstNameError = false
+                                }
+                            },
+                            label = { Text("First Name") },
+                            singleLine = true,
+                            isError = firstNameError,
+                            supportingText = {
+                                Text(
+                                    text = if (firstNameError) "First name field cannot be empty." else " ",
+                                    color = if (firstNameError) MaterialTheme.colorScheme.error else Color.Transparent
+                                )
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 0.dp),
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_pencil),
+                                    contentDescription = "First Name Icon"
+                                )
+                            },
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                            keyboardActions = KeyboardActions(
+                                onNext = {
+                                    lastNameFocusRequester.requestFocus()
+                                }
                             )
-                        },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                        keyboardActions = KeyboardActions(
-                            onNext = {
-                                lastNameFocusRequester.requestFocus()
-                            }
                         )
-                    )
+
+                        // Counter overlaid at bottom-end
+                        Text(
+                            text = "${firstName.length} / $maxLength",
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(end = 16.dp), // fine-tune padding to align it well
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                        )
+                    }
 
 
-                    Text(
-                        text = "${firstName.length} / $maxLength",
-                        modifier = Modifier
-                            .align(Alignment.End)
-                            .padding(end = 8.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-                    )
-
-
-                    OutlinedTextField(
-                        value = lastName,
-                        onValueChange = {
-                            if (it.length <= maxLength && it.matches(letterOnlyRegex)) {
-                                lastName = it
+                    Box(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        OutlinedTextField(
+                            value = lastName,
+                            onValueChange = {
+                                if (it.length <= maxLength && it.matches(letterOnlyRegex)) {
+                                    lastName = it
+                                    lastNameError = false
+                                }
+                            },
+                            label = { Text("Last Name") },
+                            singleLine = true,
+                            isError = lastNameError,
+                            supportingText = {
+                                Text(
+                                    text = if (lastNameError) "Last name field cannot be empty." else " ",
+                                    color = if (lastNameError) MaterialTheme.colorScheme.error else Color.Transparent
+                                )
                             }
-                        },
-                        label = { Text("Last Name") },
-                        singleLine = true,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .focusRequester(lastNameFocusRequester),
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_pencil),
-                                contentDescription = "Last Name Icon"
+                            ,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .focusRequester(lastNameFocusRequester),
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_pencil),
+                                    contentDescription = "Last Name Icon"
+                                )
+                            },
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                            keyboardActions = KeyboardActions(
+                                onDone = {
+                                    focusManager.clearFocus()
+                                }
                             )
-                        },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
                         )
-                    )
 
-                    Text(
-                        text = "${lastName.length} / $maxLength",
-                        modifier = Modifier
-                            .align(Alignment.End)
-                            .padding(end = 8.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-                    )
-
+                        Text(
+                            text = "${lastName.length} / $maxLength",
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(end = 16.dp), // fine-tune padding to align it well
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                        )
+                    }
                 }
             }
         }
@@ -169,17 +202,45 @@ fun SlideOne() {
                 .padding(bottom = 60.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "We'll only use your name to create a unique identity within the app, so please make sure it's accurate.",
-                fontSize = 14.sp,
-                textAlign = TextAlign.Center,
-                lineHeight = 16.sp,
+            Row(
                 modifier = Modifier
-                .padding(bottom = 12.dp, start = 8.dp, end = 8.dp),
-            )
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Already have an account? ",
+                    fontSize = 14.sp
+                )
+                Text(
+                    text = "Login",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = blue_green,
+                    modifier = Modifier
+                        .clickable(
+                            onClick = {
+                                loginClick1()// TODO: Navigate to login
+                            },
+                            role = Role.Button
+                        )
+                        .indication(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = rememberRipple(bounded = true)
+                        )
+                )
+            }
+
             Button(
                 onClick = {
-                    // TODO: Use firstName and lastName or navigate
+                    val firstEmpty = firstName.isBlank()
+                    val lastEmpty = lastName.isBlank()
+
+                    firstNameError = firstEmpty
+                    lastNameError = lastEmpty
+
+                    if (!firstEmpty && !lastEmpty) {
+                        // TODO: Navigate to Next
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = blue_green,
