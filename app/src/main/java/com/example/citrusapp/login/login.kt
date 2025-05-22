@@ -149,7 +149,7 @@ fun LoginScreen(onBoardingClick: () -> Unit, signupClick: () -> Unit, loginFinge
                 )
             }
 
-            Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
             OutlinedTextField(
                 value = password,

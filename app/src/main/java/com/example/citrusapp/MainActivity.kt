@@ -53,15 +53,16 @@ class MainActivity : ComponentActivity() {
                                 loginFingerprintClick = { navController.navigate("loginFingerprint") {popUpTo("login") {inclusive = true}} }
                             )
                         }
+                        composable("loginFingerprint") {
+                            FingerprintScreen(
+                                mainLoginClick = { navController.navigate("login") {popUpTo("loginFingerprint") {inclusive = true}} },
+                                signupClick = { navController.navigate("signup") {popUpTo("loginFingerprint") {inclusive = true}} }
+                            )
+                        }
                         composable("signup") {
                             SignupScreen(
                                 loginClick = { navController.navigate("login") {popUpTo("signup") {inclusive = true}} },
                                 loginClick1 = { navController.navigate("login") {popUpTo("signup") {inclusive = true}} }
-                            )
-                        }
-                        composable("loginFingerprint") {
-                            FingerprintScreen(
-                                mainLoginClick = { navController.navigate("login") {popUpTo("loginFingerprint") {inclusive = true}} }
                             )
                         }
                     }
