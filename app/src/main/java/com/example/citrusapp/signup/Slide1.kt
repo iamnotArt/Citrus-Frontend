@@ -131,12 +131,11 @@ fun SlideOne(loginClick1: () -> Unit) {
                             )
                         )
 
-                        // Counter overlaid at bottom-end
                         Text(
                             text = "${firstName.length} / $maxLength",
                             modifier = Modifier
                                 .align(Alignment.BottomEnd)
-                                .padding(end = 16.dp), // fine-tune padding to align it well
+                                .padding(end = 16.dp),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                         )
@@ -185,7 +184,7 @@ fun SlideOne(loginClick1: () -> Unit) {
                             text = "${lastName.length} / $maxLength",
                             modifier = Modifier
                                 .align(Alignment.BottomEnd)
-                                .padding(end = 16.dp), // fine-tune padding to align it well
+                                .padding(end = 16.dp),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                         )
@@ -194,7 +193,6 @@ fun SlideOne(loginClick1: () -> Unit) {
             }
         }
 
-        // Bottom Button
         Column(
             modifier = Modifier
                 .fillMaxWidth()

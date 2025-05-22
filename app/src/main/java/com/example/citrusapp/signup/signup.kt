@@ -38,7 +38,6 @@ fun SignupScreen(loginClick: () -> Unit, loginClick1: () -> Unit) {
         )
 
         Column(modifier = Modifier.fillMaxSize()) {
-            // Header
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -91,7 +90,7 @@ fun SignupScreen(loginClick: () -> Unit, loginClick1: () -> Unit) {
             ) { page ->
                 when (page) {
                     0 -> SlideOne(
-                        loginClick1 = { loginClick1() } // Pass the loginClick1 function to SlideOne
+                        loginClick1 = { loginClick1() }
                     )
                     1 -> SlideTwo()
                     2 -> SlideThree()

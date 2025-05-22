@@ -32,7 +32,7 @@ import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
-fun LoginScreen(onBoardingClick: () -> Unit, signupClick: () -> Unit) {
+fun LoginScreen(onBoardingClick: () -> Unit, signupClick: () -> Unit, loginFingerprintClick: () -> Unit) {
     val isDarkTheme = isSystemInDarkTheme()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -138,10 +138,12 @@ fun LoginScreen(onBoardingClick: () -> Unit, signupClick: () -> Unit) {
                         )
                     },
                     supportingText = {
-                        if (hasSubmittedEmail && !isEmailValid) {
-                            Text("Please enter a valid email.")
-                        }
-                    },
+                        Text(
+                            text = if (hasSubmittedEmail && !isEmailValid) "Please enter a valid email." else " ",
+                            color = if (hasSubmittedEmail && !isEmailValid) MaterialTheme.colorScheme.error else Color.Transparent
+                        )
+                    }
+                    ,
                     modifier = Modifier
                         .fillMaxWidth()
                 )
@@ -262,7 +264,7 @@ fun LoginScreen(onBoardingClick: () -> Unit, signupClick: () -> Unit) {
                         .padding(top = 4.dp, end = 18.dp)
                         .clickable(
                             onClick = {
-                            // TODO: Fingerprint Login
+                                loginFingerprintClick() // TODO: Navigate to Fingerprint Login
                             }
                         )
                 )

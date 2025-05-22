@@ -79,11 +79,10 @@ fun SlideTwo() {
             .fillMaxSize()
     ) {
 
-        // ✅ Top Title and Description
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .align(Alignment.TopCenter) // This works now!
+                .align(Alignment.TopCenter)
                 .padding(top = 30.dp)
         ) {
             Text(
@@ -201,7 +200,6 @@ fun SlideTwo() {
                             }
                         ),
                         supportingText = {
-                            // Example: you can show password strength or error here, for now keeping space reserved
                             Text(
                                 text = buildAnnotatedString {
                                     if (password.isNotEmpty()) {
@@ -210,11 +208,11 @@ fun SlideTwo() {
                                             append(getPasswordStrength(password).first)
                                         }
                                     } else {
-                                        append(" ") // Keeps the space reserved
+                                        append(" ")
                                     }
                                 },
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurface, // Default color for "Password strength:"
+                                color = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.height(20.dp)
                             )
 
