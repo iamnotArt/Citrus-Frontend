@@ -32,7 +32,7 @@ import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
-fun LoginScreen(onBoardingClick: () -> Unit, signupClick: () -> Unit, loginFingerprintClick: () -> Unit) {
+fun LoginScreen(homeClick: () -> Unit,onBoardingClick: () -> Unit, signupClick: () -> Unit, loginFingerprintClick: () -> Unit) {
     val isDarkTheme = isSystemInDarkTheme()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -224,7 +224,7 @@ fun LoginScreen(onBoardingClick: () -> Unit, signupClick: () -> Unit, loginFinge
         ) {
             Button(
                 onClick = {
-                    // TODO: Navigate to Login
+                    homeClick()// TODO: Navigate to Login
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = blue_green,
