@@ -57,12 +57,13 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("androidx.compose.foundation:foundation:1.5.0") // or latest stable
+    implementation(libs.androidx.foundation) // or latest stable
 
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation(libs.androidx.navigation.compose)
 
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0")
+    implementation(libs.accompanist.navigation.animation)
 
+    implementation(libs.lottie.compose) // or latest
 
 
 
