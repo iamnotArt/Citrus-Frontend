@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-05-22T21:47:23.816333800Z">
+        <DropdownSelection timestamp="2025-05-23T15:11:21.680154500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=D:\AndroidAVD\realme_6_pro_emulator.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=168306a9" />
             </handle>
           </Target>
         </DropdownSelection>

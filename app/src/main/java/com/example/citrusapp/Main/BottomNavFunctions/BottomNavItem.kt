@@ -6,7 +6,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +35,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun BottomNavItem(
     label: String,
-    animationFile: String? = null,
+    animationFile: String?,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
@@ -49,10 +52,10 @@ fun BottomNavItem(
         animationSpec = tween(durationMillis = 300)
     )
 
-    Box(
-        contentAlignment = Alignment.Center,
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .size(70.dp)
+            .width(64.dp)
             .clip(CircleShape)
             .clickable(
                 onClick = {
@@ -64,35 +67,31 @@ fun BottomNavItem(
                     }
                 }
             )
+            .padding(vertical = 4.dp)
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            if (animationFile != null) {
-                LottieAnimation(
-                    composition = composition,
-                    progress = { lottieAnimState.progress },
-                    modifier = Modifier
-                        .size(24.dp)
-                        .graphicsLayer(alpha = iconAlpha)
-                )
-            } else {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_email),
-                    contentDescription = "Account Icon",
-                    tint = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray,
-                    modifier = Modifier
-                        .size(24.dp)
-                        .graphicsLayer(alpha = iconAlpha)
-                )
-            }
-            Text(
-                text = label,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = iconAlpha),
-                fontSize = 12.sp
+        if (animationFile != null) {
+            LottieAnimation(
+                composition = composition,
+                progress = { lottieAnimState.progress },
+                modifier = Modifier
+                    .size(20.dp)
+                    .graphicsLayer(alpha = iconAlpha)
+            )
+        } else {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_email),
+                contentDescription = "Account Icon",
+                modifier = Modifier
+                    .size(20.dp)
+                    .graphicsLayer(alpha = iconAlpha),
+                tint = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
             )
         }
+        Text(
+            text = label,
+            fontSize = 11.sp,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = iconAlpha)
+        )
     }
 }
 
