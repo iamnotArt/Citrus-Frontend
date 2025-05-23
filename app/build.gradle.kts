@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.citrusapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -64,7 +64,4 @@ dependencies {
     implementation(libs.accompanist.navigation.animation)
 
     implementation(libs.lottie.compose) // or latest
-
-
-
 }

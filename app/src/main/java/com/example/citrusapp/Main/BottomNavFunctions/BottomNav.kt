@@ -1,29 +1,17 @@
 package com.example.citrusapp.Main.BottomNavFunctions
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.airbnb.lottie.compose.*
 import com.example.citrusapp.Main.Account.AccountScreen
 import com.example.citrusapp.Main.Home.HomeScreen
 import com.example.citrusapp.Main.Inbox.InboxScreen
 import com.example.citrusapp.Main.LMS.LMSScreen
 import com.example.citrusapp.Main.Network.NetworkScreen
-import com.example.citrusapp.R
-import kotlinx.coroutines.launch
 
 @Composable
 fun BottomNavScreen() {
@@ -35,7 +23,7 @@ fun BottomNavScreen() {
         bottomBar = {
             Surface(
                 tonalElevation = 8.dp,
-                modifier = Modifier.height(56.dp),
+                modifier = Modifier.height(60.dp),
                 color = MaterialTheme.colorScheme.surface
             ) {
                 Row(
@@ -83,7 +71,7 @@ fun BottomNavScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(bottom = innerPadding.calculateBottomPadding())
                 .background(MaterialTheme.colorScheme.background)
         ) {
             when (selectedItem) {
