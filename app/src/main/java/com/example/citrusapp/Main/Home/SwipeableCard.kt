@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,6 +35,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.times
 import androidx.compose.ui.zIndex
 import kotlinx.coroutines.delay
 import kotlin.math.abs
@@ -108,13 +111,54 @@ fun SwipableCardSection() {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(250.dp)
+                .height(300.dp) // Increased height to accommodate the fan
+                .padding(horizontal = 16.dp)
         ) {
-            // The swipable card
+            // Background cards fan (peeking from top)
+            val visibleCards = minOf(5, cards.size - currentIndex - 1)
+            for (i in 0 until visibleCards) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .zIndex((visibleCards - i).toFloat()) // Lower zIndex for cards behind
+                        .offset(
+                            x = (i + 1) * 12.dp, // Horizontal offset for fan effect
+                            y = (i + 1) * 8.dp // Vertical offset for staircase
+                        )
+                        .graphicsLayer {
+                            // Slight scale reduction for depth
+                            scaleX = 1f - (0.03f * (i + 1))
+                            scaleY = 1f - (0.03f * (i + 1))
+                            // Slight rotation for fan effect
+                            rotationZ = 2f * (i + 1)
+                        },
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = CardDefaults.cardElevation(4.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = cards[currentIndex + i + 1],
+                            fontSize = 18.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(start = 32.dp) // Keep text visible
+                        )
+                    }
+                }
+            }
+
+            // The main swipable card (on top of the fan)
             Card(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .zIndex(1f)
+                    .fillMaxWidth()
+                    .height(250.dp)
+                    .zIndex(10f) // Highest zIndex
                     .onSizeChanged { size ->
                         cardWidth = size.width
                     }
@@ -180,6 +224,19 @@ fun SwipableCardSection() {
                         fontWeight = FontWeight.Bold
                     )
                 }
+            }
+
+            // Card counter
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 8.dp)
+            ) {
+                Text(
+                    text = "${currentIndex + 1}/${cards.size}",
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
         }
     } else {
