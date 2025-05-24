@@ -20,7 +20,7 @@ fun LMSScreen() {
             .padding(16.dp)
     ) {
         Text(
-            text = "Settings",
+            text = "LMS",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.fillMaxWidth(),

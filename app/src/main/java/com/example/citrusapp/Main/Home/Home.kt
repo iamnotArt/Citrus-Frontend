@@ -3,19 +3,26 @@ package com.example.citrusapp.Main.Home
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.citrusapp.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
     val listState = rememberLazyListState()
@@ -61,16 +68,38 @@ fun HomeScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(animatedAppBarHeight)
+                .padding(horizontal = 14.dp, vertical = 4.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.schoollogo),
-                contentDescription = "School Logo",
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .height(60.dp)         // or any desired fixed size
-                    .padding(start = 14.dp, top = 6.dp, bottom = 6.dp) // keep your padding
-            )
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.schoollogo),
+                    contentDescription = "School Logo",
+                    modifier = Modifier.height(34.dp)
+                )
+
+                Spacer(modifier = Modifier.width(6.dp))
+
+                Text(
+                    text = "Citrus NWSSU",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
+                )
+
+                Spacer(modifier = Modifier.width(12.dp))
+                // Logo
+                Image(
+                    painter = painterResource(id = R.drawable.schoollogo),
+                    contentDescription = "School Logo",
+                    modifier = Modifier.height(34.dp)
+                )
+
+
+            }
         }
+
 
         LazyColumn(
             state = listState,
