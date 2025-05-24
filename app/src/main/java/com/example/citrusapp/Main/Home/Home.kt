@@ -1,7 +1,7 @@
 package com.example.citrusapp.Main.Home
 
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,20 +13,41 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.citrusapp.R
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
     val listState = rememberLazyListState()
     val appBarHeight = 56.dp
 
-    var lastScrollOffset by remember { mutableStateOf(0) }
     var isAppBarVisible by remember { mutableStateOf(true) }
 
-    LaunchedEffect(listState.firstVisibleItemScrollOffset, listState.firstVisibleItemIndex) {
-        val currentOffset = listState.firstVisibleItemScrollOffset + listState.firstVisibleItemIndex * 1000
-        isAppBarVisible = currentOffset < lastScrollOffset || listState.firstVisibleItemIndex == 0
-        lastScrollOffset = currentOffset
+    LaunchedEffect(listState) {
+        var previousOffset = 0
+        snapshotFlow {
+            listState.firstVisibleItemIndex * 1000 + listState.firstVisibleItemScrollOffset
+        }
+            .distinctUntilChanged()
+            .collectLatest { currentOffset ->
+                val layoutInfo = listState.layoutInfo
+                val visibleItems = layoutInfo.visibleItemsInfo
+                val totalItems = layoutInfo.totalItemsCount
+
+                val isAtBottom = visibleItems.lastOrNull()?.index == totalItems - 1
+
+                val delta = currentOffset - previousOffset
+
+                isAppBarVisible = when {
+                    isAtBottom -> false
+                    delta < -10 -> true
+                    delta > 10 -> false
+                    listState.firstVisibleItemIndex == 0 -> true
+                    else -> isAppBarVisible
+                }
+
+                previousOffset = currentOffset
+            }
     }
 
     val animatedAppBarHeight by animateDpAsState(
@@ -35,22 +56,27 @@ fun HomeScreen() {
         label = "AppBarHeight"
     )
 
-    val contentTopPadding by animateDpAsState(
-        targetValue = if (isAppBarVisible) appBarHeight else 0.dp,
-        animationSpec = tween(durationMillis = 300),
-        label = "ContentTopPadding"
-    )
+    Column(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(animatedAppBarHeight)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.schoollogo),
+                contentDescription = "School Logo",
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .height(60.dp)         // or any desired fixed size
+                    .padding(start = 14.dp, top = 6.dp, bottom = 6.dp) // keep your padding
+            )
+        }
 
-    Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             state = listState,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    top = contentTopPadding,
-                    start = 16.dp,
-                    end = 16.dp
-                ),
+                .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(30) { index ->
@@ -69,25 +95,5 @@ fun HomeScreen() {
                 }
             }
         }
-
-        TopAppBar(
-            title = {},
-            navigationIcon = {
-                Image(
-                    painter = painterResource(id = R.drawable.schoollogo),
-                    contentDescription = "School Logo",
-                    modifier = Modifier
-                        .height(48.dp)
-                        .padding(start = 8.dp)
-                )
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-                navigationIconContentColor = MaterialTheme.colorScheme.onSurface
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(animatedAppBarHeight)
-        )
     }
 }
