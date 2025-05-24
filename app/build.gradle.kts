@@ -64,4 +64,6 @@ dependencies {
     implementation(libs.accompanist.navigation.animation)
 
     implementation(libs.lottie.compose) // or latest
+
+
 }

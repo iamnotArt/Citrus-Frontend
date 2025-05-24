@@ -3,30 +3,44 @@ package com.example.citrusapp.Main.Home
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.example.citrusapp.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
     val listState = rememberLazyListState()
     val appBarHeight = 56.dp
+    val isDarkTheme = isSystemInDarkTheme()
 
     var isAppBarVisible by remember { mutableStateOf(true) }
 
@@ -74,13 +88,14 @@ fun HomeScreen() {
                 modifier = Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
                 Image(
                     painter = painterResource(id = R.drawable.schoollogo),
                     contentDescription = "School Logo",
                     modifier = Modifier.height(34.dp)
                 )
 
-                Spacer(modifier = Modifier.width(6.dp))
+                Spacer(modifier = Modifier.width(12.dp))
 
                 Text(
                     text = "Citrus NWSSU",
@@ -88,18 +103,27 @@ fun HomeScreen() {
                     fontSize = 24.sp,
                 )
 
-                Spacer(modifier = Modifier.width(12.dp))
-                // Logo
-                Image(
-                    painter = painterResource(id = R.drawable.schoollogo),
-                    contentDescription = "School Logo",
-                    modifier = Modifier.height(34.dp)
-                )
+                // Flexible space pushes content after this to the end
+                Spacer(modifier = Modifier.weight(1f))
 
+                Image(
+                    painter = painterResource(id = R.drawable.ic_menu),
+                    contentDescription = "School Logo",
+                    modifier = Modifier
+                        .height(34.dp)
+                        .clip(CircleShape)
+                        .clickable(
+                            onClick = {
+                                //TODO: Open Drawer
+                            }
+                        ),
+                    colorFilter = ColorFilter.tint(
+                        if (isDarkTheme) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground
+                    )
+                )
 
             }
         }
-
 
         LazyColumn(
             state = listState,
@@ -108,6 +132,12 @@ fun HomeScreen() {
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            // Swipable card item
+            item {
+                SwipableCardSection()
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
             items(30) { index ->
                 Card(
                     modifier = Modifier
@@ -126,3 +156,4 @@ fun HomeScreen() {
         }
     }
 }
+
