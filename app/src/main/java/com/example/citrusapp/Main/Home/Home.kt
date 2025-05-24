@@ -5,7 +5,6 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -24,7 +23,6 @@ fun HomeScreen() {
     var lastScrollOffset by remember { mutableStateOf(0) }
     var isAppBarVisible by remember { mutableStateOf(true) }
 
-    // Detect scroll direction
     LaunchedEffect(listState.firstVisibleItemScrollOffset, listState.firstVisibleItemIndex) {
         val currentOffset = listState.firstVisibleItemScrollOffset + listState.firstVisibleItemIndex * 1000
         isAppBarVisible = currentOffset < lastScrollOffset || listState.firstVisibleItemIndex == 0
@@ -44,7 +42,6 @@ fun HomeScreen() {
     )
 
     Box(modifier = Modifier.fillMaxSize()) {
-        // Content
         LazyColumn(
             state = listState,
             modifier = Modifier
@@ -73,7 +70,6 @@ fun HomeScreen() {
             }
         }
 
-        // AppBar
         TopAppBar(
             title = {},
             navigationIcon = {
