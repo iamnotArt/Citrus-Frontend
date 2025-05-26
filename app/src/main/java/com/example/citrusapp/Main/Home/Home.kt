@@ -4,43 +4,34 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.TransformOrigin
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import com.example.citrusapp.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlin.math.abs
-import kotlin.math.roundToInt
 
 @Composable
 fun HomeScreen() {
     val listState = rememberLazyListState()
     val appBarHeight = 56.dp
     val isDarkTheme = isSystemInDarkTheme()
+
+    val scrollState = rememberScrollState()
 
     var isAppBarVisible by remember { mutableStateOf(true) }
 
@@ -125,20 +116,14 @@ fun HomeScreen() {
             }
         }
 
-        LazyColumn(
-            state = listState,
+        Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(scrollState) // ✅ Make it scrollable
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Swipable card item
-            item {
-                SwipableCardSection()
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-
-            items(30) { index ->
+            repeat(14) { index ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -153,6 +138,9 @@ fun HomeScreen() {
                     }
                 }
             }
+
+            SwipableCardSection()
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
