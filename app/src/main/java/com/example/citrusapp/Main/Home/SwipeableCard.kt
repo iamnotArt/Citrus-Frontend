@@ -1,5 +1,6 @@
 package com.example.citrusapp.Main.Home
 
+import OrbitLoadingIndicator
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -129,7 +130,13 @@ fun SwipableCardSection() {
                             .padding(16.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        CircularProgressIndicator(color = Color.White)
+                        OrbitLoadingIndicator(
+                            dotColor = Color.White,
+                            dotSize = 8f,
+                            orbitRadius = 24f,
+                            orbitDurationMillis = 1000,
+                            dotCount = 4
+                        )
                     }
                 }
             }
