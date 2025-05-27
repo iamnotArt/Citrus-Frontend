@@ -21,12 +21,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.citrusapp.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     val listState = rememberLazyListState()
     val appBarHeight = 56.dp
     val isDarkTheme = isSystemInDarkTheme()
@@ -116,14 +117,14 @@ fun HomeScreen() {
             }
         }
 
-        Column(
+        LazyColumn( // Changed from Column to LazyColumn
+            state = listState, // Use the LazyListState
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState) // ✅ Make it scrollable
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            repeat(14) { index ->
+            items(14) { index -> // Changed from repeat to items
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -139,8 +140,19 @@ fun HomeScreen() {
                 }
             }
 
-            SwipableCardSection()
-            Spacer(modifier = Modifier.height(16.dp))
+            item {
+                SwipableCardSection(
+                    onCEAClick = { navController.navigate("cea") },
+                    onEducClick = { navController.navigate("education") },
+                    onManagementClick = { navController.navigate("management") },
+                    onCCISClick = { navController.navigate("ccis") },
+                    onCriminologyClick = { navController.navigate("criminology") },
+                    onAgriClick = { navController.navigate("agriculture") },
+                    onNursingClick = { navController.navigate("nursing") },
+                    onGradClick = { navController.navigate("graduate") }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
     }
 }

@@ -1,70 +1,178 @@
 package com.example.citrusapp.Main.BottomNavFunctions
 
+import BottomNavItem
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.*
+import com.airbnb.lottie.compose.*
 import com.example.citrusapp.Main.Account.AccountScreen
+import com.example.citrusapp.Main.Home.AgriScreen
+import com.example.citrusapp.Main.Home.CCISScreen
+import com.example.citrusapp.Main.Home.CEAScreen
+import com.example.citrusapp.Main.Home.CriminologyScreen
+import com.example.citrusapp.Main.Home.EducScreen
+import com.example.citrusapp.Main.Home.GradScreen
 import com.example.citrusapp.Main.Home.HomeScreen
+import com.example.citrusapp.Main.Home.ManagementScreen
+import com.example.citrusapp.Main.Home.NursingScreen
 import com.example.citrusapp.Main.Inbox.InboxScreen
 import com.example.citrusapp.Main.LMS.LMSScreen
 import com.example.citrusapp.Main.Network.NetworkScreen
+import com.example.citrusapp.R
+import kotlinx.coroutines.launch
+
+sealed class NavItem(val route: String, val label: String, val lottieIcon: String?) {
+    object Home : NavItem("home", "Home", "home")
+    object LMS : NavItem("lms", "LMS", "article_icon")
+    object Network : NavItem("network", "Network", "newspaper")
+    object Inbox : NavItem("inbox", "Inbox", "inbox")
+    object Account : NavItem("account", "Account", null)
+}
 
 @Composable
 fun BottomNavScreen() {
-    var selectedItem by remember { mutableStateOf(0) }
+    val navController = rememberNavController()
     val isDarkTheme = isSystemInDarkTheme()
+
+    val items = listOf(
+        NavItem.Home,
+        NavItem.LMS,
+        NavItem.Network,
+        NavItem.Inbox,
+        NavItem.Account
+    )
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            Surface(
-                color = MaterialTheme.colorScheme.background,
-                tonalElevation = 8.dp,
-                modifier = Modifier.height(60.dp)
-            ) {
-                Column {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(0.8.dp)
-                            .alpha(0.6f)
-                            .background(MaterialTheme.colorScheme.onSurface)
-                    )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp)
-                            .padding(horizontal = 8.dp, vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-                        BottomNavItem("Home", "home", selectedItem == 0, isDarkTheme) { selectedItem = 0 }
-                        BottomNavItem("LMS", "article_icon", selectedItem == 1, isDarkTheme) { selectedItem = 1 }
-                        BottomNavItem("Network", "newspaper", selectedItem == 2, isDarkTheme) { selectedItem = 2 }
-                        BottomNavItem("Inbox", "inbox", selectedItem == 3, isDarkTheme) { selectedItem = 3 }
-                        BottomNavItem("Account", null, selectedItem == 4, isDarkTheme) { selectedItem = 4 }
-                    }
-                }
-            }
+            BottomNavBar(navController = navController, items = items, isDarkTheme = isDarkTheme)
         }
     ) { innerPadding ->
-        Box(
+        NavHost(
+            navController = navController,
+            startDestination = NavItem.Home.route,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = innerPadding.calculateBottomPadding())
+                .padding(bottom = innerPadding.calculateBottomPadding()),
+            enterTransition = { fadeIn(animationSpec = tween(100)) },
+            exitTransition = { fadeOut(animationSpec = tween(100)) },
         ) {
-            when (selectedItem) {
-                0 -> HomeScreen()
-                1 -> LMSScreen()
-                2 -> NetworkScreen()
-                3 -> InboxScreen()
-                4 -> AccountScreen()
+            composable("home") { backStackEntry ->
+                // Pass the navController to HomeScreen
+                HomeScreen(navController = navController)
+            }
+            composable("lms") {
+                LMSScreen()
+            }
+            composable("network") {
+                NetworkScreen()
+            }
+            composable("inbox") {
+                InboxScreen()
+            }
+            composable("account") {
+                AccountScreen()
+            }
+
+
+            // Home routes
+
+            //college routes
+            composable("cea") {
+                CEAScreen(navController = navController)
+            }
+            composable("education") {
+                EducScreen(navController = navController)
+            }
+            composable("management") {
+                ManagementScreen(navController = navController)
+            }
+            composable("ccis") {
+                CCISScreen(navController = navController)
+            }
+            composable("criminology") {
+                CriminologyScreen(navController = navController)
+            }
+            composable("agriculture") {
+                AgriScreen(navController = navController)
+            }
+            composable("nursing") {
+                NursingScreen(navController = navController)
+            }
+            composable("graduate") {
+                GradScreen(navController = navController)
+            }
+        }
+    }
+}
+
+@Composable
+fun BottomNavBar(
+    navController: NavHostController,
+    items: List<NavItem>,
+    isDarkTheme: Boolean
+) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
+    Surface(
+        color = MaterialTheme.colorScheme.background,
+        tonalElevation = 8.dp,
+        modifier = Modifier.height(60.dp)
+    ) {
+        Column {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(0.8.dp)
+                    .alpha(0.6f)
+                    .background(MaterialTheme.colorScheme.onSurface)
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                items.forEach { item ->
+                    BottomNavItem(
+                        label = item.label,
+                        animationFile = item.lottieIcon,
+                        isSelected = currentRoute == item.route,
+                        isDarkTheme = isDarkTheme
+                    ) {
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                }
             }
         }
     }

@@ -10,11 +10,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.citrusapp.Main.BottomNavFunctions.BottomNavScreen
+import com.example.citrusapp.Main.Home.AgriScreen
+import com.example.citrusapp.Main.Home.CCISScreen
+import com.example.citrusapp.Main.Home.CEAScreen
+import com.example.citrusapp.Main.Home.CriminologyScreen
+import com.example.citrusapp.Main.Home.EducScreen
+import com.example.citrusapp.Main.Home.GradScreen
+import com.example.citrusapp.Main.Home.ManagementScreen
+import com.example.citrusapp.Main.Home.NursingScreen
+import com.example.citrusapp.Main.Home.SwipableCardSection
 import com.example.citrusapp.login.FingerprintScreen
 import com.example.citrusapp.login.LoginScreen
 import com.example.citrusapp.onboardingScreen.OnboardingScreen
@@ -70,6 +80,7 @@ class MainActivity : ComponentActivity() {
                         composable("BottomNav") {
                             BottomNavScreen()
                         }
+
                     }
                 }
             }

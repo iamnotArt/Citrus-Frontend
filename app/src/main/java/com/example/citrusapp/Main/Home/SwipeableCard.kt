@@ -10,6 +10,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -20,7 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,24 +52,81 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
+data class CardData(
+    val title: String,
+    val color: Color,
+    val imageRes: Int,
+    val onClick: () -> Unit
+)
+
 @Composable
-fun SwipableCardSection() {
+fun SwipableCardSection(
+    onCEAClick: () -> Unit = {},
+    onEducClick: () -> Unit = {},
+    onManagementClick: () -> Unit = {},
+    onCCISClick: () -> Unit = {},
+    onCriminologyClick: () -> Unit = {},
+    onAgriClick: () -> Unit = {},
+    onNursingClick: () -> Unit = {},
+    onGradClick: () -> Unit = {}
+) {
     val scope = rememberCoroutineScope()
     var isLoaded by remember { mutableStateOf(false) }
 
-    // Define cards data first so we can access the count during loading
+    // Define cards data with their corresponding click handlers
     val cardsWithData = remember {
         listOf(
-            Triple("College of Engineering and Architecture", Color(0xFFEF5350), R.drawable.engineering),
-            Triple("College of Education", Color(0xFFAB47BC), R.drawable.education),
-            Triple("College of Management", Color(0xFF5C6BC0), R.drawable.management),
-            Triple("College of Computing and Information Sciences", Color(0xFF26C6DA), R.drawable.computing),
-            Triple("College of Criminal Justice and Sciences", Color(0xFF66BB6A), R.drawable.justice),
-            Triple("College of Agriculture and Technology", Color(0xFFFFA726), R.drawable.agriculture),
-            Triple("College of Nursing", Color(0xFFEC407A), R.drawable.nursing),
-            Triple("Graduate School", Color(0xFF167A4E), R.drawable.graduate)
+            CardData(
+                "College of Engineering and Architecture",
+                Color(0xFFEF5350),
+                R.drawable.engineering,
+                onCEAClick
+            ),
+            CardData(
+                "College of Education",
+                Color(0xFFAB47BC),
+                R.drawable.education,
+                onEducClick
+            ),
+            CardData(
+                "College of Management",
+                Color(0xFF5C6BC0),
+                R.drawable.management,
+                onManagementClick
+            ),
+            CardData(
+                "College of Computing and Information Sciences",
+                Color(0xFF26C6DA),
+                R.drawable.computing,
+                onCCISClick
+            ),
+            CardData(
+                "College of Criminal Justice and Sciences",
+                Color(0xFF66BB6A),
+                R.drawable.justice,
+                onCriminologyClick
+            ),
+            CardData(
+                "College of Agriculture and Technology",
+                Color(0xFFFFA726),
+                R.drawable.agriculture,
+                onAgriClick
+            ),
+            CardData(
+                "College of Nursing",
+                Color(0xFFEC407A),
+                R.drawable.nursing,
+                onNursingClick
+            ),
+            CardData(
+                "Graduate School",
+                Color(0xFF167A4E),
+                R.drawable.graduate,
+                onGradClick
+            )
         )
     }
+
     val cardsCount = cardsWithData.size
     var currentIndex by remember { mutableStateOf(0) }
 
@@ -103,10 +160,10 @@ fun SwipableCardSection() {
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxSize()
-                            .blur(16.dp) // Apply blur to the image only
+                            .blur(16.dp)
                     )
 
-                    // Blurred Gradient Overlay (matches the design)
+                    // Blurred Gradient Overlay
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -120,10 +177,10 @@ fun SwipableCardSection() {
                                     endY = Float.POSITIVE_INFINITY
                                 )
                             )
-                            .blur(16.dp) // Blur the gradient too
+                            .blur(16.dp)
                     )
 
-                    // Crisp Loading Indicator centered
+                    // Loading Indicator
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -140,13 +197,8 @@ fun SwipableCardSection() {
                     }
                 }
             }
-        }
-        else {
-            // Loaded state with actual cards
-            val cards = cardsWithData.map { it.first }
-            val cardColors = cardsWithData.map { it.second }
-            val cardImages = cardsWithData.map { it.third }
-
+        } else {
+            // Animation and state variables
             val infiniteTransition = rememberInfiniteTransition(label = "Infinite >> Transition")
             val chevronAlpha by infiniteTransition.animateFloat(
                 initialValue = 0.4f,
@@ -160,6 +212,7 @@ fun SwipableCardSection() {
             var offsetX by remember { mutableStateOf(0f) }
             var offsetY by remember { mutableStateOf(0f) }
             var rotation by remember { mutableStateOf(0f) }
+            var isSwiping by remember { mutableStateOf(false) }
             var isAnimating by remember { mutableStateOf(false) }
             var shouldDismiss by remember { mutableStateOf(false) }
             var startOffsetX by remember { mutableStateOf(0f) }
@@ -226,17 +279,18 @@ fun SwipableCardSection() {
                     shouldDismiss = false
                     nextCardScale = 0.9f
                     nextCardOffset = 30f
-                    currentIndex = (currentIndex + 1) % cards.size
+                    currentIndex = (currentIndex + 1) % cardsWithData.size
                 }
             }
 
             // Background cards fan
-            val visibleCards = minOf(6, cards.size - 1)
+            val visibleCards = minOf(6, cardsWithData.size - 1)
             for (i in 0 until visibleCards) {
                 val isNextCard = i == 0
                 val isSecondCard = i == 1
                 val progressFactor = if (isNextCard) stackProgressAnim else if (isSecondCard) stackProgressAnim * 0.8f else stackProgressAnim * 0.6f
-                val cardIndex = (currentIndex + i + 1) % cards.size
+                val cardIndex = (currentIndex + i + 1) % cardsWithData.size
+                val cardData = cardsWithData[cardIndex]
 
                 Card(
                     modifier = Modifier
@@ -268,9 +322,13 @@ fun SwipableCardSection() {
                         if (isNextCard) 6.dp else 4.dp - (1.dp * progressFactor)
                     )
                 ) {
-                    Box(modifier = Modifier.fillMaxSize()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable { cardData.onClick() }
+                    ) {
                         Image(
-                            painter = painterResource(id = cardImages[cardIndex]),
+                            painter = painterResource(id = cardData.imageRes),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -284,8 +342,8 @@ fun SwipableCardSection() {
                                 .background(
                                     brush = Brush.verticalGradient(
                                         colors = listOf(
-                                            cardColors[cardIndex].copy(alpha = 0.7f),
-                                            cardColors[cardIndex].copy(alpha = 0.7f)
+                                            cardData.color.copy(alpha = 0.7f),
+                                            cardData.color.copy(alpha = 0.7f)
                                         ),
                                         startY = 0f,
                                         endY = Float.POSITIVE_INFINITY
@@ -304,7 +362,7 @@ fun SwipableCardSection() {
                             contentAlignment = Alignment.CenterStart
                         ) {
                             Text(
-                                text = cards[cardIndex],
+                                text = cardData.title,
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White,
@@ -337,6 +395,7 @@ fun SwipableCardSection() {
             }
 
             // Main swipable card
+            val currentCard = cardsWithData[currentIndex]
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -403,9 +462,13 @@ fun SwipableCardSection() {
                 shape = RoundedCornerShape(16.dp),
                 elevation = CardDefaults.cardElevation(8.dp)
             ) {
-                Box(modifier = Modifier.fillMaxSize()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable { currentCard.onClick() }
+                ) {
                     Image(
-                        painter = painterResource(id = cardImages[currentIndex]),
+                        painter = painterResource(id = currentCard.imageRes),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -419,8 +482,8 @@ fun SwipableCardSection() {
                             .background(
                                 brush = Brush.verticalGradient(
                                     colors = listOf(
-                                        cardColors[currentIndex].copy(alpha = 0.7f),
-                                        cardColors[currentIndex].copy(alpha = 0.7f)
+                                        currentCard.color.copy(alpha = 0.7f),
+                                        currentCard.color.copy(alpha = 0.7f)
                                     ),
                                     startY = 0f,
                                     endY = Float.POSITIVE_INFINITY
@@ -435,7 +498,7 @@ fun SwipableCardSection() {
                         contentAlignment = Alignment.CenterStart
                     ) {
                         Text(
-                            text = cards[currentIndex],
+                            text = currentCard.title,
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,

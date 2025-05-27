@@ -1,5 +1,3 @@
-package com.example.citrusapp.Main.BottomNavFunctions
-
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
@@ -37,23 +35,19 @@ fun BottomNavItem(
     isDarkTheme: Boolean,
     onClick: () -> Unit
 ) {
-    val fileName = if (animationFile != null) {
-        "${animationFile}_${if (isDarkTheme) "light" else "dark"}"
-    } else {
-        null
+    val fileName = animationFile?.let {
+        "${it}_${if (isDarkTheme) "light" else "dark"}"
     }
 
     val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(
-            if (fileName != null) getRawResId(fileName) else 0
-        )
+        LottieCompositionSpec.RawRes(if (fileName != null) getRawResId(fileName) else 0)
     )
     val lottieAnimState = rememberLottieAnimatable()
     val coroutineScope = rememberCoroutineScope()
 
     val iconAlpha by animateFloatAsState(
         targetValue = if (isSelected) 1f else 0.5f,
-        animationSpec = tween(durationMillis = 300)
+        animationSpec = tween(300)
     )
 
     Column(
@@ -61,16 +55,14 @@ fun BottomNavItem(
         modifier = Modifier
             .width(64.dp)
             .clip(CircleShape)
-            .clickable(
-                onClick = {
-                    onClick()
-                    if (animationFile != null) {
-                        coroutineScope.launch {
-                            lottieAnimState.animate(composition)
-                        }
+            .clickable {
+                onClick()
+                if (animationFile != null) {
+                    coroutineScope.launch {
+                        lottieAnimState.animate(composition)
                     }
                 }
-            )
+            }
             .padding(vertical = 4.dp)
     ) {
         if (animationFile != null) {
@@ -91,6 +83,7 @@ fun BottomNavItem(
                 tint = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
             )
         }
+
         Text(
             text = label,
             fontSize = 11.sp,
@@ -109,6 +102,6 @@ fun getRawResId(fileName: String): Int {
         "article_icon_light" -> R.raw.article_icon_light
         "newspaper_dark" -> R.raw.newspaper_dark
         "newspaper_light" -> R.raw.newspaper_light
-        else -> R.raw.home_dark
+        else -> R.raw.home_dark // default fallback
     }
 }
