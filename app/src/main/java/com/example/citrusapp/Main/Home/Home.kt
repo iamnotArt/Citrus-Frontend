@@ -26,8 +26,16 @@ fun HomeScreen(navController: NavController) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val isDarkTheme = isSystemInDarkTheme()
-    var isSettingsExpanded1 by remember { mutableStateOf(false) }
-    var isSettingsExpanded2 by remember { mutableStateOf(false) }
+
+    var AboutExpanded by remember { mutableStateOf(false) }
+    var AdministrationExpanded by remember { mutableStateOf(false) }
+    var InternationalExpanded by remember { mutableStateOf(false) }
+    var LinkagesExpanded by remember { mutableStateOf(false) }
+    var SustainabilityExpanded by remember { mutableStateOf(false) }
+
+
+    var AcademeExpanded by remember { mutableStateOf(false) }
+    var OthersExpanded by remember { mutableStateOf(false) }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -42,16 +50,28 @@ fun HomeScreen(navController: NavController) {
 
                 HorizontalDivider()
 
-                Text(
-                    text = "About",
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { isSettingsExpanded1 = !isSettingsExpanded1 }
+                        .clickable { AboutExpanded = !AboutExpanded }
                         .padding(16.dp),
-                    fontWeight = FontWeight.Medium
-                )
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "About",
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.weight(1f) // Pushes icon to the end
+                    )
 
-                if (isSettingsExpanded1) {
+                    Icon(
+                        painter = painterResource(
+                            id = if (AboutExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
+                        ),
+                        contentDescription = null
+                    )
+                }
+
+                if (AboutExpanded) {
                     Column(modifier = Modifier.padding(start = 32.dp)) {
                         Text(
                             text = "The University",
@@ -95,34 +115,174 @@ fun HomeScreen(navController: NavController) {
                                 .clickable { /* Handle Privacy click */ }
                                 .padding(vertical = 8.dp)
                         )
-                        Text(
-                            text = "Administration",
+                        // Expandable Row for "Administration"
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { /* Handle Privacy click */ }
-                                .padding(vertical = 8.dp)
-                        )
-                        Text(
-                            text = "International Affairs",
+                                .clickable { AdministrationExpanded = !AdministrationExpanded }
+                                .padding(vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Administration",
+                                modifier = Modifier.weight(1f),
+                                fontWeight = FontWeight.Bold
+                            )
+
+                            Icon(
+                                painter = painterResource(
+                                    id = if (AdministrationExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
+                                ),
+                                contentDescription = null
+                            )
+                        }
+
+                        if (AdministrationExpanded) {
+                            Column(modifier = Modifier.padding(start = 32.dp)) {
+                                Text(
+                                    text = "The University President",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { /* Handle click */ }
+                                        .padding(vertical = 8.dp)
+                                )
+                                Text(
+                                    text = "Key Officials",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { /* Handle click */ }
+                                        .padding(vertical = 8.dp)
+                                )
+                            }
+                        }
+                        // Expandable Row for "International Affairs"
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { /* Handle Privacy click */ }
-                                .padding(vertical = 8.dp)
-                        )
-                        Text(
-                            text = "Linkages",
+                                .clickable { InternationalExpanded = !InternationalExpanded }
+                                .padding(vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "International Affairs",
+                                modifier = Modifier.weight(1f),
+                                fontWeight = FontWeight.Bold
+                            )
+
+                            Icon(
+                                painter = painterResource(
+                                    id = if (InternationalExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
+                                ),
+                                contentDescription = null
+                            )
+                        }
+
+                        if (InternationalExpanded) {
+                            Column(modifier = Modifier.padding(start = 32.dp)) {
+                                Text(
+                                    text = "Office of the Director for International Affairs",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { /* Handle click */ }
+                                        .padding(vertical = 8.dp)
+                                )
+                            }
+                        }
+
+                        // Expandable Row for "Linkages"
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { /* Handle Privacy click */ }
-                                .padding(vertical = 8.dp)
-                        )
-                        Text(
-                            text = "Sustainability Plan (SDG's)",
+                                .clickable { LinkagesExpanded = !LinkagesExpanded }
+                                .padding(vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Linkages",
+                                modifier = Modifier.weight(1f),
+                                fontWeight = FontWeight.Bold
+                            )
+
+                            Icon(
+                                painter = painterResource(
+                                    id = if (LinkagesExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
+                                ),
+                                contentDescription = null
+                            )
+                        }
+
+                        if (LinkagesExpanded) {
+                            Column(modifier = Modifier.padding(start = 32.dp)) {
+                                Text(
+                                    text = "Regional Linkages",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { /* Handle click */ }
+                                        .padding(vertical = 8.dp)
+                                )
+                                Text(
+                                    text = "National Linkages",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { /* Handle click */ }
+                                        .padding(vertical = 8.dp)
+                                )
+                                Text(
+                                    text = "International Linkages",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { /* Handle click */ }
+                                        .padding(vertical = 8.dp)
+                                )
+                            }
+                        }
+                        // Expandable Row for "Sustainability Plan (SDGs)"
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { /* Handle Privacy click */ }
-                                .padding(vertical = 8.dp)
-                        )
+                                .clickable { SustainabilityExpanded = !SustainabilityExpanded }
+                                .padding(vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Sustainability Plan (SDGs)",
+                                modifier = Modifier.weight(1f),
+                                fontWeight = FontWeight.Bold
+                            )
+
+                            Icon(
+                                painter = painterResource(
+                                    id = if (SustainabilityExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
+                                ),
+                                contentDescription = null
+                            )
+                        }
+
+                        if (SustainabilityExpanded) {
+                            Column(modifier = Modifier.padding(start = 32.dp)) {
+                                Text(
+                                    text = "Environmental Sustainability Plan",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { /* Handle click */ }
+                                        .padding(vertical = 8.dp)
+                                )
+                                Text(
+                                    text = "Energy and Water Conservation",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { /* Handle click */ }
+                                        .padding(vertical = 8.dp)
+                                )
+                                Text(
+                                    text = "Waste Management",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { /* Handle click */ }
+                                        .padding(vertical = 8.dp)
+                                )
+                            }
+                        }
                         Text(
                             text = "Alumni Affairs",
                             modifier = Modifier
@@ -140,16 +300,28 @@ fun HomeScreen(navController: NavController) {
                     }
                 }
 
-                Text(
-                    text = "Academe",
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { isSettingsExpanded2 = !isSettingsExpanded2 }
+                        .clickable { AcademeExpanded = !AcademeExpanded }
                         .padding(16.dp),
-                    fontWeight = FontWeight.Medium
-                )
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Academe",
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.weight(1f) // Pushes icon to the end
+                    )
 
-                if (isSettingsExpanded2) {
+                    Icon(
+                        painter = painterResource(
+                            id = if (AcademeExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
+                        ),
+                        contentDescription = null
+                    )
+                }
+
+                if (AcademeExpanded) {
                     Column(modifier = Modifier.padding(start = 32.dp)) {
                         Text(
                             text = "San Jorge Campus",
@@ -159,14 +331,14 @@ fun HomeScreen(navController: NavController) {
                                 .padding(vertical = 8.dp)
                         )
                         Text(
-                            text = "Notifications",
+                            text = "Colleges",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable { /* Handle Notifications click */ }
                                 .padding(vertical = 8.dp)
                         )
                         Text(
-                            text = "Privacy",
+                            text = "School Calendar (SY: 2024 - 2025)",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable { /* Handle Privacy click */ }
@@ -175,13 +347,45 @@ fun HomeScreen(navController: NavController) {
                     }
                 }
 
-                Text(
-                    text = "Logout",
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { /* Perform logout */ }
-                        .padding(16.dp)
-                )
+                        .clickable { OthersExpanded = !OthersExpanded }
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Others",
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.weight(1f) // Pushes icon to the end
+                    )
+
+                    Icon(
+                        painter = painterResource(
+                            id = if (OthersExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
+                        ),
+                        contentDescription = null
+                    )
+                }
+
+                if (OthersExpanded) {
+                    Column(modifier = Modifier.padding(start = 32.dp)) {
+                        Text(
+                            text = "Student Handbook",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { /* Handle Account click */ }
+                                .padding(vertical = 8.dp)
+                        )
+                        Text(
+                            text = "Registrar's Office",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { /* Handle Notifications click */ }
+                                .padding(vertical = 8.dp)
+                        )
+                    }
+                }
             }
         }
     ) {
