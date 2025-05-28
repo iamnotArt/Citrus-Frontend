@@ -30,6 +30,7 @@ import com.example.citrusapp.ui.theme.blue_green
 fun SlideOne(loginClick1: () -> Unit) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
+    var currentError by remember { mutableStateOf("") } // Track the current error message
 
     var firstNameError by remember { mutableStateOf(false) }
     var lastNameError by remember { mutableStateOf(false) }
@@ -39,6 +40,29 @@ fun SlideOne(loginClick1: () -> Unit) {
 
     val focusManager = LocalFocusManager.current
     val lastNameFocusRequester = remember { FocusRequester() }
+
+    fun validateFields(): Boolean {
+        return when {
+            firstName.isBlank() -> {
+                currentError = "First name field cannot be empty."
+                firstNameError = true
+                lastNameError = false
+                false
+            }
+            lastName.isBlank() -> {
+                currentError = "Last name field cannot be empty."
+                lastNameError = true
+                firstNameError = false
+                false
+            }
+            else -> {
+                currentError = ""
+                firstNameError = false
+                lastNameError = false
+                true
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -103,6 +127,7 @@ fun SlideOne(loginClick1: () -> Unit) {
                                 if (it.length <= maxLength && it.matches(letterOnlyRegex)) {
                                     firstName = it
                                     firstNameError = false
+                                    currentError = "" // Clear error when user types
                                 }
                             },
                             label = { Text("First Name") },
@@ -110,7 +135,7 @@ fun SlideOne(loginClick1: () -> Unit) {
                             isError = firstNameError,
                             supportingText = {
                                 Text(
-                                    text = if (firstNameError) "First name field cannot be empty." else " ",
+                                    text = if (firstNameError) currentError else " ",
                                     color = if (firstNameError) MaterialTheme.colorScheme.error else Color.Transparent
                                 )
                             },
@@ -151,6 +176,7 @@ fun SlideOne(loginClick1: () -> Unit) {
                                 if (it.length <= maxLength && it.matches(letterOnlyRegex)) {
                                     lastName = it
                                     lastNameError = false
+                                    currentError = "" // Clear error when user types
                                 }
                             },
                             label = { Text("Last Name") },
@@ -158,7 +184,7 @@ fun SlideOne(loginClick1: () -> Unit) {
                             isError = lastNameError,
                             supportingText = {
                                 Text(
-                                    text = if (lastNameError) "Last name field cannot be empty." else " ",
+                                    text = if (lastNameError) currentError else " ",
                                     color = if (lastNameError) MaterialTheme.colorScheme.error else Color.Transparent
                                 )
                             }
@@ -230,13 +256,7 @@ fun SlideOne(loginClick1: () -> Unit) {
 
             Button(
                 onClick = {
-                    val firstEmpty = firstName.isBlank()
-                    val lastEmpty = lastName.isBlank()
-
-                    firstNameError = firstEmpty
-                    lastNameError = lastEmpty
-
-                    if (!firstEmpty && !lastEmpty) {
+                    if (validateFields()) {
                         // TODO: Navigate to Next
                     }
                 },

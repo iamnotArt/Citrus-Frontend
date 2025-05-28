@@ -130,30 +130,30 @@ fun SlideTwo() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
                 ) {
+                    // Email Field
                     OutlinedTextField(
                         value = gmail,
                         onValueChange = {
                             gmail = it
                             showGmailError = false
+                            emailError = false
                         },
                         label = { Text("Email") },
-                        isError = showGmailError,
+                        isError = showGmailError || emailError,
                         supportingText = {
                             Text(
-                                text = if (showGmailError) "Please enter a valid email address" else " ",
-                                color = if (showGmailError) MaterialTheme.colorScheme.error else Color.Transparent,
+                                text = when {
+                                    emailError -> "Email field cannot be empty."
+                                    showGmailError -> "Please enter a valid email address"
+                                    else -> " "
+                                },
+                                color = if (showGmailError || emailError) MaterialTheme.colorScheme.error else Color.Transparent,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.height(20.dp)
                             )
-
-                            Text(
-                                text = if (emailError) "Email field cannot be empty." else " ",
-                                color = if (emailError) MaterialTheme.colorScheme.error else Color.Transparent
-                            )
                         },
                         singleLine = true,
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                         leadingIcon = {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_email),
@@ -163,23 +163,25 @@ fun SlideTwo() {
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                         keyboardActions = KeyboardActions(
                             onNext = {
-                                if (!strictEmailRegex.matches(gmail)) {
+                                if (gmail.isBlank()) {
+                                    emailError = true
+                                } else if (!strictEmailRegex.matches(gmail)) {
                                     showGmailError = true
                                 } else {
                                     passwordFocusRequester.requestFocus()
                                 }
                             }
                         )
-
                     )
-
 
                     Spacer(modifier = Modifier.height(4.dp))
 
+// Password Field
                     OutlinedTextField(
                         value = password,
                         onValueChange = {
                             password = it
+                            passwordError = false
                         },
                         label = { Text("Password") },
                         singleLine = true,
@@ -196,31 +198,38 @@ fun SlideTwo() {
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                         keyboardActions = KeyboardActions(
                             onNext = {
-                                confirmPasswordFocusRequester.requestFocus()
+                                if (password.isBlank()) {
+                                    passwordError = true
+                                } else {
+                                    confirmPasswordFocusRequester.requestFocus()
+                                }
                             }
                         ),
                         supportingText = {
-                            Text(
-                                text = buildAnnotatedString {
-                                    if (password.isNotEmpty()) {
+                            when {
+                                passwordError -> Text(
+                                    text = "Password field cannot be empty.",
+                                    color = MaterialTheme.colorScheme.error,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    modifier = Modifier.height(20.dp)
+                                )
+                                password.isNotEmpty() -> Text(
+                                    text = buildAnnotatedString {
                                         append("Password strength: ")
                                         withStyle(style = SpanStyle(color = getPasswordStrength(password).second)) {
                                             append(getPasswordStrength(password).first)
                                         }
-                                    } else {
-                                        append(" ")
-                                    }
-                                },
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.height(20.dp)
-                            )
-
-
-                            Text(
-                                text = if (passwordError) "Password field cannot be empty." else " ",
-                                color = if (passwordError) MaterialTheme.colorScheme.error else Color.Transparent
-                            )
+                                    },
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.height(20.dp)
+                                )
+                                else -> Text(
+                                    text = " ",
+                                    color = Color.Transparent,
+                                    modifier = Modifier.height(20.dp)
+                                )
+                            }
                         },
                         trailingIcon = {
                             IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -236,12 +245,13 @@ fun SlideTwo() {
 
                     Spacer(modifier = Modifier.height(4.dp))
 
+// Confirm Password Field
                     OutlinedTextField(
                         value = confirmPassword,
                         onValueChange = {
                             confirmPassword = it
-                        }
-                        ,
+                            confirmPasswordError = false
+                        },
                         label = { Text("Confirm Password") },
                         singleLine = true,
                         visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -257,23 +267,28 @@ fun SlideTwo() {
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(
                             onDone = {
-                                focusManager.clearFocus()
+                                if (confirmPassword.isBlank()) {
+                                    confirmPasswordError = true
+                                } else if (password != confirmPassword) {
+                                    confirmPasswordError = true
+                                } else {
+                                    focusManager.clearFocus()
+                                }
                             }
                         ),
-                        isError = showConfirmPasswordError,
+                        isError = confirmPasswordError || showConfirmPasswordError,
                         supportingText = {
                             Text(
-                                text = if (showConfirmPasswordError) "Passwords do not match" else " ",
-                                color = if (showConfirmPasswordError)
+                                text = when {
+                                    confirmPasswordError -> "Confirm password field cannot be empty."
+                                    showConfirmPasswordError -> "Passwords do not match"
+                                    else -> " "
+                                },
+                                color = if (confirmPasswordError || showConfirmPasswordError)
                                     MaterialTheme.colorScheme.error
                                 else Color.Transparent,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.height(20.dp)
-                            )
-
-                            Text(
-                                text = if (confirmPasswordError) "Confirm password field cannot be empty." else " ",
-                                color = if (confirmPasswordError) MaterialTheme.colorScheme.error else Color.Transparent
                             )
                         },
                         trailingIcon = {
@@ -352,12 +367,14 @@ fun SlideTwo() {
                     val emailEmpty = gmail.isBlank()
                     val passwordEmpty = password.isBlank()
                     val confirmPasswordEmpty = confirmPassword.isBlank()
+                    val emailInvalid = !emailEmpty && !strictEmailRegex.matches(gmail)
 
                     emailError = emailEmpty
                     passwordError = passwordEmpty
                     confirmPasswordError = confirmPasswordEmpty
+                    showGmailError = emailInvalid
 
-                    if (!emailEmpty && !passwordEmpty && !confirmPasswordEmpty) {
+                    if (!emailEmpty && !emailInvalid && !passwordEmpty && !confirmPasswordEmpty) {
                         // TODO: Proceed with navigation or logic
                     }
                 },
