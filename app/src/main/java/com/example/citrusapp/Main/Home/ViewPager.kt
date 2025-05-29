@@ -27,9 +27,9 @@ import com.example.citrusapp.R
 @Composable
 fun ViewPagerSection() {
     val pagerItems = listOf(
-        R.drawable.education,
-        R.drawable.engineering,
-        R.drawable.graduate
+        R.drawable.viewpager1,
+        R.drawable.viewpager2,
+        R.drawable.viewpager3
     )
 
     val virtualPageCount = Int.MAX_VALUE
@@ -48,7 +48,7 @@ fun ViewPagerSection() {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(230.dp)
+                .height(190.dp)
         ) {
             HorizontalPager(
                 state = pagerState,
@@ -68,6 +68,7 @@ fun ViewPagerSection() {
                     )
                 }
             }
+
 
             Image(
                 painter = painterResource(id = R.drawable.schoollogo),
