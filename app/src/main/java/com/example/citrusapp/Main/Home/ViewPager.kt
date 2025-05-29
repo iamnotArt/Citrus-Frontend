@@ -36,13 +36,14 @@ fun ViewPagerSection() {
 
     AutoScrollPager(pagerState = pagerState, delayMillis = 6000L)
 
-    // Calculate dynamic height based on screen width and image aspect ratio (1243 x 721)
     val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
     val aspectRatio = 1243f / 721f
     val imageHeightDp = screenWidthDp / aspectRatio
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
     ) {
         Box(
             modifier = Modifier
@@ -78,12 +79,19 @@ fun ViewPagerSection() {
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        PagerIndicator(
-            pageCount = pagerItems.size,
-            currentPage = pagerState.currentPage % pagerItems.size,
-            modifier = Modifier.padding(bottom = 4.dp)
-        )
+        // ✅ Reserve indicator space even if you later hide the indicator conditionally
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(24.dp), // Reserve enough vertical space for the indicator
+            contentAlignment = Alignment.Center
+        ) {
+            PagerIndicator(
+                pageCount = pagerItems.size,
+                currentPage = pagerState.currentPage % pagerItems.size,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+        }
     }
 }
+
