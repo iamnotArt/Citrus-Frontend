@@ -198,16 +198,6 @@ fun SwipableCardSection(
                 }
             }
         } else {
-            // Animation and state variables
-            val infiniteTransition = rememberInfiniteTransition(label = "Infinite >> Transition")
-            val chevronAlpha by infiniteTransition.animateFloat(
-                initialValue = 0.4f,
-                targetValue = 1f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(1000, easing = LinearEasing),
-                    repeatMode = RepeatMode.Reverse
-                ), label = ">> Animation"
-            )
 
             var offsetX by remember { mutableStateOf(0f) }
             var offsetY by remember { mutableStateOf(0f) }
@@ -376,19 +366,11 @@ fun SwipableCardSection(
                                 .padding(16.dp),
                             contentAlignment = Alignment.BottomEnd
                         ) {
-                            Row {
-                                Text(
-                                    text = "View more ",
-                                    color = Color.White.copy(alpha = 0.8f),
-                                    fontSize = 14.sp
-                                )
-                                Text(
-                                    text = ">>",
-                                    color = Color.White.copy(alpha = chevronAlpha),
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
+                            Text(
+                                text = "View more >>",
+                                color = Color.White.copy(alpha = 0.8f),
+                                fontSize = 14.sp
+                            )
                         }
                     }
                 }
@@ -512,19 +494,11 @@ fun SwipableCardSection(
                             .padding(16.dp),
                         contentAlignment = Alignment.BottomEnd
                     ) {
-                        Row {
-                            Text(
-                                text = "View more ",
-                                color = Color.White.copy(alpha = 0.8f),
-                                fontSize = 14.sp
-                            )
-                            Text(
-                                text = ">>",
-                                color = Color.White.copy(alpha = chevronAlpha),
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
+                        Text(
+                            text = "View more >>",
+                            color = Color.White.copy(alpha = 0.8f),
+                            fontSize = 14.sp
+                        )
                     }
                 }
             }
