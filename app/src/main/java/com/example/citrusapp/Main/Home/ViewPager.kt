@@ -83,7 +83,7 @@ fun ViewPagerSection() {
         PagerIndicator(
             pageCount = pagerItems.size,
             currentPage = pagerState.currentPage % pagerItems.size,
-            modifier = Modifier.padding(bottom = 12.dp)
+            modifier = Modifier.padding(bottom = 4.dp)
         )
     }
 }
