@@ -1,4 +1,3 @@
-// HomeScreen.kt
 package com.example.citrusapp.Main.Home
 
 import androidx.compose.foundation.Image
@@ -76,42 +75,51 @@ fun HomeScreen(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 16.dp)
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(
-                    text = "Featured",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                )
+                // Section with padding
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
 
-                HorizontalDivider()
+                    Spacer(modifier = Modifier.width(12.dp))
 
-                ViewPagerSection()
+                    Text(
+                        text = "Featured",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                    )
 
-                Text(
-                    text = "Shortcuts",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                )
+                    HorizontalDivider()
+                }
 
-                HorizontalDivider()
+                // Section without padding
+                ViewPagerSection() // <- No padding here
 
-                Spacer(modifier = Modifier.height(16.dp))
+                // Continue rest of the content with padding again
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    Text(
+                        text = "Shortcuts",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                    )
 
-                SwipableCardSection(
-                    onCEAClick = { navController.navigate("cea") },
-                    onEducClick = { navController.navigate("education") },
-                    onManagementClick = { navController.navigate("management") },
-                    onCCISClick = { navController.navigate("ccis") },
-                    onCriminologyClick = { navController.navigate("criminology") },
-                    onAgriClick = { navController.navigate("agriculture") },
-                    onNursingClick = { navController.navigate("nursing") },
-                    onGradClick = { navController.navigate("graduate") }
-                )
+                    HorizontalDivider()
 
-                Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    SwipableCardSection(
+                        onCEAClick = { navController.navigate("cea") },
+                        onEducClick = { navController.navigate("education") },
+                        onManagementClick = { navController.navigate("management") },
+                        onCCISClick = { navController.navigate("ccis") },
+                        onCriminologyClick = { navController.navigate("criminology") },
+                        onAgriClick = { navController.navigate("agriculture") },
+                        onNursingClick = { navController.navigate("nursing") },
+                        onGradClick = { navController.navigate("graduate") }
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
         }
     }

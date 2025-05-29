@@ -2,14 +2,7 @@ package com.example.citrusapp.Main.Home
 
 import AutoScrollPager
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
@@ -19,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.citrusapp.Components.PagerIndicator
@@ -42,13 +36,18 @@ fun ViewPagerSection() {
 
     AutoScrollPager(pagerState = pagerState, delayMillis = 6000L)
 
+    // Calculate dynamic height based on screen width and image aspect ratio (1243 x 721)
+    val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
+    val aspectRatio = 1243f / 721f
+    val imageHeightDp = screenWidthDp / aspectRatio
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(190.dp)
+                .height(imageHeightDp)
         ) {
             HorizontalPager(
                 state = pagerState,
@@ -69,7 +68,6 @@ fun ViewPagerSection() {
                 }
             }
 
-
             Image(
                 painter = painterResource(id = R.drawable.schoollogo),
                 contentDescription = "School Logo",
@@ -89,4 +87,3 @@ fun ViewPagerSection() {
         )
     }
 }
-
