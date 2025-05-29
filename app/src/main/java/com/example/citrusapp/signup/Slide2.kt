@@ -78,7 +78,6 @@ fun SlideTwo() {
         modifier = Modifier
             .fillMaxSize()
     ) {
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier

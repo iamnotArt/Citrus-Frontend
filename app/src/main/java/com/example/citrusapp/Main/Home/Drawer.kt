@@ -1,4 +1,3 @@
-// AppDrawer.kt
 package com.example.citrusapp.Main.Home
 
 import androidx.compose.foundation.Image
@@ -13,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,8 +27,6 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun HomeDrawer(
     drawerState: DrawerState,
-    scope: CoroutineScope,
-    navController: NavController,
     content: @Composable () -> Unit
 ) {
     var AboutExpanded by remember { mutableStateOf(false) }
@@ -40,11 +38,13 @@ fun HomeDrawer(
     var AcademeExpanded by remember { mutableStateOf(false) }
     var OthersExpanded by remember { mutableStateOf(false) }
 
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(
-                modifier = Modifier.background(blue_green),
+                modifier = Modifier.background(blue_green).width(screenWidth * 0.8f),
                 drawerContainerColor = blue_green,
             ) {
                 Column(
