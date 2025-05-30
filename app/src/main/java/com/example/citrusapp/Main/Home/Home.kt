@@ -81,7 +81,6 @@ fun HomeScreen(navController: NavController) {
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                // Section with padding
                 Column(modifier = Modifier.padding(horizontal = 16.dp)) {
 
                     Spacer(modifier = Modifier.width(12.dp))
@@ -95,13 +94,9 @@ fun HomeScreen(navController: NavController) {
                     HorizontalDivider()
                 }
 
-                // Section without padding
-                ViewPagerSection() // <- No padding here
+                ViewPagerSection()
 
-                // Continue rest of the content with padding again
                 Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-
-
 
                     Spacer(modifier = Modifier.height(2.dp))
 
@@ -109,13 +104,13 @@ fun HomeScreen(navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(500.dp)
-                            .clip(RoundedCornerShape(16.dp)) // 🔘 Rounded corners
-                            .background(Color.LightGray)     // Background applied after clipping
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(Color.LightGray)
                     ) {
                         Column(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(16.dp), // 👈 Inner padding
+                                .padding(16.dp),
                             verticalArrangement = Arrangement.Top
                         ) {
                             Text(
@@ -124,7 +119,7 @@ fun HomeScreen(navController: NavController) {
                                 fontSize = 18.sp,
                             )
 
-                            Spacer(modifier = Modifier.height(8.dp)) // Optional spacing
+                            Spacer(modifier = Modifier.height(8.dp))
 
                             HorizontalDivider(
                                 color = Color.Black
