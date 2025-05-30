@@ -9,6 +9,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -106,7 +108,7 @@ fun HomeScreen(navController: NavController) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(340.dp)
+                            .height(350.dp)
                             .clip(RoundedCornerShape(16.dp))
                             .background(MaterialTheme.colorScheme.surface)
                     ) {
@@ -116,11 +118,28 @@ fun HomeScreen(navController: NavController) {
                                 .padding(16.dp),
                             verticalArrangement = Arrangement.Top
                         ) {
-                            Text(
-                                text = "Shortcuts",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp
-                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Shortcuts",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 18.sp
+                                )
+
+                                Icon(
+                                    imageVector = Icons.Default.Info,
+                                    contentDescription = "Info",
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .clickable
+                                        {
+                                            //TODO: INFO CLICK
+                                        }
+                                )
+                            }
 
                             Spacer(modifier = Modifier.height(8.dp))
 
