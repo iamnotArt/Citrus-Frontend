@@ -15,6 +15,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -108,7 +109,7 @@ fun HomeScreen(navController: NavController) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(350.dp)
+                            .height(450.dp)
                             .clip(RoundedCornerShape(16.dp))
                             .background(MaterialTheme.colorScheme.surface)
                     ) {
@@ -134,6 +135,7 @@ fun HomeScreen(navController: NavController) {
                                     contentDescription = "Info",
                                     modifier = Modifier
                                         .size(24.dp)
+                                        .clip(CircleShape)
                                         .clickable
                                         {
                                             //TODO: INFO CLICK
@@ -175,6 +177,21 @@ fun HomeScreen(navController: NavController) {
                                         // Handle Grades click
                                     }
                                     ShortcutItem(R.drawable.evaluation, "Evaluation") {
+                                        // Handle Evaluation click
+                                    }
+                                    ShortcutItem(R.drawable.network, "Network") {
+                                        // Handle Payments click
+                                    }
+                                }
+
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceEvenly,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    ShortcutItem(R.drawable.lms, "LMS") {
+                                        // Handle Grades click
+                                    }
+                                    ShortcutItem(R.drawable.maps, "Map") {
                                         // Handle Evaluation click
                                     }
                                     ShortcutItem(R.drawable.payments, "Payments") {
