@@ -21,7 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.citrusapp.Main.ShortcutItem
 import com.example.citrusapp.R
+import com.example.citrusapp.ui.theme.blue_green
+import com.example.citrusapp.ui.theme.calm_white
 import kotlinx.coroutines.launch
 
 @Composable
@@ -103,9 +106,9 @@ fun HomeScreen(navController: NavController) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(500.dp)
+                            .height(340.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .background(Color.LightGray)
+                            .background(MaterialTheme.colorScheme.surface)
                     ) {
                         Column(
                             modifier = Modifier
@@ -116,20 +119,56 @@ fun HomeScreen(navController: NavController) {
                             Text(
                                 text = "Shortcuts",
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp,
+                                fontSize = 18.sp
                             )
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            HorizontalDivider(
-                                color = Color.Black
-                            )
+                            HorizontalDivider()
 
-                            // Add more content here if needed
+                            Spacer(modifier = Modifier.height(24.dp))
+
+                            // Icons grid
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(24.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceEvenly,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    ShortcutItem(R.drawable.library, "Library") {
+                                        // Handle Library click
+                                    }
+                                    ShortcutItem(R.drawable.lostnfound, "Lost & Found") {
+                                        // Handle Lost & Found click
+                                    }
+                                    ShortcutItem(R.drawable.schedule, "Schedule") {
+                                        // Handle Schedule click
+                                    }
+                                }
+
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceEvenly,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    ShortcutItem(R.drawable.grades, "Grades") {
+                                        // Handle Grades click
+                                    }
+                                    ShortcutItem(R.drawable.evaluation, "Evaluation") {
+                                        // Handle Evaluation click
+                                    }
+                                    ShortcutItem(R.drawable.payments, "Payments") {
+                                        // Handle Payments click
+                                    }
+                                }
+
+                            }
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Spacer(modifier = Modifier.height(32.dp))
 
                     Text(
                         text = "Recommended for You",
@@ -137,8 +176,6 @@ fun HomeScreen(navController: NavController) {
                         fontSize = 18.sp,
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
                     HorizontalDivider()
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -149,13 +186,13 @@ fun HomeScreen(navController: NavController) {
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(16.dp))
                             .height(350.dp) // adjust height as needed
-                            .background(Color.LightGray), // sample background
+                            .background(MaterialTheme.colorScheme.surface), // sample background
                         contentAlignment = Alignment.Center
                     ) {
                         Text("This is a Box below the Recommended divider")
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(32.dp))
 
                     Text(
                         text = "Discover",
@@ -163,7 +200,6 @@ fun HomeScreen(navController: NavController) {
                         fontSize = 18.sp,
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
 
                     HorizontalDivider()
 
@@ -175,17 +211,13 @@ fun HomeScreen(navController: NavController) {
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(16.dp))
                             .height(350.dp) // adjust height as needed
-                            .background(Color.LightGray), // sample background
+                            .background(MaterialTheme.colorScheme.surface), // sample background
                         contentAlignment = Alignment.Center
                     ) {
                         Text("This is a Box below the Discover divider")
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
-
-
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(32.dp))
 
                     Text(
                         text = "Courses",
