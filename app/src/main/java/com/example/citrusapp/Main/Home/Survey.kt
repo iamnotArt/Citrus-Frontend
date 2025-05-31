@@ -7,16 +7,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
@@ -35,48 +33,48 @@ fun Survey() {
 
     val responses = remember { mutableStateListOf<String?>().apply { repeat(totalQuestions) { add(null) } } }
 
-    // State for optional reason input on specific questions
-    var dissatisfactionReason by remember { mutableStateOf("") }  // Q1
-    var lmsReason by remember { mutableStateOf("") }              // Q2
-    var easeOfUseReason by remember { mutableStateOf("") }        // Q4 (index 3)
+    var dissatisfactionReason by remember { mutableStateOf("") }
+    var lmsReason by remember { mutableStateOf("") }
+    var easeOfUseReason by remember { mutableStateOf("") }
 
     if (showIntro) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(32.dp),
+                .padding(8.dp),
             contentAlignment = Alignment.Center
         ) {
             Box(
                 modifier = Modifier
+                    .fillMaxWidth(0.9f)
                     .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(16.dp))
                     .padding(24.dp)
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(24.dp),
-                    modifier = Modifier.fillMaxWidth(0.8f)
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
                         text = "Could we have a moment of your time to answer a quick survey? Your feedback would be greatly appreciated.",
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
                     )
                     Button(
                         onClick = { showIntro = false },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = blue_green,
-                            contentColor = Color.White // optional: text/icon color
+                            contentColor = Color.White
                         )
                     ) {
                         Text("Start Survey")
                     }
-
                 }
             }
         }
-
-    } else {
+    }
+    else {
         if (currentQuestionIndex < totalQuestions) {
             val (question, options) = surveyData[currentQuestionIndex]
 
@@ -95,7 +93,6 @@ fun Survey() {
                 selectedOption = responses[currentQuestionIndex],
                 onOptionSelected = { selected ->
                     responses[currentQuestionIndex] = selected
-                    // Clear reason input for respective questions when answer changes
                     when (currentQuestionIndex) {
                         0 -> if (selected != "Very dissatisfied") dissatisfactionReason = ""
                         1 -> if (selected != "No") lmsReason = ""
@@ -127,7 +124,7 @@ fun Survey() {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(32.dp),
+                    .padding(16.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -149,7 +146,7 @@ fun SurveyCardBox(
     selectedOption: String?,
     onOptionSelected: (String) -> Unit,
     onNext: () -> Unit,
-    onBack: (() -> Unit)? = null, // Nullable callback for back
+    onBack: (() -> Unit)? = null,
     showReasonInput: Boolean = false,
     reasonText: String = "",
     onReasonTextChanged: (String) -> Unit = {}
@@ -221,7 +218,6 @@ fun SurveyCardBox(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Back Button (only if not first question)
             if (currentIndex > 0 && onBack != null) {
                 IconButton(onClick = { onBack() }) {
                     Icon(
@@ -230,7 +226,7 @@ fun SurveyCardBox(
                     )
                 }
             } else {
-                Spacer(modifier = Modifier.width(48.dp)) // Keeps spacing consistent
+                Spacer(modifier = Modifier.width(48.dp))
             }
 
 

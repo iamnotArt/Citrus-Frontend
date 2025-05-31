@@ -202,7 +202,6 @@ fun SwipableCardSection(
             var offsetX by remember { mutableStateOf(0f) }
             var offsetY by remember { mutableStateOf(0f) }
             var rotation by remember { mutableStateOf(0f) }
-            var isSwiping by remember { mutableStateOf(false) }
             var isAnimating by remember { mutableStateOf(false) }
             var shouldDismiss by remember { mutableStateOf(false) }
             var startOffsetX by remember { mutableStateOf(0f) }
@@ -214,9 +213,9 @@ fun SwipableCardSection(
             var nextCardOffset by remember { mutableStateOf(30f) }
             var cardStackProgress by remember { mutableStateOf(0f) }
 
-            // Animation states
+            // Animation states - simplified
             val throwOffsetX by animateFloatAsState(
-                targetValue = if (shouldDismiss) (if (startOffsetX > 0) 2000f else -2000f) else 0f,
+                targetValue = if (shouldDismiss) (if (offsetX > 0) 2000f else -2000f) else 0f,
                 animationSpec = tween(durationMillis = 250)
             )
 
@@ -274,7 +273,7 @@ fun SwipableCardSection(
             }
 
             // Background cards fan
-            val visibleCards = minOf(6, cardsWithData.size - 1)
+            val visibleCards = minOf(4, cardsWithData.size - 1)
             for (i in 0 until visibleCards) {
                 val isNextCard = i == 0
                 val isSecondCard = i == 1

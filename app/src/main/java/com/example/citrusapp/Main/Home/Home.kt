@@ -150,11 +150,21 @@ fun HomeScreen(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    Text(
-                        text = "Courses",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                    )
+                    Row{
+                        Text(
+                            text = "Courses",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                        )
+                        Text(
+                            text = "(Swipable)",
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 10.sp,
+                            modifier = Modifier.padding(start = 6.dp, top = 2.dp)
+                        )
+
+                    }
+
 
                     HorizontalDivider()
 
