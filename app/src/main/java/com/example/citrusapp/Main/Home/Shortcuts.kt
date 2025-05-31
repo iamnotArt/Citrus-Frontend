@@ -73,7 +73,7 @@ fun Shortcuts() {
             ShortcutItem(R.drawable.lms, "LMS") {
                 // Handle LMS click
             }
-            ShortcutItem(R.drawable.maps, "Maps") {
+            ShortcutItem(R.drawable.maps, "School Map") {
                 // Handle Map click
             }
             ShortcutItem(R.drawable.payments, "Payments") {
