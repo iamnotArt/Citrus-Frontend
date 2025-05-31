@@ -65,5 +65,7 @@ dependencies {
 
     implementation(libs.lottie.compose) // or latest
 
+    implementation("androidx.compose.foundation:foundation:1.6.0") // or latest
+
 
 }
