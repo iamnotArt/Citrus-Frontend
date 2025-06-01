@@ -87,9 +87,9 @@ fun HomeScreen(navController: NavController) {
                     Spacer(modifier = Modifier.width(12.dp))
 
                     Text(
-                        text = "Featured",
+                        text = "Featured Posts",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
+                        fontSize = 20.sp,
                     )
 
                     HorizontalDivider()
@@ -120,16 +120,16 @@ fun HomeScreen(navController: NavController) {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Shortcuts",
+                                    text = "Quick Actions",
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp
+                                    fontSize = 20.sp
                                 )
 
                                 Icon(
                                     imageVector = Icons.Default.Info,
                                     contentDescription = "Info",
                                     modifier = Modifier
-                                        .size(24.dp)
+                                        .size(20.dp)
                                         .clip(CircleShape)
                                         .clickable
                                         {
@@ -150,11 +150,60 @@ fun HomeScreen(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(32.dp))
 
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 4.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Calendar",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                        )
+
+                        Text(
+                            text = "View more",
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 14.sp,
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .clickable {
+                                // TODO: handle click
+                            }
+                        )
+                    }
+
+                    HorizontalDivider()
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+
+                    //here
+                    Calendar()
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Text(
+                        text = "Survey",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                    )
+
+                    HorizontalDivider()
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Survey()
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
                     Row{
                         Text(
                             text = "Courses",
                             fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
+                            fontSize = 20.sp,
                         )
                         Text(
                             text = "(Swipable)",
@@ -181,21 +230,6 @@ fun HomeScreen(navController: NavController) {
                         onGradClick = { navController.navigate("graduate") }
                     )
 
-
-                    Spacer(modifier = Modifier.height(32.dp))
-
-                    Text(
-                        text = "Survey",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                    )
-
-                    HorizontalDivider()
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    //
-                    Survey()
                 }
 
             }

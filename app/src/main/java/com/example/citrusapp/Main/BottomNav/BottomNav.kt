@@ -1,32 +1,21 @@
-package com.example.citrusapp.Main.BottomNavFunctions
+package com.example.citrusapp.Main.BottomNav
 
 import BottomNavItem
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
-import com.airbnb.lottie.compose.*
 import com.example.citrusapp.Main.Account.AccountScreen
 import com.example.citrusapp.Main.Home.AgriScreen
 import com.example.citrusapp.Main.Home.CCISScreen
@@ -40,8 +29,6 @@ import com.example.citrusapp.Main.Home.NursingScreen
 import com.example.citrusapp.Main.Inbox.InboxScreen
 import com.example.citrusapp.Main.LMS.LMSScreen
 import com.example.citrusapp.Main.Network.NetworkScreen
-import com.example.citrusapp.R
-import kotlinx.coroutines.launch
 
 sealed class NavItem(val route: String, val label: String, val lottieIcon: String?) {
     object Home : NavItem("home", "Home", "home")

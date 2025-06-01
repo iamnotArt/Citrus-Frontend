@@ -67,5 +67,8 @@ dependencies {
 
     implementation("androidx.compose.foundation:foundation:1.6.0") // or latest
 
+    implementation("androidx.compose.animation:animation:1.5.0") // or higher
+
+
 
 }

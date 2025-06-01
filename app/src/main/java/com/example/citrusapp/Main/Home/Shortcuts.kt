@@ -61,8 +61,9 @@ fun Shortcuts() {
             ShortcutItem(R.drawable.evaluation, "Evaluation") {
                 // Handle Evaluation click
             }
-            ShortcutItem(R.drawable.network, "Network") {
-                // Handle Network click
+
+            ShortcutItem(R.drawable.maps, "School Map") {
+                // Handle Map click
             }
         }
 
@@ -73,8 +74,8 @@ fun Shortcuts() {
             ShortcutItem(R.drawable.lms, "LMS") {
                 // Handle LMS click
             }
-            ShortcutItem(R.drawable.maps, "School Map") {
-                // Handle Map click
+            ShortcutItem(R.drawable.network, "Network") {
+                // Handle Network click
             }
             ShortcutItem(R.drawable.payments, "Payments") {
                 // Handle Payments click
