@@ -150,35 +150,15 @@ fun HomeScreen(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 4.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Calendar",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp,
-                        )
-
-                        Text(
-                            text = "View more",
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 14.sp,
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .clickable {
-                                // TODO: handle click
-                            }
-                        )
-                    }
+                    Text(
+                        text = "Calendar",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                    )
 
                     HorizontalDivider()
 
                     Spacer(modifier = Modifier.height(16.dp))
-
 
                     //here
                     Calendar()

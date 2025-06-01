@@ -1,9 +1,7 @@
 package com.example.citrusapp.Main.Home
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -65,16 +63,15 @@ fun Calendar() {
                 AnimatedContent(
                     targetState = selectedMonth,
                     transitionSpec = {
-                        val slideDirection = if (direction > 0) 1 else -1
-
-                        if (targetState > initialState) {
-                            // Enter from right + fade in, exit to left + fade out
-                            (slideInHorizontally { width -> slideDirection * width } + fadeIn())
-                                .togetherWith(slideOutHorizontally { width -> -slideDirection * width } + fadeOut())
+                        // Reverse the logic for more intuitive animation
+                        if (direction > 0) {
+                            // Moving forward (>) - slide from right to left
+                            (slideInHorizontally { width -> width } + fadeIn())
+                                .togetherWith(slideOutHorizontally { width -> -width } + fadeOut())
                         } else {
-                            // Enter from left + fade in, exit to right + fade out
-                            (slideInHorizontally { width -> -slideDirection * width } + fadeIn())
-                                .togetherWith(slideOutHorizontally { width -> slideDirection * width } + fadeOut())
+                            // Moving backward (<) - slide from left to right
+                            (slideInHorizontally { width -> -width } + fadeIn())
+                                .togetherWith(slideOutHorizontally { width -> width } + fadeOut())
                         }.using(
                             SizeTransform(clip = false)
                         )
@@ -123,16 +120,15 @@ fun Calendar() {
             AnimatedContent(
                 targetState = selectedMonth,
                 transitionSpec = {
-                    val slideDirection = if (direction > 0) 1 else -1
-
-                    if (targetState > initialState) {
-                        // Enter from right + fade in, exit to left + fade out
-                        (slideInHorizontally { width -> slideDirection * width } + fadeIn())
-                            .togetherWith(slideOutHorizontally { width -> -slideDirection * width } + fadeOut())
+                    // Same animation logic as above for consistency
+                    if (direction > 0) {
+                        // Moving forward (>) - slide from right to left
+                        (slideInHorizontally { width -> width } + fadeIn())
+                            .togetherWith(slideOutHorizontally { width -> -width } + fadeOut())
                     } else {
-                        // Enter from left + fade in, exit to right + fade out
-                        (slideInHorizontally { width -> -slideDirection * width } + fadeIn())
-                            .togetherWith(slideOutHorizontally { width -> slideDirection * width } + fadeOut())
+                        // Moving backward (<) - slide from left to right
+                        (slideInHorizontally { width -> -width } + fadeIn())
+                            .togetherWith(slideOutHorizontally { width -> width } + fadeOut())
                     }.using(
                         SizeTransform(clip = false)
                     )

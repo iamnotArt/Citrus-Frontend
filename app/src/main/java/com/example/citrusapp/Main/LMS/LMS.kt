@@ -38,7 +38,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.citrusapp.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -55,7 +54,7 @@ fun LMSScreen() {
     var isAppBarVisible by remember { mutableStateOf(true) }
     var selectedTabIndex by remember { mutableStateOf(0) }
 
-    val tabTitles = listOf("Courses", "Assignments", "Grades")
+    val tabTitles = listOf("Dashboard", "My Courses", "Available Courses")
 
     LaunchedEffect(listState) {
         var previousOffset = 0
@@ -103,7 +102,6 @@ fun LMSScreen() {
                         .weight(1f),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Logo
                     Image(
                         painter = painterResource(id = R.drawable.schoollogo),
                         contentDescription = "School Logo",
@@ -153,7 +151,6 @@ fun LMSScreen() {
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // ✅ Tab Layout
                 TabRow(
                     selectedTabIndex = selectedTabIndex,
                     modifier = Modifier.fillMaxWidth(),
