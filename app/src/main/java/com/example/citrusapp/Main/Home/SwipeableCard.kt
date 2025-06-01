@@ -1,19 +1,13 @@
 package com.example.citrusapp.Main.Home
 
 import OrbitLoadingIndicator
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -73,7 +67,6 @@ fun SwipableCardSection(
     val scope = rememberCoroutineScope()
     var isLoaded by remember { mutableStateOf(false) }
 
-    // Define cards data with their corresponding click handlers
     val cardsWithData = remember {
         listOf(
             CardData(
@@ -130,10 +123,9 @@ fun SwipableCardSection(
     val cardsCount = cardsWithData.size
     var currentIndex by remember { mutableStateOf(0) }
 
-    // Load heavy resources after initial composition
     LaunchedEffect(Unit) {
         scope.launch {
-            delay(1000) // Wait for initial frame
+            delay(1200)
             isLoaded = true
         }
     }
@@ -153,7 +145,6 @@ fun SwipableCardSection(
                 elevation = CardDefaults.cardElevation(8.dp)
             ) {
                 Box(modifier = Modifier.fillMaxSize()) {
-                    // Blurred Image background
                     Image(
                         painter = painterResource(id = R.drawable.engineering),
                         contentDescription = null,
@@ -163,7 +154,6 @@ fun SwipableCardSection(
                             .blur(16.dp)
                     )
 
-                    // Blurred Gradient Overlay
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -180,7 +170,6 @@ fun SwipableCardSection(
                             .blur(16.dp)
                     )
 
-                    // Loading Indicator
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -213,7 +202,6 @@ fun SwipableCardSection(
             var nextCardOffset by remember { mutableStateOf(30f) }
             var cardStackProgress by remember { mutableStateOf(0f) }
 
-            // Animation states - simplified
             val throwOffsetX by animateFloatAsState(
                 targetValue = if (shouldDismiss) (if (offsetX > 0) 2000f else -2000f) else 0f,
                 animationSpec = tween(durationMillis = 250)
@@ -503,7 +491,6 @@ fun SwipableCardSection(
             }
         }
 
-        // Card counter - shown in both states
         Box(
             modifier = Modifier
                 .align(Alignment.BottomStart)

@@ -15,6 +15,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.citrusapp.Main.BottomNav.BottomNavScreen
+import com.example.citrusapp.Main.Home.Shortcuts
+import com.example.citrusapp.Main.LMS.LMSScreen
 import com.example.citrusapp.login.FingerprintScreen
 import com.example.citrusapp.login.LoginScreen
 import com.example.citrusapp.onboardingScreen.OnboardingScreen

@@ -27,10 +27,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.example.citrusapp.Main.BottomNav.NavItem
 import com.example.citrusapp.R
 
 @Composable
-fun Shortcuts() {
+fun Shortcuts(navController: NavController? = null) {
     // Icons grid
     Column(
         verticalArrangement = Arrangement.spacedBy(24.dp),
@@ -72,10 +75,22 @@ fun Shortcuts() {
             modifier = Modifier.fillMaxWidth()
         ) {
             ShortcutItem(R.drawable.lms, "LMS") {
-                // Handle LMS click
+                navController?.navigate("lms") {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
             }
             ShortcutItem(R.drawable.network, "Network") {
-                // Handle Network click
+                navController?.navigate("network") {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
             }
             ShortcutItem(R.drawable.payments, "Payments") {
                 // Handle Payments click

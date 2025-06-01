@@ -1,14 +1,21 @@
 package com.example.citrusapp.Main.Home
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,8 +25,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.citrusapp.R
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
@@ -27,9 +37,10 @@ import java.util.*
 
 @Composable
 fun Calendar() {
+    val isDarkTheme = isSystemInDarkTheme()
     var selectedMonth by remember { mutableStateOf(YearMonth.now()) }
-    var direction by remember { mutableStateOf(0) } // -1 for left, 1 for right, 0 for initial
-
+    var direction by remember { mutableStateOf(0) }
+    var isExpanded by remember { mutableStateOf(false) }
     val today = LocalDate.now()
 
     Box(
@@ -37,9 +48,10 @@ fun Calendar() {
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surface)
-            .padding(16.dp)
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
             // Header with navigation
             Row(
                 modifier = Modifier
@@ -63,13 +75,10 @@ fun Calendar() {
                 AnimatedContent(
                     targetState = selectedMonth,
                     transitionSpec = {
-                        // Reverse the logic for more intuitive animation
                         if (direction > 0) {
-                            // Moving forward (>) - slide from right to left
                             (slideInHorizontally { width -> width } + fadeIn())
                                 .togetherWith(slideOutHorizontally { width -> -width } + fadeOut())
                         } else {
-                            // Moving backward (<) - slide from left to right
                             (slideInHorizontally { width -> -width } + fadeIn())
                                 .togetherWith(slideOutHorizontally { width -> width } + fadeOut())
                         }.using(
@@ -120,13 +129,10 @@ fun Calendar() {
             AnimatedContent(
                 targetState = selectedMonth,
                 transitionSpec = {
-                    // Same animation logic as above for consistency
                     if (direction > 0) {
-                        // Moving forward (>) - slide from right to left
                         (slideInHorizontally { width -> width } + fadeIn())
                             .togetherWith(slideOutHorizontally { width -> -width } + fadeOut())
                     } else {
-                        // Moving backward (<) - slide from left to right
                         (slideInHorizontally { width -> -width } + fadeIn())
                             .togetherWith(slideOutHorizontally { width -> width } + fadeOut())
                     }.using(
@@ -136,6 +142,74 @@ fun Calendar() {
                 label = "CalendarAnimation"
             ) { targetMonth ->
                 CalendarGrid(targetMonth, today)
+            }
+
+            // Animated expand/collapse button
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+                    .clickable { isExpanded = !isExpanded },
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(
+                        id = if (isExpanded) R.drawable.ic_arrow_up
+                        else R.drawable.ic_arrow_down
+                    ),
+                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    modifier = Modifier.size(24.dp),
+                    colorFilter = ColorFilter.tint(
+                        if (isDarkTheme) MaterialTheme.colorScheme.onBackground
+                        else MaterialTheme.colorScheme.onBackground
+                    )
+                )
+            }
+
+            // Smoothly animated expandable content
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = expandVertically(
+                    expandFrom = Alignment.Top,
+                    animationSpec = tween(durationMillis = 300)
+                ) + fadeIn(),
+                exit = shrinkVertically(
+                    shrinkTowards = Alignment.Top,
+                    animationSpec = tween(durationMillis = 300)
+                ) + fadeOut()
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .padding(8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.schoollogo),
+                            contentDescription = "No Events",
+                            modifier = Modifier
+                                .size(60.dp)
+                                .padding(bottom = 8.dp),
+                            alpha = 0.6f
+                        )
+                        Text(
+                            text = "No scheduled events",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                        )
+                        Text(
+                            text = "Check back later!",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                            modifier = Modifier.padding(top = 4.dp)
+                        )
+                    }
+                }
             }
         }
     }
