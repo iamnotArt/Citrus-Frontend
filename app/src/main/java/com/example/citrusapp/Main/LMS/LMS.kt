@@ -28,19 +28,36 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
-
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun LMSScreen() {
     val listState = rememberLazyListState()
-    val appBarHeight = 170.dp
-
-    var isAppBarVisible by remember { mutableStateOf(true) }
     var selectedTabIndex by remember { mutableStateOf(0) }
-
     val tabTitles = listOf("Dashboard", "My Courses", "Available Courses")
 
-    LaunchedEffect(listState) {
+    // App bar visibility state
+    var isAppBarVisible by remember { mutableStateOf(true) }
+
+    // Define different heights for each tab
+    val dashboardAppBarHeight = 170.dp
+    val coursesAppBarHeight = 68.dp
+
+    // Calculate target height based on selected tab and visibility
+    val targetHeight = when (selectedTabIndex) {
+        0 -> if (isAppBarVisible) dashboardAppBarHeight else 0.dp
+        else -> if (isAppBarVisible) coursesAppBarHeight else 0.dp
+    }
+
+    // Animate the height change
+    val animatedAppBarHeight by animateDpAsState(
+        targetValue = targetHeight,
+        animationSpec = tween(durationMillis = 300),
+        label = "AppBarHeightAnimation"
+    )
+
+    // Scroll listener for hide/show behavior
+    LaunchedEffect(listState, selectedTabIndex) {
         var previousOffset = 0
         snapshotFlow {
             listState.firstVisibleItemIndex * 1000 + listState.firstVisibleItemScrollOffset
@@ -56,8 +73,8 @@ fun LMSScreen() {
 
                 isAppBarVisible = when {
                     isAtBottom -> false
-                    delta < -10 -> true
-                    delta > 10 -> false
+                    delta < -10 -> true // Scrolling up
+                    delta > 10 -> false // Scrolling down
                     listState.firstVisibleItemIndex == 0 -> true
                     else -> isAppBarVisible
                 }
@@ -66,13 +83,8 @@ fun LMSScreen() {
             }
     }
 
-    val animatedAppBarHeight by animateDpAsState(
-        targetValue = if (isAppBarVisible) appBarHeight else 0.dp,
-        animationSpec = tween(durationMillis = 300),
-        label = "AppBarHeight"
-    )
-
     Column(modifier = Modifier.fillMaxSize()) {
+        // App Bar with animated height
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -80,17 +92,31 @@ fun LMSScreen() {
                 .padding(horizontal = 16.dp, vertical = 4.dp)
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    // ADD HEADER CONTENT HERE
+                // Header content (only for Dashboard)
+                if (selectedTabIndex == 0) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(
+                                text = "Art Lyndone Acuesta Hemplo",
+                                style = MaterialTheme.typography.headlineMedium,
+                                fontSize = 26.sp
+                            )
+                            Text(
+                                text = "22-00489",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontSize = 18.sp
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
-
+                // Tab row (always shown when app bar is visible)
                 TabRow(
                     selectedTabIndex = selectedTabIndex,
                     modifier = Modifier.fillMaxWidth(),
@@ -108,6 +134,7 @@ fun LMSScreen() {
             }
         }
 
+        // Tab content
         when (selectedTabIndex) {
             0 -> DashboardTab(listState)
             1 -> MyCoursesTab(listState)
