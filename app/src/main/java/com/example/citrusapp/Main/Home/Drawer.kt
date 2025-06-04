@@ -3,6 +3,7 @@ package com.example.citrusapp.Main.Home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -29,6 +30,7 @@ fun HomeDrawer(
     drawerState: DrawerState,
     content: @Composable () -> Unit
 ) {
+    val isDarkTheme = isSystemInDarkTheme()
     var AboutExpanded by remember { mutableStateOf(false) }
     var AdministrationExpanded by remember { mutableStateOf(false) }
     var InternationalExpanded by remember { mutableStateOf(false) }
@@ -44,8 +46,8 @@ fun HomeDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(
-                modifier = Modifier.background(blue_green).width(screenWidth * 0.8f),
-                drawerContainerColor = blue_green,
+                modifier = Modifier.width(screenWidth * 0.8f),
+                drawerContainerColor = MaterialTheme.colorScheme.background
             ) {
                 Column(
                     modifier = Modifier
@@ -59,7 +61,9 @@ fun HomeDrawer(
                         Image(
                             painter = painterResource(id = R.drawable.nwssutext),
                             contentDescription = "NwSSU Text Logo",
-                            colorFilter = ColorFilter.tint(calm_white),
+                            colorFilter = ColorFilter.tint(
+                                if (isDarkTheme) Color.White else blue_green
+                            ),
                             modifier = Modifier
                                 .padding(16.dp)
                                 .height(50.dp)
@@ -89,7 +93,12 @@ fun HomeDrawer(
                                 painter = painterResource(id = R.drawable.drawerlogo3),
                                 contentDescription = "NwSSU Text Logo 3",
                                 modifier = Modifier
-                                    .height(50.dp)
+                                    .height(50.dp),
+                                colorFilter = if (isDarkTheme) {
+                                    ColorFilter.tint(Color.White)
+                                } else {
+                                    null
+                                }
                             )
                         }
 
@@ -105,7 +114,6 @@ fun HomeDrawer(
                             Text(
                                 text = "About",
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White,
                                 modifier = Modifier.weight(1f)
                             )
 
@@ -113,7 +121,6 @@ fun HomeDrawer(
                                 painter = painterResource(
                                     id = if (AboutExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
                                 ),
-                                tint = calm_white,
                                 contentDescription = null
                             )
                         }
@@ -122,7 +129,6 @@ fun HomeDrawer(
                             Column(modifier = Modifier.padding(start = 32.dp)) {
                                 Text(
                                     text = "The University",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Account click */ }
@@ -130,7 +136,6 @@ fun HomeDrawer(
                                 )
                                 Text(
                                     text = "Vision and Mission",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Notifications click */ }
@@ -138,7 +143,6 @@ fun HomeDrawer(
                                 )
                                 Text(
                                     text = "NwSSU Official Seal",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Privacy click */ }
@@ -146,7 +150,6 @@ fun HomeDrawer(
                                 )
                                 Text(
                                     text = "NwSSU General Mandate",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Privacy click */ }
@@ -154,7 +157,6 @@ fun HomeDrawer(
                                 )
                                 Text(
                                     text = "NwSSU History",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Privacy click */ }
@@ -162,7 +164,6 @@ fun HomeDrawer(
                                 )
                                 Text(
                                     text = "Board of Regents",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Privacy click */ }
@@ -179,7 +180,6 @@ fun HomeDrawer(
                                     Text(
                                         text = "Administration",
                                         modifier = Modifier.weight(1f),
-                                        color = Color.White,
                                         fontWeight = FontWeight.Bold
                                     )
 
@@ -188,7 +188,6 @@ fun HomeDrawer(
                                             id = if (AdministrationExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
                                         ),
                                         contentDescription = null,
-                                        tint = calm_white
                                     )
                                 }
 
@@ -196,7 +195,6 @@ fun HomeDrawer(
                                     Column(modifier = Modifier.padding(start = 32.dp)) {
                                         Text(
                                             text = "The University President",
-                                            color = Color.White,
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .clickable { /* Handle click */ }
@@ -204,7 +202,6 @@ fun HomeDrawer(
                                         )
                                         Text(
                                             text = "Key Officials",
-                                            color = Color.White,
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .clickable { /* Handle click */ }
@@ -222,7 +219,6 @@ fun HomeDrawer(
                                 ) {
                                     Text(
                                         text = "International Affairs",
-                                        color = Color.White,
                                         modifier = Modifier.weight(1f),
                                         fontWeight = FontWeight.Bold
                                     )
@@ -231,7 +227,6 @@ fun HomeDrawer(
                                         painter = painterResource(
                                             id = if (InternationalExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
                                         ),
-                                        tint = calm_white,
                                         contentDescription = null
                                     )
                                 }
@@ -240,7 +235,6 @@ fun HomeDrawer(
                                     Column(modifier = Modifier.padding(start = 32.dp)) {
                                         Text(
                                             text = "Office of the Director for International Affairs",
-                                            color = Color.White,
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .clickable { /* Handle click */ }
@@ -259,7 +253,6 @@ fun HomeDrawer(
                                 ) {
                                     Text(
                                         text = "Linkages",
-                                        color = Color.White,
                                         modifier = Modifier.weight(1f),
                                         fontWeight = FontWeight.Bold
                                     )
@@ -268,7 +261,6 @@ fun HomeDrawer(
                                         painter = painterResource(
                                             id = if (LinkagesExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
                                         ),
-                                        tint = calm_white,
                                         contentDescription = null
                                     )
                                 }
@@ -277,7 +269,6 @@ fun HomeDrawer(
                                     Column(modifier = Modifier.padding(start = 32.dp)) {
                                         Text(
                                             text = "Regional Linkages",
-                                            color = Color.White,
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .clickable { /* Handle click */ }
@@ -285,7 +276,6 @@ fun HomeDrawer(
                                         )
                                         Text(
                                             text = "National Linkages",
-                                            color = Color.White,
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .clickable { /* Handle click */ }
@@ -293,7 +283,6 @@ fun HomeDrawer(
                                         )
                                         Text(
                                             text = "International Linkages",
-                                            color = Color.White,
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .clickable { /* Handle click */ }
@@ -311,7 +300,6 @@ fun HomeDrawer(
                                 ) {
                                     Text(
                                         text = "Sustainability Plan (SDGs)",
-                                        color = Color.White,
                                         modifier = Modifier.weight(1f),
                                         fontWeight = FontWeight.Bold
                                     )
@@ -320,7 +308,6 @@ fun HomeDrawer(
                                         painter = painterResource(
                                             id = if (SustainabilityExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
                                         ),
-                                        tint = calm_white,
                                         contentDescription = null
                                     )
                                 }
@@ -329,7 +316,6 @@ fun HomeDrawer(
                                     Column(modifier = Modifier.padding(start = 32.dp)) {
                                         Text(
                                             text = "Environmental Sustainability Plan",
-                                            color = Color.White,
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .clickable { /* Handle click */ }
@@ -337,7 +323,6 @@ fun HomeDrawer(
                                         )
                                         Text(
                                             text = "Energy and Water Conservation",
-                                            color = Color.White,
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .clickable { /* Handle click */ }
@@ -345,7 +330,6 @@ fun HomeDrawer(
                                         )
                                         Text(
                                             text = "Waste Management",
-                                            color = Color.White,
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .clickable { /* Handle click */ }
@@ -355,7 +339,6 @@ fun HomeDrawer(
                                 }
                                 Text(
                                     text = "Alumni Affairs",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Privacy click */ }
@@ -363,7 +346,6 @@ fun HomeDrawer(
                                 )
                                 Text(
                                     text = "Gender and Development",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Privacy click */ }
@@ -381,7 +363,6 @@ fun HomeDrawer(
                         ) {
                             Text(
                                 text = "Academe",
-                                color = Color.White,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.weight(1f)
                             )
@@ -390,7 +371,6 @@ fun HomeDrawer(
                                 painter = painterResource(
                                     id = if (AcademeExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
                                 ),
-                                tint = calm_white,
                                 contentDescription = null
                             )
                         }
@@ -399,7 +379,6 @@ fun HomeDrawer(
                             Column(modifier = Modifier.padding(start = 32.dp)) {
                                 Text(
                                     text = "San Jorge Campus",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Account click */ }
@@ -407,7 +386,6 @@ fun HomeDrawer(
                                 )
                                 Text(
                                     text = "Colleges",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Notifications click */ }
@@ -415,7 +393,6 @@ fun HomeDrawer(
                                 )
                                 Text(
                                     text = "School Calendar (SY: 2024 - 2025)",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Privacy click */ }
@@ -433,7 +410,6 @@ fun HomeDrawer(
                         ) {
                             Text(
                                 text = "Others",
-                                color = Color.White,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.weight(1f)
                             )
@@ -442,7 +418,6 @@ fun HomeDrawer(
                                 painter = painterResource(
                                     id = if (OthersExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
                                 ),
-                                tint = calm_white,
                                 contentDescription = null
                             )
                         }
@@ -451,7 +426,6 @@ fun HomeDrawer(
                             Column(modifier = Modifier.padding(start = 32.dp)) {
                                 Text(
                                     text = "Student Handbook",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Account click */ }
@@ -459,7 +433,6 @@ fun HomeDrawer(
                                 )
                                 Text(
                                     text = "Registrar's Office",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Notifications click */ }
@@ -467,7 +440,6 @@ fun HomeDrawer(
                                 )
                                 Text(
                                     text = "NWSSU Official Website",
-                                    color = Color.White,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { /* Handle Notifications click */ }
@@ -480,7 +452,6 @@ fun HomeDrawer(
                     // Version text at the bottom, outside the scrollable content
                     Text(
                         text = "Version 1.0.0",
-                        color = calm_white,
                         fontSize = 12.sp,
                         modifier = Modifier
                             .fillMaxWidth()

@@ -14,9 +14,18 @@ fun AutoScrollPager(
     LaunchedEffect(pagerState) {
         while (isActive) {
             delay(delayMillis)
+
+            // Prevent multiple scroll calls while the pager is settling
             if (!pagerState.isScrollInProgress) {
-                val nextPage = pagerState.currentPage + 1
-                pagerState.animateScrollToPage(nextPage)
+                val currentPage = pagerState.currentPage
+                val targetPage = currentPage + 1
+
+                // Use scroll instead of animate if animation causes lag
+                try {
+                    pagerState.animateScrollToPage(targetPage)
+                } catch (e: Exception) {
+                    // Fail-safe to prevent crash if scroll is interrupted
+                }
             }
         }
     }

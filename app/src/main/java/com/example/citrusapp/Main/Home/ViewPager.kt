@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
@@ -56,9 +57,11 @@ fun ViewPagerSection() {
             ) { page ->
                 val actualPage = page % pagerItems.size
                 Card(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp), // Padding around the card
                     elevation = CardDefaults.cardElevation(4.dp),
-                    shape = RectangleShape
+                    shape = RoundedCornerShape(16.dp) // Rounded corners
                 ) {
                     Image(
                         painter = painterResource(id = pagerItems[actualPage]),
@@ -68,15 +71,6 @@ fun ViewPagerSection() {
                     )
                 }
             }
-
-            Image(
-                painter = painterResource(id = R.drawable.schoollogo),
-                contentDescription = "School Logo",
-                modifier = Modifier
-                    .size(48.dp)
-                    .padding(8.dp)
-                    .align(Alignment.TopStart)
-            )
         }
 
         // ✅ Reserve indicator space even if you later hide the indicator conditionally
