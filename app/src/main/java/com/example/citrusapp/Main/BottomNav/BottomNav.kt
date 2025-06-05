@@ -1,9 +1,12 @@
 package com.example.citrusapp.Main.BottomNav
 
 import BottomNavItem
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -125,40 +128,53 @@ fun BottomNavBar(
 ) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
-    Surface(
-        color = MaterialTheme.colorScheme.background,
-        tonalElevation = 8.dp,
+    // List of bottom nav routes
+    val bottomNavRoutes = items.map { it.route }
+
+    // Only show if current route is a bottom nav route
+    val showBottomNav = currentRoute in bottomNavRoutes
+
+    AnimatedVisibility(
+        visible = showBottomNav,
+        enter = slideInVertically { it } + fadeIn(),
+        exit = slideOutVertically { it } + fadeOut(),
         modifier = Modifier.height(60.dp)
     ) {
-        Column {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(0.8.dp)
-                    .alpha(0.6f)
-                    .background(MaterialTheme.colorScheme.onSurface)
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                items.forEach { item ->
-                    BottomNavItem(
-                        label = item.label,
-                        animationFile = item.lottieIcon,
-                        isSelected = currentRoute == item.route,
-                        isDarkTheme = isDarkTheme
-                    ) {
-                        navController.navigate(item.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+        Surface(
+            color = MaterialTheme.colorScheme.background,
+            tonalElevation = 8.dp,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(0.8.dp)
+                        .alpha(0.6f)
+                        .background(MaterialTheme.colorScheme.onSurface)
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    items.forEach { item ->
+                        BottomNavItem(
+                            label = item.label,
+                            animationFile = item.lottieIcon,
+                            isSelected = currentRoute == item.route,
+                            isDarkTheme = isDarkTheme
+                        ) {
+                            navController.navigate(item.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
                         }
                     }
                 }
