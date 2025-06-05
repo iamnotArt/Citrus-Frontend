@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.citrusapp.Main.LMS.Dashboard.DashboardTab
+import com.example.citrusapp.Main.LMS.MyCourses.MyCoursesTab
 
 @Composable
 fun LMSScreen() {
