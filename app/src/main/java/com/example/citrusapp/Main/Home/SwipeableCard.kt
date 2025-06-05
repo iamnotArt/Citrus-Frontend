@@ -363,7 +363,7 @@ fun SwipableCardSection(
                 }
             }
 
-            // Main swipable card
+            // Main swipable card - modified version
             val currentCard = cardsWithData[currentIndex]
             Card(
                 modifier = Modifier
@@ -378,7 +378,6 @@ fun SwipableCardSection(
                         if (isAnimating) {
                             if (shouldDismiss) {
                                 translationX = startOffsetX + throwOffsetX
-                                translationY = startOffsetY + throwOffsetY
                                 rotationZ = startRotation + throwRotation
                                 if (abs(throwOffsetX) > cardWidth / 4f) {
                                     nextCardScale = 1f
@@ -387,12 +386,10 @@ fun SwipableCardSection(
                                 }
                             } else {
                                 translationX = returnOffsetX
-                                translationY = returnOffsetX * 0.1f
                                 rotationZ = returnOffsetX / 20f
                             }
                         } else {
                             translationX = offsetX
-                            translationY = offsetY
                             rotationZ = rotation
                         }
                         transformOrigin = TransformOrigin(0.5f, 0.5f)
@@ -405,7 +402,6 @@ fun SwipableCardSection(
                                         isAnimating = true
                                         shouldDismiss = true
                                         startOffsetX = offsetX
-                                        startOffsetY = offsetY
                                         startRotation = rotation
                                         nextCardScale = 1f
                                         nextCardOffset = 0f
@@ -413,7 +409,6 @@ fun SwipableCardSection(
                                     } else {
                                         isAnimating = true
                                         offsetX = 0f
-                                        offsetY = 0f
                                         rotation = 0f
                                     }
                                 }
@@ -421,8 +416,9 @@ fun SwipableCardSection(
                             onDrag = { change, dragAmount ->
                                 if (!isAnimating) {
                                     change.consume()
+                                    // Only track horizontal movement
                                     offsetX += dragAmount.x
-                                    offsetY += dragAmount.y
+                                    // Calculate rotation based on horizontal movement
                                     rotation = offsetX / 20f
                                 }
                             }

@@ -225,7 +225,6 @@ fun HomeScreen(navController: NavController) {
                 }
             }
 
-
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
