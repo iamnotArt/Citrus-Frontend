@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun LMSScreen() {
-    val tabTitles = listOf("Dashboard", "My Courses", "Available Courses")
+    val tabTitles = listOf("Dashboard", "My Courses")
     val pagerState = rememberPagerState { tabTitles.size }
     var selectedTabIndex by remember { mutableStateOf(0) }
 
@@ -116,7 +116,6 @@ fun LMSScreen() {
             when (page) {
                 0 -> DashboardTab(rememberLazyListState())
                 1 -> MyCoursesTab(rememberLazyListState())
-                2 -> AvailableCoursesTab(rememberLazyListState())
             }
         }
     }

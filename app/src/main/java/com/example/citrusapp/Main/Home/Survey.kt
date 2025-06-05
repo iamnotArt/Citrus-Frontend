@@ -23,7 +23,7 @@ fun Survey() {
         "How satisfied are you with the app so far?" to listOf("Very satisfied", "Satisfied", "Neutral", "Dissatisfied", "Very dissatisfied"),
         "Is the new LMS better than the old one?" to listOf("Yes", "Probably", "I don't know", "No"),
         "What do you think about the chat system that we've implemented?" to listOf("I like it, it's very useful", "It's okay, but not really necessary to add a chat system", "I don't like the idea, its too repetitive", "I don't know"),
-        "How easy is the app to use?" to listOf("Very easy", "Easy", "Average", "Difficult", "Very difficult")
+        "How easy is the app to use?" to listOf("Very easy", "Easy", "Average", "Difficult", "Very difficult"),
     )
 
     val totalQuestions = surveyData.size
@@ -195,7 +195,6 @@ fun SurveyCardBox(
         }
 
         if (showReasonInput) {
-            Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
                 value = reasonText,
                 onValueChange = onReasonTextChanged,
@@ -211,7 +210,7 @@ fun SurveyCardBox(
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
