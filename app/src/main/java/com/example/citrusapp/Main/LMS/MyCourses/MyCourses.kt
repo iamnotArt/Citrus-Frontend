@@ -6,10 +6,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -17,6 +20,7 @@ import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
 import kotlin.random.Random
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyCoursesTab(listState: LazyListState) {
     val courses = listOf(
@@ -30,6 +34,16 @@ fun MyCoursesTab(listState: LazyListState) {
         Course("Data Structures", "BSCS 2A", "Dr. Reyes"),
         Course("Machine Learning", "BSCS 4A", "Prof. Navarro")
     )
+
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val showSheet = remember { mutableStateOf(false) }
+
+    if (showSheet.value) {
+        AddCourseBottomSheet(
+            sheetState = sheetState,
+            onDismiss = { showSheet.value = false }
+        )
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
@@ -61,19 +75,38 @@ fun MyCoursesTab(listState: LazyListState) {
                                 )
                             )
                     ) {
-                        Row(
+                        Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                                .background(
+                                    brush = Brush.verticalGradient(
+                                        colors = listOf(
+                                            baseColor.darken(0.4f),
+                                            baseColor
+                                        )
+                                    )
+                                )
                         ) {
-                            Column {
+                            // Title at TopStart
+                            Column(
+                                modifier = Modifier
+                                    .align(Alignment.TopStart)
+                                    .padding(16.dp)
+                            ) {
                                 Text(
                                     text = course.title,
                                     style = MaterialTheme.typography.titleMedium,
-                                    color = Color.White
+                                    color = Color.White,
+                                    fontSize = 20.sp
                                 )
+                            }
+
+                            // Section and Instructor at BottomStart
+                            Column(
+                                modifier = Modifier
+                                    .align(Alignment.BottomStart)
+                                    .padding(16.dp)
+                            ) {
                                 Text(
                                     text = course.section,
                                     style = MaterialTheme.typography.bodySmall,
@@ -86,14 +119,30 @@ fun MyCoursesTab(listState: LazyListState) {
                                     fontSize = 12.sp
                                 )
                             }
+
                         }
+
+
+                        androidx.compose.foundation.Image(
+                            painter = painterResource(id = R.drawable.schoollogo),
+                            contentDescription = "School Logo",
+                            modifier = Modifier
+                                .size(200.dp) // Adjust size as needed
+                                .align(Alignment.BottomEnd)
+                                .offset(x = 80.dp, y = 35.dp) // Push half out of bounds
+                                .graphicsLayer {
+                                    alpha = 0.5f // Lower opacity here
+                                }
+                        )
+
                     }
+
                 }
             }
         }
 
         FloatingActionButton(
-            onClick = { /* TODO: Add FAB action */ },
+            onClick = { showSheet.value = true }, // ✅ This shows the bottom sheet
             containerColor = blue_green,
             shape = MaterialTheme.shapes.extraLarge,
             modifier = Modifier
@@ -108,6 +157,7 @@ fun MyCoursesTab(listState: LazyListState) {
                 tint = Color.White
             )
         }
+
     }
 }
 

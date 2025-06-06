@@ -66,7 +66,7 @@ fun BottomNavScreen() {
             startDestination = NavItem.Home.route,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = innerPadding.calculateBottomPadding()),
+                .padding(bottom = 60.dp), // or whatever height your nav bar usually is
             enterTransition = { fadeIn(animationSpec = tween(100)) },
             exitTransition = { fadeOut(animationSpec = tween(100)) },
         ) {

@@ -34,16 +34,18 @@ fun DashboardTab(listState: LazyListState) {
                 )
                 Text(
                     text = "Here's what's happening today.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
         }
 
         item {
-            // AI-Powered Suggestions (Placeholder logic)
-            AIPoweredSuggestions()
+            TaskOverviewCard(
+                pendingTasks = 6,
+                totalTasks = 10
+            )
         }
+
 
         item {
             Text(
@@ -62,42 +64,59 @@ fun DashboardTab(listState: LazyListState) {
 }
 
 @Composable
-fun AIPoweredSuggestions() {
+fun TaskOverviewCard(
+    pendingTasks: Int = 6,
+    totalTasks: Int = 10
+) {
+    val progress = if (totalTasks > 0) pendingTasks / totalTasks.toFloat() else 0f
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+            .height(150.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(4.dp)
-    ) {
+    )
+    {
         Row(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Icon(
-                imageVector = Icons.Default.Home,
-                contentDescription = "AI Suggestion",
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(32.dp)
-            )
+            // Circular progress indicator
+            Box(contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(
+                    progress = { progress },
+                    modifier = Modifier.size(72.dp),
+                    color = MaterialTheme.colorScheme.primary,
+                    strokeWidth = 8.dp,
+                )
+                Text(
+                    text = "${(progress * 100).toInt()}%",
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold)
+                )
+            }
+
             Spacer(modifier = Modifier.width(16.dp))
-            Column {
-                Text(
-                    text = "AI Suggestion",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-                Text(
-                    text = "Based on your activity, you should start working on your capstone documentation.",
-                    fontSize = 14.sp,
-                    color = Color.DarkGray
-                )
+
+            // Summary
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Task Overview", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text("Pending: $pendingTasks / $totalTasks", fontSize = 14.sp)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text("• 3 Quizzes Pending", fontSize = 13.sp)
+                Text("• 2 Assignments", fontSize = 13.sp)
+                Text("• 1 Project", fontSize = 13.sp)
             }
         }
     }
 }
+
 
 @Composable
 fun RecentActivityCard(title: String, subtitle: String) {
@@ -105,8 +124,10 @@ fun RecentActivityCard(title: String, subtitle: String) {
         modifier = Modifier
             .fillMaxWidth()
             .height(90.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(6.dp)
-    ) {
+    )
+    {
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -125,12 +146,11 @@ fun RecentActivityCard(title: String, subtitle: String) {
             Column {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
+                    fontSize = 14.sp
                 )
                 Text(
                     text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
+                    fontSize = 11.sp
                 )
             }
         }

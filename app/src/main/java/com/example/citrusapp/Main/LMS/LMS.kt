@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.citrusapp.Main.LMS.Dashboard.DashboardTab
@@ -82,7 +83,9 @@ fun LMSScreen() {
                         Text(
                             text = "Art Lyndone Acuesta Hemplo",
                             style = MaterialTheme.typography.headlineMedium,
-                            fontSize = 26.sp
+                            fontSize = 26.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             text = "22-00489",
