@@ -65,7 +65,7 @@ fun Calendar() {
                             direction = 1
                             selectedMonth = selectedMonth.plusMonths(1)
                         }
-                        dragDistance = 0f // reset after swipe ends
+                        dragDistance = 0f
                     },
                     onHorizontalDrag = { _, delta ->
                         dragDistance += delta
