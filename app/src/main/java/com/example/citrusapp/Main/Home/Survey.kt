@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -47,6 +48,7 @@ fun Survey() {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
+                    .shadow(8.dp, RoundedCornerShape(16.dp))
                     .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(16.dp))
                     .padding(24.dp)
             ) {

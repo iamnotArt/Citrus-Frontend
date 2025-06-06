@@ -1,20 +1,19 @@
 package com.example.citrusapp.Main.LMS.Dashboard
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.citrusapp.R
 
 @Composable
 fun DashboardTab(listState: LazyListState) {
@@ -22,11 +21,9 @@ fun DashboardTab(listState: LazyListState) {
         state = listState,
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         item {
-            // Greeting
             Column {
                 Text(
                     text = "Welcome back, Art!",
@@ -37,6 +34,8 @@ fun DashboardTab(listState: LazyListState) {
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
         item {
@@ -44,20 +43,26 @@ fun DashboardTab(listState: LazyListState) {
                 pendingTasks = 6,
                 totalTasks = 10
             )
-        }
 
+            Spacer(modifier = Modifier.height(24.dp))
+        }
 
         item {
             Text(
                 text = "Recent Activity",
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
             )
+
+            Spacer(modifier = Modifier.height(12.dp))
         }
 
-        items(5) { index ->
+        itemsIndexed(List(5) {
+            "Reminder: Submit Midterm Project" to "Due: Oct 15 • Mobile App Dev"
+        }) { index, (title, subtitle) ->
             RecentActivityCard(
-                title = "Reminder: Submit Midterm Project",
-                subtitle = "Due: Oct 15 • Mobile App Dev"
+                title = title,
+                subtitle = subtitle,
+                showDivider = index < 4 // Show divider except for last item
             )
         }
     }
@@ -74,10 +79,8 @@ fun TaskOverviewCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(4.dp)
-    )
-    {
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -85,12 +88,11 @@ fun TaskOverviewCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            // Circular progress indicator
             Box(contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(
                     progress = { progress },
                     modifier = Modifier.size(72.dp),
-                    color = Color(0xFFFFD600),
+                    color = MaterialTheme.colorScheme.primary,
                     strokeWidth = 8.dp,
                 )
                 Text(
@@ -101,7 +103,6 @@ fun TaskOverviewCard(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            // Summary
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier.weight(1f)
@@ -117,27 +118,18 @@ fun TaskOverviewCard(
     }
 }
 
-
 @Composable
-fun RecentActivityCard(title: String, subtitle: String) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(90.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(6.dp)
-    )
-    {
+fun RecentActivityCard(title: String, subtitle: String, showDivider: Boolean) {
+    Column {
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+                .fillMaxWidth()
+                .padding(vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Default.Person,
+            Image(
+                painter = painterResource(id = R.drawable.megaphone),
                 contentDescription = "Announcement Icon",
-                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(32.dp)
             )
 
@@ -153,6 +145,10 @@ fun RecentActivityCard(title: String, subtitle: String) {
                     fontSize = 11.sp
                 )
             }
+        }
+
+        if (showDivider) {
+            HorizontalDivider()
         }
     }
 }
