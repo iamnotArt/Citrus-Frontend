@@ -29,7 +29,7 @@ fun DashboardTab(listState: LazyListState) {
             // Greeting
             Column {
                 Text(
-                    text = "Welcome back, Art Lyndone!",
+                    text = "Welcome back, Art!",
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
                 )
                 Text(
@@ -90,7 +90,7 @@ fun TaskOverviewCard(
                 CircularProgressIndicator(
                     progress = { progress },
                     modifier = Modifier.size(72.dp),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = Color(0xFFFFD600),
                     strokeWidth = 8.dp,
                 )
                 Text(

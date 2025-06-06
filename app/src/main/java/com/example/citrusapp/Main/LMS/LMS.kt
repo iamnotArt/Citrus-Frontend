@@ -15,11 +15,12 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.citrusapp.Main.LMS.Dashboard.DashboardTab
 import com.example.citrusapp.Main.LMS.MyCourses.MyCoursesTab
 
 @Composable
-fun LMSScreen() {
+fun LMSScreen(navController: NavHostController) {
     val tabTitles = listOf("Dashboard", "My Courses")
     val pagerState = rememberPagerState { tabTitles.size }
     var selectedTabIndex by remember { mutableStateOf(0) }
@@ -120,7 +121,7 @@ fun LMSScreen() {
         ) { page ->
             when (page) {
                 0 -> DashboardTab(rememberLazyListState())
-                1 -> MyCoursesTab(rememberLazyListState())
+                1 -> MyCoursesTab(rememberLazyListState(), navController)
             }
         }
     }

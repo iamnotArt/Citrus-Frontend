@@ -15,6 +15,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -26,6 +27,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -43,12 +47,34 @@ fun Calendar() {
     var isExpanded by remember { mutableStateOf(false) }
     val today = LocalDate.now()
 
+    var dragDistance by remember { mutableStateOf(0f) }
+
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surface)
-    ) {
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures(
+                    onDragEnd = {
+                        if (dragDistance > 100f) {
+                            direction = -1
+                            selectedMonth = selectedMonth.minusMonths(1)
+                        } else if (dragDistance < -100f) {
+                            direction = 1
+                            selectedMonth = selectedMonth.plusMonths(1)
+                        }
+                        dragDistance = 0f // reset after swipe ends
+                    },
+                    onHorizontalDrag = { _, delta ->
+                        dragDistance += delta
+                    }
+                )
+            }
+
+    )
+    {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
