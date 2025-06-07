@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,8 +25,9 @@ fun AccountScreen() {
     ) {
 
         // Profile
-        Row(
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_email),
@@ -36,24 +36,28 @@ fun AccountScreen() {
                     .size(72.dp)
                     .clip(CircleShape)
             )
-            Spacer(modifier = Modifier.width(16.dp))
-            Column {
-                Text(
-                    text = "Art Lyndone Acuesta Hemplo",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontSize = 20.sp
-                )
-                Text(
-                    text = "22-00489",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Art Lyndone Acuesta Hemplo",
+                style = MaterialTheme.typography.titleMedium,
+                fontSize = 20.sp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            Text(
+                text = "Lyndonehemplo1@gmail.com",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
+
 
         Text(
             text = "Account",
-            modifier = Modifier.padding(start = 6.dp ,top = 16.dp)
+            modifier = Modifier.padding(start = 16.dp ,top = 16.dp),
+            fontSize = 13.sp
         )
         Surface(
             tonalElevation = 2.dp,
@@ -72,7 +76,8 @@ fun AccountScreen() {
 
         Text(
             text = "Display",
-            modifier = Modifier.padding(start = 6.dp ,top = 16.dp)
+            modifier = Modifier.padding(start = 16.dp ,top = 16.dp),
+            fontSize = 13.sp
         )
         Surface(
             tonalElevation = 2.dp,
@@ -91,7 +96,8 @@ fun AccountScreen() {
 
         Text(
             text = "Support & About",
-            modifier = Modifier.padding(start = 6.dp ,top = 16.dp)
+            modifier = Modifier.padding(start = 16.dp ,top = 16.dp),
+            fontSize = 13.sp
         )
         Surface(
             tonalElevation = 2.dp,
@@ -110,7 +116,8 @@ fun AccountScreen() {
 
         Text(
             text = "Login",
-            modifier = Modifier.padding(start = 6.dp ,top = 16.dp)
+            modifier = Modifier.padding(start = 16.dp ,top = 16.dp),
+            fontSize = 13.sp
         )
         Surface(
             tonalElevation = 2.dp,
