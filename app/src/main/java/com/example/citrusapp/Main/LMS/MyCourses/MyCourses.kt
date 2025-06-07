@@ -47,7 +47,7 @@ fun MyCoursesTab(listState: LazyListState, navController: NavHostController) {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(116.dp)
+                        .height(126.dp)
                         .clickable {
                             //TODO: COURSE CLICK
                         },

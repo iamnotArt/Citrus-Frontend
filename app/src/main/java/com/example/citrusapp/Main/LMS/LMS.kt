@@ -7,17 +7,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.citrusapp.Main.LMS.Dashboard.DashboardTab
 import com.example.citrusapp.Main.LMS.MyCourses.MyCoursesTab
+import com.example.citrusapp.R
 
 @Composable
 fun LMSScreen(navController: NavHostController) {
@@ -81,18 +85,46 @@ fun LMSScreen(navController: NavHostController) {
                     Column(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(
-                            text = "Art Lyndone Acuesta Hemplo",
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontSize = 26.sp,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            text = "22-00489",
-                            style = MaterialTheme.typography.bodySmall,
-                            fontSize = 18.sp
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Art Lyndone Acuesta Hemplo",
+                                style = MaterialTheme.typography.headlineMedium,
+                                fontSize = 26.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            IconButton(onClick = { /* TODO: Handle dropdown click */ }) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_more),
+                                    contentDescription = "Dropdown menu"
+                                )
+                            }
+                        }
+
+                        Row{
+                            Text(
+                                text = "22-00489",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontSize = 16.sp
+                            )
+                            Text(
+                                text = "  •  ",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontSize = 18.sp
+                            )
+                            Text(
+                                text = "BSCS 3A",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontSize = 16.sp
+                            )
+                        }
+
                     }
                 }
 

@@ -14,6 +14,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.citrusapp.R
+import com.example.citrusapp.ui.theme.blue_green
+import com.example.citrusapp.ui.theme.light_green
 
 @Composable
 fun DashboardTab(listState: LazyListState) {
@@ -75,48 +77,120 @@ fun TaskOverviewCard(
 ) {
     val progress = if (totalTasks > 0) pendingTasks / totalTasks.toFloat() else 0f
 
+    val taskProgressData = listOf(
+        "Mobile App Development" to 0.6f,
+        "Data Structures" to 0.8f,
+        "UI/UX Design" to 0.4f
+    )
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp),
+            .wrapContentHeight(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            Box(contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(
-                    progress = { progress },
-                    modifier = Modifier.size(72.dp),
-                    color = MaterialTheme.colorScheme.primary,
-                    strokeWidth = 8.dp,
-                )
-                Text(
-                    text = "${(progress * 100).toInt()}%",
-                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold)
-                )
+            Text(
+                "Task Overview",
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
+            )
+
+            // Row layout: Progress circle on the left, AI suggestion on the right
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                // Circular progress
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.size(140.dp)
+                ) {
+                    CircularProgressIndicator(
+                        progress = { progress },
+                        modifier = Modifier.fillMaxSize(),
+                        color = light_green,
+                        strokeWidth = 10.dp
+                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Overall Progress",
+                            style = MaterialTheme.typography.labelLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp
+                            ),
+                            lineHeight = 18.sp,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        )
+                        Text(
+                            text = "${(progress * 100).toInt()}%",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
+
+                // AI suggestion
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Citrus AI Suggestion",
+                        style = MaterialTheme.typography.labelMedium.copy(
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 13.sp
+                        )
+                    )
+                    Text(
+                        text = "You’re doing great! Try finishing 2 more tasks today to stay on track.",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 13.sp
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.width(16.dp))
-
+            // Task bars
             Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text("Task Overview", fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                Text("Pending: $pendingTasks / $totalTasks", fontSize = 14.sp)
-                Spacer(modifier = Modifier.height(4.dp))
-                Text("• 3 Quizzes Pending", fontSize = 13.sp)
-                Text("• 2 Assignments", fontSize = 13.sp)
-                Text("• 1 Project", fontSize = 13.sp)
+                taskProgressData.forEach { (course, courseProgress) ->
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Text(course, fontWeight = FontWeight.Medium, fontSize = 14.sp)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            LinearProgressIndicator(
+                                progress = { courseProgress },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(8.dp),
+                                color = blue_green,
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("${(courseProgress * 100).toInt()}%", fontSize = 13.sp)
+                        }
+                    }
+                }
             }
         }
     }
 }
+
+
 
 @Composable
 fun RecentActivityCard(title: String, subtitle: String, showDivider: Boolean) {
