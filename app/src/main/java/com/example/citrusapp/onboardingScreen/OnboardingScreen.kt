@@ -1,6 +1,5 @@
 package com.example.citrusapp.onboardingScreen
 
-import AutoScrollPager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
@@ -34,16 +33,12 @@ import com.example.citrusapp.ui.theme.blue_green
 @Composable
 fun OnboardingScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit, signupClick: () -> Unit) {
     val realPageCount = 3
-    val fakePageCount = 1000
-    val startIndex = (fakePageCount / 2) - ((fakePageCount / 2) % realPageCount)
     val isDarkTheme = isSystemInDarkTheme()
 
     val pagerState = rememberPagerState(
-        initialPage = startIndex,
-        pageCount = { fakePageCount }
+        initialPage = 0,
+        pageCount = { realPageCount }
     )
-
-    AutoScrollPager(pagerState)
 
     val pages = listOf(
         Triple(R.drawable.screen1, "Welcome to Citrus", "Your all-in-one companion for Northwest Samar State University life! Whether you're looking for the latest campus news and events, need to track your class schedule and more, Citrus has got you covered!"),
@@ -70,7 +65,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit, si
             Spacer(modifier = Modifier.height(12.dp))
             PagerIndicator(
                 pageCount = realPageCount,
-                currentPage = pagerState.currentPage % realPageCount
+                currentPage = pagerState.currentPage
             )
         }
 
@@ -91,9 +86,8 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit, si
                 state = pagerState,
                 modifier = Modifier.fillMaxSize()
             ) { index ->
-                val realIndex = index % realPageCount
-                val (imageRes, title, description) = pages[realIndex]
-                val blobRes = when (realIndex) {
+                val (imageRes, title, description) = pages[index]
+                val blobRes = when (index) {
                     0 -> R.drawable.blob1
                     1 -> R.drawable.blob2
                     else -> R.drawable.blob
@@ -117,7 +111,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit, si
             Spacer(modifier = Modifier.height(8.dp))
             Button(
                 onClick = {
-                    onLoginClick() // TODO: Navigate to Login
+                    onLoginClick()
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = blue_green,
@@ -145,7 +139,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit, si
                     .padding(top = 4.dp, bottom = 40.dp)
                     .clickable(
                         onClick = {
-                            signupClick() // TODO: Navigate to Signup
+                            signupClick()
                         },
                         role = Role.Button
                     )
@@ -219,8 +213,6 @@ fun OnboardingPage(
                 .fillMaxWidth()
                 .padding(start = 32.dp, end = 32.dp, bottom = 16.dp)
         )
-
-
     }
 }
 
@@ -234,7 +226,7 @@ fun BlobBackground(
         val containerWidth = maxWidth
         val totalWidth = containerWidth * (realPageCount - 1)
 
-        val currentPage = pagerState.currentPage % realPageCount
+        val currentPage = pagerState.currentPage
         val pageOffset = pagerState.currentPageOffsetFraction
         val scrollPosition = (currentPage + pageOffset) * containerWidth.value
 
@@ -255,6 +247,5 @@ fun BlobBackground(
                 .align(Alignment.Center)
                 .alpha(0.3f)
         )
-
     }
 }

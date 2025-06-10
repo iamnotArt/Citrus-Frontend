@@ -3,7 +3,9 @@ package com.example.citrusapp.Main.Account
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,10 +20,13 @@ import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
 fun AccountScreen() {
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp)
+            .verticalScroll(scrollState)
     ) {
 
         // Profile
@@ -123,7 +128,7 @@ fun AccountScreen() {
             tonalElevation = 2.dp,
             shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(bottom = 36.dp)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -132,6 +137,8 @@ fun AccountScreen() {
                 SettingsItem(title = "Log out", iconResId = R.drawable.ic_logout)
             }
         }
+
+
     }
 }
 
