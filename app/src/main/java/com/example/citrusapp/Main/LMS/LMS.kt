@@ -113,18 +113,7 @@ fun LMSScreen(navController: NavHostController) {
                                 style = MaterialTheme.typography.bodySmall,
                                 fontSize = 16.sp
                             )
-                            Text(
-                                text = "  •  ",
-                                style = MaterialTheme.typography.bodySmall,
-                                fontSize = 18.sp
-                            )
-                            Text(
-                                text = "BSCS 3A",
-                                style = MaterialTheme.typography.bodySmall,
-                                fontSize = 16.sp
-                            )
                         }
-
                     }
                 }
 
