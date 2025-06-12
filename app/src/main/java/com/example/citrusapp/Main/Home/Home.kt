@@ -238,17 +238,25 @@ fun HomeScreen(navController: NavController) {
                         .clip(RoundedCornerShape(50))
                         .background(blue_green)
                         .clickable { /*TODO: FAB */ }
-                        .animateContentSize()
                 ) {
-                    if (isAtTop) {
-                        Text(
-                            text = "Ask Citrus AI",
-                            modifier = Modifier.padding(start = 16.dp, end = 8.dp),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
+
+                    Box(
+                        modifier = Modifier
+                            .widthIn(min = 0.dp)
+                            .animateContentSize()
+                    ) {
+                        if (isAtTop) {
+                            Text(
+                                text = "Ask Citrus AI",
+                                modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                        }
                     }
+
+
                     Box(
                         modifier = Modifier
                             .size(56.dp)
@@ -263,7 +271,6 @@ fun HomeScreen(navController: NavController) {
                             contentDescription = "Ask Citrus AI",
                             modifier = Modifier.size(40.dp),
                             tint = Color.Unspecified
-
                         )
                     }
                 }

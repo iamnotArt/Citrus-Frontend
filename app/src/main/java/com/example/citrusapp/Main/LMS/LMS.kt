@@ -128,7 +128,6 @@ fun LMSScreen(navController: NavHostController) {
                     }
                 }
 
-                // Tab row (always shown)
                 TabRow(
                     selectedTabIndex = selectedTabIndex,
                     modifier = Modifier.fillMaxWidth(),
