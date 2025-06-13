@@ -15,9 +15,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.citrusapp.Main.BottomNav.BottomNavScreen
-import com.example.citrusapp.Main.Home.Shortcuts
-import com.example.citrusapp.Main.LMS.LMSScreen
-import com.example.citrusapp.login.FingerprintScreen
 import com.example.citrusapp.login.LoginScreen
 import com.example.citrusapp.onboardingScreen.OnboardingScreen
 import com.example.citrusapp.signup.SignupScreen
@@ -53,14 +50,7 @@ class MainActivity : ComponentActivity() {
                             LoginScreen(
                                 onBoardingClick = { navController.navigate("onboarding") {popUpTo("login") {inclusive = true}} },
                                 signupClick = { navController.navigate("signup") {popUpTo("login") {inclusive = true}} },
-                                loginFingerprintClick = { navController.navigate("loginFingerprint") {popUpTo("login") {inclusive = true}} },
                                 homeClick = { navController.navigate("BottomNav") {popUpTo("login") {inclusive = true}} }
-                            )
-                        }
-                        composable("loginFingerprint") {
-                            FingerprintScreen(
-                                mainLoginClick = { navController.navigate("login") {popUpTo("loginFingerprint") {inclusive = true}} },
-                                signupClick = { navController.navigate("signup") {popUpTo("loginFingerprint") {inclusive = true}} }
                             )
                         }
                         composable("signup") {

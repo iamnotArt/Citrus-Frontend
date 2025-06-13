@@ -32,7 +32,7 @@ import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
-fun LoginScreen(homeClick: () -> Unit,onBoardingClick: () -> Unit, signupClick: () -> Unit, loginFingerprintClick: () -> Unit) {
+fun LoginScreen(homeClick: () -> Unit,onBoardingClick: () -> Unit, signupClick: () -> Unit) {
     val isDarkTheme = isSystemInDarkTheme()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -238,39 +238,7 @@ fun LoginScreen(homeClick: () -> Unit,onBoardingClick: () -> Unit, signupClick: 
                 Text(text = "Login")
             }
 
-            Spacer(modifier = Modifier.height(18.dp))
-
-            Text(
-                text = "OR",
-                fontSize = 14.sp,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-
-            Spacer(modifier = Modifier.height(18.dp))
-
-            Row{
-                Image(
-                    painter = painterResource(id = R.drawable.fingerprint),
-                    contentDescription = "Fingerprint",
-                    modifier = Modifier
-                        .height(32.dp)
-                        .padding(end = 8.dp)
-                )
-                Text(
-                    text = "Login with Fingerprint",
-                    fontSize = 14.sp,
-                    modifier = Modifier
-                        .padding(top = 4.dp, end = 18.dp)
-                        .clickable(
-                            onClick = {
-                                loginFingerprintClick() // TODO: Navigate to Fingerprint Login
-                            }
-                        )
-                )
-            }
-
-            Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 text = "Don't have an account?",
@@ -295,7 +263,7 @@ fun LoginScreen(homeClick: () -> Unit,onBoardingClick: () -> Unit, signupClick: 
                         indication = rememberRipple(bounded = true)
                     )
             )
-            Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(15.dp))
 
             Text(
                 text = "Developed by DCODE",
