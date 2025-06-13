@@ -120,6 +120,24 @@ fun AccountScreen() {
         }
 
         Text(
+            text = "Support Us \uD83E\uDDE1",
+            modifier = Modifier.padding(start = 16.dp ,top = 16.dp),
+            fontSize = 13.sp
+        )
+        Surface(
+            tonalElevation = 2.dp,
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                SettingsItem(title = "Contribute", iconResId = R.drawable.ic_smile)
+            }
+        }
+
+        Text(
             text = "Login",
             modifier = Modifier.padding(start = 16.dp ,top = 16.dp),
             fontSize = 13.sp
