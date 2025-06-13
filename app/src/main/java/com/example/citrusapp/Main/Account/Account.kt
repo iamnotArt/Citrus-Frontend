@@ -155,11 +155,8 @@ fun AccountScreen() {
                 SettingsItem(title = "Log out", iconResId = R.drawable.ic_logout)
             }
         }
-
-
     }
 }
-
 
 @Composable
 fun SettingsItem(
