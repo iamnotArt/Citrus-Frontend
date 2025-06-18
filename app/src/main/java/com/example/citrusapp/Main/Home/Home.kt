@@ -39,6 +39,14 @@ fun HomeScreen(navController: NavController) {
     val isDarkTheme = isSystemInDarkTheme()
     val scrollState = rememberScrollState()
     val isAtTop by remember { derivedStateOf { scrollState.value == 0 } }
+    val coroutineScope = rememberCoroutineScope()
+
+    // Function to scroll to calendar
+    val scrollToCalendar: () -> Unit = {
+        coroutineScope.launch {
+            scrollState.animateScrollTo(2200)
+        }
+    }
 
     HomeDrawer(
         drawerState = drawerState
@@ -161,7 +169,7 @@ fun HomeScreen(navController: NavController) {
 
                                 Spacer(modifier = Modifier.height(24.dp))
 
-                                Shortcuts(navController = navController)
+                                Shortcuts(navController = navController, scrollToCalendar = scrollToCalendar)
                             }
                         }
 

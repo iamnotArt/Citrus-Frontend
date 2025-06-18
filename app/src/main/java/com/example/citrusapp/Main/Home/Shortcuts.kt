@@ -33,7 +33,7 @@ import com.example.citrusapp.Main.BottomNav.NavItem
 import com.example.citrusapp.R
 
 @Composable
-fun Shortcuts(navController: NavController? = null) {
+fun Shortcuts(navController: NavController? = null, scrollToCalendar: (() -> Unit)? = null) {
     // Icons grid
     Column(
         verticalArrangement = Arrangement.spacedBy(24.dp),
@@ -50,7 +50,7 @@ fun Shortcuts(navController: NavController? = null) {
                 // Handle Lost & Found click
             }
             ShortcutItem(R.drawable.schedule, "Schedule") {
-                // Handle Schedule click
+                scrollToCalendar?.invoke()
             }
         }
 
