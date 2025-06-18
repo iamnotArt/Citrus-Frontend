@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.citrusapp.Main.Home.Shortcuts.Shortcuts
 import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
 import kotlinx.coroutines.launch
@@ -41,7 +42,7 @@ fun HomeScreen(navController: NavController) {
     val isAtTop by remember { derivedStateOf { scrollState.value == 0 } }
     val coroutineScope = rememberCoroutineScope()
 
-    // Function to scroll to calendar
+    //Calendar Redirection
     val scrollToCalendar: () -> Unit = {
         coroutineScope.launch {
             scrollState.animateScrollTo(2200)
@@ -263,7 +264,6 @@ fun HomeScreen(navController: NavController) {
                             )
                         }
                     }
-
 
                     Box(
                         modifier = Modifier

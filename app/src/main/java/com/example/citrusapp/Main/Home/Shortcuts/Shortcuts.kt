@@ -1,4 +1,4 @@
-package com.example.citrusapp.Main.Home
+package com.example.citrusapp.Main.Home.Shortcuts
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import com.example.citrusapp.Main.BottomNav.NavItem
 import com.example.citrusapp.R
 
 @Composable
@@ -61,10 +60,9 @@ fun Shortcuts(navController: NavController? = null, scrollToCalendar: (() -> Uni
             ShortcutItem(R.drawable.grades, "Grades") {
                 // Handle Grades click
             }
-            ShortcutItem(R.drawable.evaluation, "Evaluation") {
-                // Handle Evaluation click
+            ShortcutItem(R.drawable.payments, "Payments") {
+                // Handle Payments click
             }
-
             ShortcutItem(R.drawable.maps, "School Map") {
                 // Handle Map click
             }
@@ -92,8 +90,15 @@ fun Shortcuts(navController: NavController? = null, scrollToCalendar: (() -> Uni
                     restoreState = true
                 }
             }
-            ShortcutItem(R.drawable.payments, "Payments") {
-                // Handle Payments click
+            //INVISIBLE DONT TOUCH
+            Box(
+                modifier = Modifier
+                    .width(80.dp)
+                    .graphicsLayer { alpha = 0f }
+            ) {
+                ShortcutItem(R.drawable.payments, "Payments") {
+
+                }
             }
         }
 

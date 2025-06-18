@@ -29,7 +29,6 @@ import com.example.citrusapp.Main.Home.GradScreen
 import com.example.citrusapp.Main.Home.HomeScreen
 import com.example.citrusapp.Main.Home.ManagementScreen
 import com.example.citrusapp.Main.Home.NursingScreen
-import com.example.citrusapp.Main.Home.Shortcuts
 import com.example.citrusapp.Main.Inbox.InboxScreen
 import com.example.citrusapp.Main.LMS.LMSScreen
 import com.example.citrusapp.Main.LMS.MyCourses.AddCourseScreen
