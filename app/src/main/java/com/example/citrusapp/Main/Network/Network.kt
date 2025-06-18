@@ -1,18 +1,22 @@
 package com.example.citrusapp.Main.Network
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.citrusapp.Main.Network.FindWorks.FindWorksTab
+import com.example.citrusapp.Main.Network.Services.ServicesTab
 import com.example.citrusapp.R
 
 @Composable
@@ -32,27 +36,33 @@ fun NetworkScreen() {
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 16.dp, vertical = 4.dp)
+                .padding(horizontal = 14.dp, vertical = 12.dp)
         ) {
             Row(
-                modifier = Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.schoollogo),
                     contentDescription = "School Logo",
-                    modifier = Modifier.height(34.dp)
+                    modifier = Modifier
+                        .height(34.dp)
+                        .clip(CircleShape)
                 )
 
+                Spacer(modifier = Modifier.width(12.dp))
 
+                Text(
+                    text = tabTitles[selectedTabIndex],
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp, // match HomeScreen title size
+                )
             }
         }
 
-        // Tabs
+
         TabRow(
             selectedTabIndex = selectedTabIndex,
             modifier = Modifier.fillMaxWidth(),
@@ -68,7 +78,6 @@ fun NetworkScreen() {
             }
         }
 
-        // Swipeable Content
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.fillMaxSize()
@@ -80,63 +89,3 @@ fun NetworkScreen() {
         }
     }
 }
-
-
-@Composable
-fun FindWorksTab() {
-    val listState = rememberLazyListState()
-    LazyColumn(
-        state = listState,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        items(20) { index ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp),
-                elevation = CardDefaults.cardElevation(4.dp)
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "Friend #$index")
-                }
-            }
-        }
-    }
-}
-
-
-@Composable
-fun ServicesTab() {
-    val listState = rememberLazyListState()
-    LazyColumn(
-        state = listState,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        items(10) { index ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp),
-                elevation = CardDefaults.cardElevation(4.dp)
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "Request #$index")
-                }
-            }
-        }
-    }
-}
-
-

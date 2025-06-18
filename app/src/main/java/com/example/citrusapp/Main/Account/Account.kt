@@ -25,11 +25,9 @@ fun AccountScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
             .verticalScroll(scrollState)
     ) {
 
-        // Profile
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
@@ -61,14 +59,14 @@ fun AccountScreen() {
 
         Text(
             text = "Account",
-            modifier = Modifier.padding(start = 16.dp ,top = 16.dp),
+            modifier = Modifier.padding(start = 32.dp ,top = 16.dp),
             fontSize = 13.sp
         )
         Surface(
             tonalElevation = 2.dp,
             shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -81,14 +79,14 @@ fun AccountScreen() {
 
         Text(
             text = "Display",
-            modifier = Modifier.padding(start = 16.dp ,top = 16.dp),
+            modifier = Modifier.padding(start = 32.dp ,top = 16.dp),
             fontSize = 13.sp
         )
         Surface(
             tonalElevation = 2.dp,
             shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -101,14 +99,14 @@ fun AccountScreen() {
 
         Text(
             text = "Support & About",
-            modifier = Modifier.padding(start = 16.dp ,top = 16.dp),
+            modifier = Modifier.padding(start = 32.dp ,top = 16.dp),
             fontSize = 13.sp
         )
         Surface(
             tonalElevation = 2.dp,
             shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -121,14 +119,14 @@ fun AccountScreen() {
 
         Text(
             text = "Support Us \uD83E\uDDE1",
-            modifier = Modifier.padding(start = 16.dp ,top = 16.dp),
+            modifier = Modifier.padding(start = 32.dp ,top = 16.dp),
             fontSize = 13.sp
         )
         Surface(
             tonalElevation = 2.dp,
             shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -139,14 +137,14 @@ fun AccountScreen() {
 
         Text(
             text = "Login",
-            modifier = Modifier.padding(start = 16.dp ,top = 16.dp),
+            modifier = Modifier.padding(start = 34.dp ,top = 16.dp),
             fontSize = 13.sp
         )
         Surface(
             tonalElevation = 2.dp,
             shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
-            modifier = Modifier.fillMaxWidth().padding(bottom = 36.dp)
+            modifier = Modifier.fillMaxWidth().padding(bottom = 36.dp, start = 16.dp, end = 16.dp)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
