@@ -19,7 +19,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import com.example.citrusapp.Main.Account.AccountEditScreen
 import com.example.citrusapp.Main.Account.AccountScreen
+import com.example.citrusapp.Main.Account.ContributeScreen
+import com.example.citrusapp.Main.Account.DisplayScreen
+import com.example.citrusapp.Main.Account.LogoutScreen
+import com.example.citrusapp.Main.Account.NotificationScreen
+import com.example.citrusapp.Main.Account.PrivacyScreen
+import com.example.citrusapp.Main.Account.ReportScreen
+import com.example.citrusapp.Main.Account.SecurityScreen
+import com.example.citrusapp.Main.Account.SupportScreen
+import com.example.citrusapp.Main.Account.SwitchAccountScreen
+import com.example.citrusapp.Main.Account.TermsScreen
 import com.example.citrusapp.Main.Home.AgriScreen
 import com.example.citrusapp.Main.Home.CCISScreen
 import com.example.citrusapp.Main.Home.CEAScreen
@@ -90,7 +101,7 @@ fun BottomNavScreen() {
                 InboxScreen()
             }
             composable("account") {
-                AccountScreen()
+                AccountScreen(navController = navController)
             }
 
 
@@ -147,6 +158,56 @@ fun BottomNavScreen() {
 
             composable("addCourse") {
                 AddCourseScreen(navController = navController)
+            }
+
+            //Account routes
+
+            composable("accountEdit") {
+                AccountEditScreen()
+            }
+
+            composable("privacy") {
+                PrivacyScreen()
+            }
+
+            composable("privacy") {
+                PrivacyScreen()
+            }
+
+            composable("security") {
+                SecurityScreen()
+            }
+
+            composable("notification") {
+                NotificationScreen()
+            }
+
+            composable("display") {
+                DisplayScreen()
+            }
+
+            composable("report") {
+                ReportScreen()
+            }
+
+            composable("support") {
+                SupportScreen()
+            }
+
+            composable("terms") {
+                TermsScreen()
+            }
+
+            composable("contribute") {
+                ContributeScreen()
+            }
+
+            composable("switchacc") {
+                SwitchAccountScreen()
+            }
+
+            composable("logout") {
+                LogoutScreen()
             }
         }
     }

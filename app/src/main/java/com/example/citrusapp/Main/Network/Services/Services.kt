@@ -25,8 +25,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -139,17 +142,52 @@ fun ServicesTab() {
 
                 Spacer(modifier = Modifier.width(12.dp)) // space between field and icon
 
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_filter),
-                    contentDescription = "Filter Icon",
-                    tint = onSurfaceColor,
-                    modifier = Modifier
-                        .size(28.dp)
-                        .clip(CircleShape)
-                        .clickable {
-                            //TODO: FILTER CLICK DIDI
+                var expanded by remember { mutableStateOf(false) }
+                var selectedOption by remember { mutableStateOf("Newest First") }
+
+                val options = listOf("Newest First", "Oldest First", "Most Relevant")
+
+                Box {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_filter),
+                        contentDescription = "Filter Icon",
+                        tint = onSurfaceColor,
+                        modifier = Modifier
+                            .size(28.dp)
+                            .clip(CircleShape)
+                            .clickable { expanded = true }
+                    )
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        options.forEach { option ->
+                            DropdownMenuItem(
+                                text = {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(option)
+                                        RadioButton(
+                                            selected = (selectedOption == option),
+                                            onClick = {
+                                                selectedOption = option
+                                                expanded = false
+                                            }
+                                        )
+                                    }
+                                },
+                                onClick = {
+                                    selectedOption = option
+                                    expanded = false
+                                }
+                            )
                         }
-                )
+                    }
+                }
             }
 
 

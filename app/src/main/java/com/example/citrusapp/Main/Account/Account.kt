@@ -15,11 +15,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
-fun AccountScreen() {
+fun AccountScreen(navController: NavController? = null) {
     val scrollState = rememberScrollState()
 
     Column(
@@ -71,9 +72,9 @@ fun AccountScreen() {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                SettingsItem(title = "Account", iconResId = R.drawable.ic_account)
-                SettingsItem(title = "Privacy", iconResId = R.drawable.ic_privacy)
-                SettingsItem(title = "Security & permissions", iconResId = R.drawable.ic_security)
+                SettingsItem(title = "Account", iconResId = R.drawable.ic_account, onClick = {navController?.navigate("accountEdit")})
+                SettingsItem(title = "Privacy", iconResId = R.drawable.ic_privacy, onClick = {navController?.navigate("privacy")})
+                SettingsItem(title = "Security & permissions", iconResId = R.drawable.ic_security, onClick = {navController?.navigate("security")})
             }
         }
 
@@ -91,8 +92,8 @@ fun AccountScreen() {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                SettingsItem(title = "Notification", iconResId = R.drawable.ic_notification)
-                SettingsItem(title = "Display", iconResId = R.drawable.ic_display)
+                SettingsItem(title = "Notification", iconResId = R.drawable.ic_notification, onClick = {navController?.navigate("notification")})
+                SettingsItem(title = "Display", iconResId = R.drawable.ic_display, onClick = {navController?.navigate("display")})
             }
         }
 
@@ -111,9 +112,9 @@ fun AccountScreen() {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                SettingsItem(title = "Report a problem", iconResId = R.drawable.ic_report)
-                SettingsItem(title = "Support", iconResId = R.drawable.ic_support)
-                SettingsItem(title = "Terms and Policies", iconResId = R.drawable.ic_terms)
+                SettingsItem(title = "Report a problem", iconResId = R.drawable.ic_report, onClick = {navController?.navigate("report")})
+                SettingsItem(title = "Support", iconResId = R.drawable.ic_support, onClick = {navController?.navigate("support")})
+                SettingsItem(title = "Terms and Policies", iconResId = R.drawable.ic_terms, onClick = {navController?.navigate("terms")})
             }
         }
 
@@ -131,7 +132,7 @@ fun AccountScreen() {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                SettingsItem(title = "Contribute", iconResId = R.drawable.ic_smile)
+                SettingsItem(title = "Contribute", iconResId = R.drawable.ic_smile, onClick = {navController?.navigate("contribute")})
             }
         }
 
@@ -149,8 +150,8 @@ fun AccountScreen() {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                SettingsItem(title = "Switch Account", iconResId = R.drawable.ic_switch)
-                SettingsItem(title = "Log out", iconResId = R.drawable.ic_logout)
+                SettingsItem(title = "Switch Account", iconResId = R.drawable.ic_switch, onClick = {navController?.navigate("switchacc")})
+                SettingsItem(title = "Log out", iconResId = R.drawable.ic_logout, onClick = {navController?.navigate("logout")})
             }
         }
     }
