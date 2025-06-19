@@ -22,7 +22,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -33,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
@@ -64,54 +62,58 @@ fun ServicesTab() {
     ) {
 
         item {
-            CompositionLocalProvider(LocalTextSelectionColors provides customSelectionColors) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(MaterialTheme.colorScheme.surface),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
+
+            Row {
+                CompositionLocalProvider(LocalTextSelectionColors provides customSelectionColors) {
+                    Box(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 12.dp)
+                            .fillMaxWidth()
+                            .height(40.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(MaterialTheme.colorScheme.surface),
+                        contentAlignment = Alignment.CenterStart
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_search),
-                            contentDescription = "Search Icon",
-                            tint = Color.Gray,
-                            modifier = Modifier.size(18.dp)
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 12.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_search),
+                                contentDescription = "Search Icon",
+                                tint = Color.Gray,
+                                modifier = Modifier.size(18.dp)
+                            )
 
-                        Spacer(modifier = Modifier.width(8.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
 
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            if (text.isEmpty()) {
-                                Text(
-                                    text = "Search for Services...",
-                                    fontSize = 14.sp,
-                                    color = onSurfaceColor.copy(alpha = 0.6f)
+                            Box(modifier = Modifier.fillMaxWidth()) {
+                                if (text.isEmpty()) {
+                                    Text(
+                                        text = "Search for Services...",
+                                        fontSize = 14.sp,
+                                        color = onSurfaceColor.copy(alpha = 0.6f)
+                                    )
+                                }
+
+                                BasicTextField(
+                                    value = text,
+                                    onValueChange = { text = it },
+                                    singleLine = true,
+                                    textStyle = TextStyle(
+                                        fontSize = 14.sp,
+                                        color = onSurfaceColor
+                                    ),
+                                    cursorBrush = SolidColor(onSurfaceColor),
+                                    modifier = Modifier.fillMaxWidth()
                                 )
                             }
-
-                            BasicTextField(
-                                value = text,
-                                onValueChange = { text = it },
-                                singleLine = true,
-                                textStyle = TextStyle(
-                                    fontSize = 14.sp,
-                                    color = onSurfaceColor
-                                ),
-                                cursorBrush = SolidColor(onSurfaceColor),
-                                modifier = Modifier.fillMaxWidth()
-                            )
                         }
                     }
                 }
             }
+
         }
 
         item {
@@ -119,7 +121,7 @@ fun ServicesTab() {
                 Text(
                     text = "Service Marketplace",
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 18.dp),
+                    modifier = Modifier.padding(top = 8.dp),
                     fontSize = 22.sp
                 )
                 Text(

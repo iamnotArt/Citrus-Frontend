@@ -118,7 +118,7 @@ fun FindWorksTab() {
                 Text(
                     text = "Find Work Opportunities",
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 18.dp),
+                    modifier = Modifier.padding(top = 8.dp),
                     fontSize = 22.sp
                 )
                 Text(
