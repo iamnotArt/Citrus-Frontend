@@ -207,11 +207,6 @@ fun SwipableCardSection(
                 animationSpec = tween(durationMillis = 250)
             )
 
-            val throwOffsetY by animateFloatAsState(
-                targetValue = if (shouldDismiss) startOffsetY * 3 else 0f,
-                animationSpec = tween(durationMillis = 250)
-            )
-
             val throwRotation by animateFloatAsState(
                 targetValue = if (shouldDismiss) startRotation * 3 else 0f,
                 animationSpec = tween(durationMillis = 250)
