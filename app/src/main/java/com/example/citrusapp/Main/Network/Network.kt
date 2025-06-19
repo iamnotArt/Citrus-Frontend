@@ -80,7 +80,8 @@ fun NetworkScreen() {
 
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            userScrollEnabled = false
         ) { page ->
             when (page) {
                 0 -> FindWorksTab()

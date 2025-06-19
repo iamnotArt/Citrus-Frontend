@@ -1,6 +1,8 @@
 package com.example.citrusapp.Main.Network.FindWorks
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,10 +16,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -32,14 +37,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.citrusapp.R
+import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
 fun FindWorksTab() {
@@ -53,64 +64,133 @@ fun FindWorksTab() {
         handleColor = onSurfaceColor,
         backgroundColor = onSurfaceColor.copy(alpha = 0.3f))
 
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     LazyColumn(
         state = listState,
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                }
+            },
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
 
         item {
-            CompositionLocalProvider(LocalTextSelectionColors provides customSelectionColors) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+
+                CompositionLocalProvider(LocalTextSelectionColors provides customSelectionColors) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(40.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(MaterialTheme.colorScheme.surface),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(start = 8.dp, end = 12.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_search),
+                                contentDescription = "Search Icon",
+                                tint = Color.Gray,
+                                modifier = Modifier.size(18.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Box(modifier = Modifier.fillMaxWidth()) {
+                                if (text.isEmpty()) {
+                                    Text(
+                                        text = "Search for Jobs...",
+                                        fontSize = 14.sp,
+                                        color = onSurfaceColor.copy(alpha = 0.6f)
+                                    )
+                                }
+
+                                BasicTextField(
+                                    value = text,
+                                    onValueChange = { text = it },
+                                    singleLine = true,
+                                    textStyle = TextStyle(
+                                        fontSize = 14.sp,
+                                        color = onSurfaceColor
+                                    ),
+                                    cursorBrush = SolidColor(onSurfaceColor),
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.width(12.dp)) // space between field and icon
+
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_filter),
+                    contentDescription = "Filter Icon",
+                    tint = onSurfaceColor,
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clip(CircleShape)
+                        .clickable {
+                            //TODO: FILTER CLICK DIDI
+                        }
+                )
+            }
+
+        }
+
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 6.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(40.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(MaterialTheme.colorScheme.surface),
-                    contentAlignment = Alignment.CenterStart
+                        .shadow(8.dp, RoundedCornerShape(16.dp))
+                        .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(16.dp))
+                        .padding(16.dp)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 12.dp)
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_search),
-                            contentDescription = "Search Icon",
-                            tint = Color.Gray,
-                            modifier = Modifier.size(18.dp)
+                        Text(
+                            text = "Trying to search for talented NWSSU students? Share your job post today!",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontSize = 14.sp,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
                         )
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            if (text.isEmpty()) {
-                                Text(
-                                    text = "Search for Jobs...",
-                                    fontSize = 14.sp,
-                                    color = onSurfaceColor.copy(alpha = 0.6f)
-                                )
-                            }
-
-                            BasicTextField(
-                                value = text,
-                                onValueChange = { text = it },
-                                singleLine = true,
-                                textStyle = TextStyle(
-                                    fontSize = 14.sp,
-                                    color = onSurfaceColor
-                                ),
-                                cursorBrush = SolidColor(onSurfaceColor),
-                                modifier = Modifier.fillMaxWidth()
-                            )
+                        Button(
+                            onClick = { /* TODO */ },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = blue_green,
+                                contentColor = Color.White
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Create a post")
                         }
                     }
                 }
             }
-
         }
 
         item {
@@ -118,7 +198,6 @@ fun FindWorksTab() {
                 Text(
                     text = "Find Work Opportunities",
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 8.dp),
                     fontSize = 22.sp
                 )
                 Text(

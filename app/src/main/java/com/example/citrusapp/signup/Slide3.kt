@@ -2,8 +2,10 @@ package com.example.citrusapp.signup.slides
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalTextStyle
@@ -18,9 +20,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,16 +39,25 @@ fun SlideThree() {
     val otpValues = remember { List(6) { mutableStateOf("") } }
     val focusRequesters = remember { List(6) { FocusRequester() } }
 
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                }
+            }
     ) {
 
         // ✅ Top Title and Description
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .align(Alignment.TopCenter) // This works now!
+                .align(Alignment.TopCenter)
                 .padding(top = 30.dp)
         ) {
             Text(
@@ -98,7 +115,7 @@ fun SlideThree() {
                     .padding(bottom = 40.dp)
             )
 
-            // OTP Input Row
+            // Enhanced OTP Input Row
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -106,20 +123,66 @@ fun SlideThree() {
                 otpValues.forEachIndexed { index, state ->
                     OutlinedTextField(
                         value = state.value,
-                        onValueChange = {
-                            if (it.length <= 1 && it.all { char -> char.isDigit() }) {
-                                state.value = it
-                                if (it.isNotEmpty() && index < 5) {
-                                    focusRequesters[index + 1].requestFocus()
+                        onValueChange = { newValue ->
+                            when {
+                                // Handle backspace/empty input
+                                newValue.isEmpty() -> {
+                                    state.value = ""
+                                    if (index > 0) {
+                                        focusRequesters[index - 1].requestFocus()
+                                    }
+                                }
+                                // Handle digit input
+                                newValue.length == 1 && newValue.all { char -> char.isDigit() } -> {
+                                    state.value = newValue
+                                    if (index < 5) {
+                                        focusRequesters[index + 1].requestFocus()
+                                    } else {
+                                        focusManager.clearFocus()
+                                    }
+                                }
+                                // Handle paste (take first 6 digits)
+                                newValue.length > 1 -> {
+                                    val digits = newValue.take(6).filter { it.isDigit() }
+                                    digits.forEachIndexed { i, c ->
+                                        if (i < 6) {
+                                            otpValues[i].value = c.toString()
+                                        }
+                                    }
+                                    if (digits.length == 6) {
+                                        focusManager.clearFocus()
+                                    } else if (digits.isNotEmpty()) {
+                                        val lastIndex = digits.length - 1
+                                        if (lastIndex < 5) {
+                                            focusRequesters[lastIndex + 1].requestFocus()
+                                        }
+                                    }
                                 }
                             }
                         },
                         singleLine = true,
-                        textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center, fontSize = 20.sp),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = if (index == 5) ImeAction.Done else ImeAction.Next
+                        ),
+                        textStyle = LocalTextStyle.current.copy(
+                            textAlign = TextAlign.Center,
+                            fontSize = 20.sp
+                        ),
                         modifier = Modifier
                             .width(48.dp)
                             .height(56.dp)
                             .focusRequester(focusRequesters[index])
+                            .onFocusChanged { focusState ->
+                                if (focusState.isFocused && state.value.isEmpty()) {
+                                    // Clear previous fields when moving back
+                                    for (i in index + 1 until 6) {
+                                        if (otpValues[i].value.isNotEmpty()) {
+                                            otpValues[i].value = ""
+                                        }
+                                    }
+                                }
+                            }
                     )
                 }
             }

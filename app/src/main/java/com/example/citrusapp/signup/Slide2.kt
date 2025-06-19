@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
@@ -58,6 +59,7 @@ fun SlideTwo() {
     val focusManager = LocalFocusManager.current
     val passwordFocusRequester = remember { FocusRequester() }
     val confirmPasswordFocusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     var showGmailError by remember { mutableStateOf(false) }
     val strictEmailRegex = Regex("^[A-Za-z0-9+_.-]+@(gmail\\.com|yahoo\\.com)$")
@@ -74,9 +76,17 @@ fun SlideTwo() {
     var confirmPasswordError by remember { mutableStateOf(false) }
 
 
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                }
+            }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
