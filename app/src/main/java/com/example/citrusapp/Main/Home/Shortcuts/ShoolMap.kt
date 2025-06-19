@@ -4,7 +4,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun PaymentsScreen() {
+fun SchoolMapScreen() {
 
-    Text("PAYMENTS")
+    Text("SCHOOL MAP")
 }

@@ -29,10 +29,16 @@ import com.example.citrusapp.Main.Home.GradScreen
 import com.example.citrusapp.Main.Home.HomeScreen
 import com.example.citrusapp.Main.Home.ManagementScreen
 import com.example.citrusapp.Main.Home.NursingScreen
+import com.example.citrusapp.Main.Home.Shortcuts.GradesScreen
+import com.example.citrusapp.Main.Home.Shortcuts.LibraryScreen
+import com.example.citrusapp.Main.Home.Shortcuts.LostFoundScreen
+import com.example.citrusapp.Main.Home.Shortcuts.PaymentsScreen
+import com.example.citrusapp.Main.Home.Shortcuts.SchoolMapScreen
 import com.example.citrusapp.Main.Inbox.InboxScreen
 import com.example.citrusapp.Main.LMS.LMSScreen
 import com.example.citrusapp.Main.LMS.MyCourses.AddCourseScreen
 import com.example.citrusapp.Main.Network.NetworkScreen
+import com.example.citrusapp.signup.SignupScreen
 
 sealed class NavItem(val route: String, val label: String, val lottieIcon: String?) {
     object Home : NavItem("home", "Home", "home")
@@ -66,7 +72,7 @@ fun BottomNavScreen() {
             startDestination = NavItem.Home.route,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 60.dp), // or whatever height your nav bar usually is
+                .padding(bottom = 60.dp),
             enterTransition = { fadeIn(animationSpec = tween(100)) },
             exitTransition = { fadeOut(animationSpec = tween(100)) },
         ) {
@@ -75,7 +81,7 @@ fun BottomNavScreen() {
                 HomeScreen(navController = navController)
             }
             composable("lms") {
-                LMSScreen(navController = navController)  // Pass the main navController directly
+                LMSScreen(navController = navController)
             }
             composable("network") {
                 NetworkScreen()
@@ -90,6 +96,25 @@ fun BottomNavScreen() {
 
             // Home routes
 
+            composable("library") {
+                LibraryScreen()
+            }
+
+            composable("lostfound") {
+                LostFoundScreen()
+            }
+
+            composable("grades") {
+                GradesScreen()
+            }
+
+            composable("payments") {
+                PaymentsScreen()
+            }
+
+            composable("schoolmap") {
+                SchoolMapScreen()
+            }
 
             //college routes
             composable("cea") {

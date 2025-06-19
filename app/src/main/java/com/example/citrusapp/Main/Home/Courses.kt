@@ -247,7 +247,7 @@ fun CEAScreen(navController: NavHostController) {
                     Surface(
                         shape = RoundedCornerShape(12.dp),
                         tonalElevation = 2.dp,
-                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        color = MaterialTheme.colorScheme.surface,
                         modifier = Modifier
                             .fillMaxWidth()
                             .animateContentSize()
@@ -304,7 +304,6 @@ fun CEAScreen(navController: NavHostController) {
                                             Text(
                                                 text = "• $major",
                                                 style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
                                             )
                                         }
@@ -579,7 +578,7 @@ fun EducScreen(navController: NavHostController) {
                     Surface(
                         shape = RoundedCornerShape(12.dp),
                         tonalElevation = 2.dp,
-                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        color = MaterialTheme.colorScheme.surface,
                         modifier = Modifier
                             .fillMaxWidth()
                             .animateContentSize()
@@ -636,7 +635,6 @@ fun EducScreen(navController: NavHostController) {
                                             Text(
                                                 text = "• $major",
                                                 style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
                                             )
                                         }
@@ -904,7 +902,6 @@ fun ManagementScreen(navController: NavHostController) {
                     Surface(
                         shape = RoundedCornerShape(12.dp),
                         tonalElevation = 2.dp,
-                        color = MaterialTheme.colorScheme.surfaceVariant,
                         modifier = Modifier
                             .fillMaxWidth()
                             .animateContentSize()
@@ -961,7 +958,6 @@ fun ManagementScreen(navController: NavHostController) {
                                             Text(
                                                 text = "• $major",
                                                 style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
                                             )
                                         }
@@ -1208,7 +1204,7 @@ fun CCISScreen(navController: NavHostController) {
                     Surface(
                         shape = RoundedCornerShape(12.dp),
                         tonalElevation = 2.dp,
-                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        color = MaterialTheme.colorScheme.surface,
                         modifier = Modifier
                             .fillMaxWidth()
                             .animateContentSize()
@@ -1265,7 +1261,6 @@ fun CCISScreen(navController: NavHostController) {
                                             Text(
                                                 text = "• $major",
                                                 style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
                                             )
                                         }
@@ -1566,7 +1561,7 @@ fun CriminologyScreen(navController: NavHostController) {
                     Surface(
                         shape = RoundedCornerShape(12.dp),
                         tonalElevation = 2.dp,
-                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        color = MaterialTheme.colorScheme.surface,
                         modifier = Modifier
                             .fillMaxWidth()
                             .animateContentSize()
@@ -1623,7 +1618,6 @@ fun CriminologyScreen(navController: NavHostController) {
                                             Text(
                                                 text = "• $major",
                                                 style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
                                             )
                                         }
@@ -1874,7 +1868,7 @@ fun AgriScreen(navController: NavHostController) {
                     Surface(
                         shape = RoundedCornerShape(12.dp),
                         tonalElevation = 2.dp,
-                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        color = MaterialTheme.colorScheme.surface,
                         modifier = Modifier
                             .fillMaxWidth()
                             .animateContentSize()
@@ -1931,7 +1925,6 @@ fun AgriScreen(navController: NavHostController) {
                                             Text(
                                                 text = "• $major",
                                                 style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
                                             )
                                         }
@@ -2122,7 +2115,7 @@ fun NursingScreen(navController: NavHostController) {
                     Surface(
                         shape = RoundedCornerShape(12.dp),
                         tonalElevation = 2.dp,
-                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        color = MaterialTheme.colorScheme.surface,
                         modifier = Modifier
                             .fillMaxWidth()
                             .animateContentSize()
@@ -2179,7 +2172,6 @@ fun NursingScreen(navController: NavHostController) {
                                             Text(
                                                 text = "• $major",
                                                 style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
                                             )
                                         }
@@ -2598,7 +2590,7 @@ fun GradScreen(navController: NavHostController) {
                     Surface(
                         shape = RoundedCornerShape(12.dp),
                         tonalElevation = 2.dp,
-                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        color = MaterialTheme.colorScheme.surface,
                         modifier = Modifier
                             .fillMaxWidth()
                             .animateContentSize()
@@ -2655,7 +2647,6 @@ fun GradScreen(navController: NavHostController) {
                                             Text(
                                                 text = "• $major",
                                                 style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
                                             )
                                         }

@@ -43,10 +43,10 @@ fun Shortcuts(navController: NavController? = null, scrollToCalendar: (() -> Uni
             modifier = Modifier.fillMaxWidth()
         ) {
             ShortcutItem(R.drawable.library, "Library") {
-                // Handle Library click
+                navController?.navigate("library") // Library
             }
             ShortcutItem(R.drawable.lostnfound, "Lost & Found") {
-                // Handle Lost & Found click
+                navController?.navigate("lostfound") // Lost & Found
             }
             ShortcutItem(R.drawable.schedule, "Schedule") {
                 scrollToCalendar?.invoke()
@@ -58,13 +58,13 @@ fun Shortcuts(navController: NavController? = null, scrollToCalendar: (() -> Uni
             modifier = Modifier.fillMaxWidth()
         ) {
             ShortcutItem(R.drawable.grades, "Grades") {
-                // Handle Grades click
+                navController?.navigate("grades")// Grades
             }
             ShortcutItem(R.drawable.payments, "Payments") {
-                // Handle Payments click
+                navController?.navigate("payments")// Payments
             }
             ShortcutItem(R.drawable.maps, "School Map") {
-                // Handle Map click
+                navController?.navigate("schoolmap")// Map
             }
         }
 
@@ -90,14 +90,13 @@ fun Shortcuts(navController: NavController? = null, scrollToCalendar: (() -> Uni
                     restoreState = true
                 }
             }
-            //INVISIBLE DONT TOUCH
-            Box(
-                modifier = Modifier
-                    .width(80.dp)
-                    .graphicsLayer { alpha = 0f }
-            ) {
-                ShortcutItem(R.drawable.payments, "Payments") {
-
+            ShortcutItem(R.drawable.evaluation, "Inbox") {
+                navController?.navigate("inbox") {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
                 }
             }
         }
