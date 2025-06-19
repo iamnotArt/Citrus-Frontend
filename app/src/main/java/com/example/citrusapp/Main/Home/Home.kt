@@ -65,12 +65,12 @@ fun HomeScreen(navController: NavController) {
                             contentDescription = "School Logo",
                             modifier = Modifier
                                 .height(34.dp)
+                                .clip(CircleShape)
                                 .clickable {
                                     scope.launch {
                                         scrollState.animateScrollTo(0)
                                     }
                                 }
-                                .clip(CircleShape)
                         )
 
 

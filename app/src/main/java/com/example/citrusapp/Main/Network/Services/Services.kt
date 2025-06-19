@@ -241,7 +241,6 @@ fun ServicesTab() {
                 )
                 Text(
                     text = "Post and discover services like projects for sale, tutoring, editing, and more. Connect with others and showcase your skills!",
-                    fontWeight = FontWeight.Light,
                     modifier = Modifier.padding(top = 12.dp, bottom = 12.dp),
                     fontSize = 14.sp,
                     lineHeight = 16.sp

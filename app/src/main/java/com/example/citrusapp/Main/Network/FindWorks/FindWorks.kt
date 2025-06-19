@@ -244,7 +244,6 @@ fun FindWorksTab() {
                 )
                 Text(
                     text = "Want to make use of your skills? Browse the latest job listings available for your skills and experience!",
-                    fontWeight = FontWeight.Light,
                     modifier = Modifier.padding(top = 12.dp, bottom = 12.dp),
                     fontSize = 14.sp,
                     lineHeight = 16.sp

@@ -2,6 +2,7 @@ package com.example.citrusapp.Main.BottomNav
 
 import BottomNavItem
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -16,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
@@ -72,23 +74,40 @@ fun BottomNavScreen() {
         NavItem.Account
     )
 
+    // Track whether bottom nav should be visible
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val bottomNavRoutes = items.map { it.route }
+    val showBottomNav = currentRoute in bottomNavRoutes
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            BottomNavBar(navController = navController, items = items, isDarkTheme = isDarkTheme)
+            AnimatedVisibility(
+                visible = showBottomNav,
+                enter = slideInVertically { it } + fadeIn(),
+                exit = slideOutVertically { it } + fadeOut(),
+                modifier = Modifier.height(60.dp)
+            ) {
+                BottomNavBar(navController = navController, items = items, isDarkTheme = isDarkTheme)
+            }
         }
     ) { innerPadding ->
+        // Animate the padding change
+        val bottomPadding by animateDpAsState(
+            targetValue = if (showBottomNav) 60.dp else 0.dp,
+            animationSpec = tween(durationMillis = 300)
+        )
+
         NavHost(
             navController = navController,
             startDestination = NavItem.Home.route,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 60.dp),
+                .padding(bottom = bottomPadding),  // Use the animated padding here
             enterTransition = { fadeIn(animationSpec = tween(100)) },
             exitTransition = { fadeOut(animationSpec = tween(100)) },
         ) {
             composable("home") { backStackEntry ->
-                // Pass the navController to HomeScreen
                 HomeScreen(navController = navController)
             }
             composable("lms") {
@@ -104,25 +123,19 @@ fun BottomNavScreen() {
                 AccountScreen(navController = navController)
             }
 
-
             // Home routes
-
             composable("library") {
                 LibraryScreen()
             }
-
             composable("lostfound") {
-                LostFoundScreen()
+                LostFoundScreen(navController = navController)
             }
-
             composable("grades") {
                 GradesScreen()
             }
-
             composable("payments") {
                 PaymentsScreen()
             }
-
             composable("schoolmap") {
                 SchoolMapScreen()
             }
@@ -153,59 +166,42 @@ fun BottomNavScreen() {
                 GradScreen(navController = navController)
             }
 
-
             //LMS routes
-
             composable("addCourse") {
                 AddCourseScreen(navController = navController)
             }
 
             //Account routes
-
             composable("accountEdit") {
                 AccountEditScreen()
             }
-
             composable("privacy") {
                 PrivacyScreen()
             }
-
-            composable("privacy") {
-                PrivacyScreen()
-            }
-
             composable("security") {
                 SecurityScreen()
             }
-
             composable("notification") {
                 NotificationScreen()
             }
-
             composable("display") {
                 DisplayScreen()
             }
-
             composable("report") {
                 ReportScreen()
             }
-
             composable("support") {
                 SupportScreen()
             }
-
             composable("terms") {
                 TermsScreen()
             }
-
             composable("contribute") {
                 ContributeScreen()
             }
-
             composable("switchacc") {
                 SwitchAccountScreen()
             }
-
             composable("logout") {
                 LogoutScreen()
             }
