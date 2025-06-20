@@ -27,6 +27,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -173,7 +174,7 @@ fun ServicesScreen(navController: NavController) {
                         }
                     }
 
-                    Spacer(modifier = Modifier.width(12.dp)) // space between field and icon
+                    Spacer(modifier = Modifier.width(12.dp))
 
                     var expanded by remember { mutableStateOf(false) }
                     var selectedOption by remember { mutableStateOf("Newest First") }
@@ -273,6 +274,7 @@ fun ServicesScreen(navController: NavController) {
                         fontWeight = FontWeight.Bold,
                         fontSize = 22.sp
                     )
+                    HorizontalDivider()
                     Text(
                         text = "Discover services from students, like projects for sale, tutoring, editing, and more.",
                         modifier = Modifier.padding(top = 12.dp, bottom = 12.dp),

@@ -83,7 +83,7 @@ fun CreateWorksScreen(navController: NavController) {
         ) {
             Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                 Text(
-                    text = "Input your Job Details",
+                    text = "Job Details",
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     modifier = Modifier.padding(bottom = 8.dp)
