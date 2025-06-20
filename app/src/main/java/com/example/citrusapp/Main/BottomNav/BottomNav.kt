@@ -17,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
@@ -50,10 +49,11 @@ import com.example.citrusapp.Main.Home.Shortcuts.SchoolMapScreen
 import com.example.citrusapp.Main.Inbox.InboxScreen
 import com.example.citrusapp.Main.LMS.LMSScreen
 import com.example.citrusapp.Main.LMS.MyCourses.AddCourseScreen
-import com.example.citrusapp.Main.Network.FindWorks.FindWorksTab
+import com.example.citrusapp.Main.Network.FindWorks.CreateWorksScreen
+import com.example.citrusapp.Main.Network.FindWorks.FindWorksScreen
 import com.example.citrusapp.Main.Network.NetworkScreen
-import com.example.citrusapp.Main.Network.Services.ServicesTab
-import com.example.citrusapp.signup.SignupScreen
+import com.example.citrusapp.Main.Network.Services.CreateServiceScreen
+import com.example.citrusapp.Main.Network.Services.ServicesScreen
 
 sealed class NavItem(val route: String, val label: String, val lottieIcon: String?) {
     object Home : NavItem("home", "Home", "home")
@@ -127,7 +127,7 @@ fun BottomNavScreen() {
 
             // Home routes
             composable("library") {
-                LibraryScreen()
+                LibraryScreen(navController = navController)
             }
             composable("lostfound") {
                 LostFoundScreen(navController = navController)
@@ -170,11 +170,18 @@ fun BottomNavScreen() {
 
             //Network routes
             composable("findworks") {
-                FindWorksTab(navController = navController)
+                FindWorksScreen(navController = navController)
+            }
+            composable("createworks") {
+                CreateWorksScreen(navController = navController)
             }
 
+
             composable("services") {
-                ServicesTab()
+                ServicesScreen(navController = navController)
+            }
+            composable("createservices") {
+                CreateServiceScreen(navController = navController)
             }
 
             //LMS routes

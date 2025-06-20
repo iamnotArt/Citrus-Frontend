@@ -106,7 +106,7 @@ fun NetworkScreen(navController: NavController? = null) {
             )
 
             Text(
-                text = "Select at least 3 items to improve your recommendations across Citrus Network",
+                text = "Select an item to improve your recommendations across Citrus Network",
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 12.sp,
                 modifier = Modifier.padding(top = 4.dp, start = 14.dp, end = 14.dp)
@@ -117,7 +117,7 @@ fun NetworkScreen(navController: NavController? = null) {
             FlowRow(
                 modifier = Modifier.fillMaxWidth().padding(start = 14.dp, end = 14.dp),
                 mainAxisAlignment = MainAxisAlignment.Center,
-                mainAxisSpacing = 8.dp, // Horizontal spacing between items
+                mainAxisSpacing = 8.dp,
             ) {
                 interests.forEach { interest ->
                     InterestChip(
@@ -163,7 +163,7 @@ fun NetworkScreen(navController: NavController? = null) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Find Works",
+                    text = "Available Jobs",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     modifier = Modifier.padding(start = 14.dp, end = 14.dp)
@@ -222,7 +222,7 @@ fun NetworkScreen(navController: NavController? = null) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Services",
+                    text = "Available Services",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     modifier = Modifier.padding(start = 14.dp, end = 14.dp)

@@ -20,20 +20,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LostFoundScreen(navController: NavController) {
-    val tabTitles = listOf("Lost Items", "Found Items", "My Posts")
-    val pagerState = rememberPagerState { tabTitles.size }
-    var selectedTabIndex by remember { mutableStateOf(0) }
-    val coroutineScope = rememberCoroutineScope()
-
-    LaunchedEffect(pagerState.currentPage) {
-        selectedTabIndex = pagerState.currentPage
-    }
-
-    LaunchedEffect(selectedTabIndex) {
-        if (selectedTabIndex != pagerState.currentPage) {
-            pagerState.animateScrollToPage(selectedTabIndex)
-        }
-    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
@@ -56,96 +42,10 @@ fun LostFoundScreen(navController: NavController) {
             }
             Spacer(modifier = Modifier.width(12.dp))
             Text(
-                text = tabTitles[selectedTabIndex],
+                text = "Lost and Found",
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
             )
-        }
-
-        TabRow(
-            selectedTabIndex = selectedTabIndex,
-            modifier = Modifier.fillMaxWidth(),
-            containerColor = MaterialTheme.colorScheme.background,
-            contentColor = MaterialTheme.colorScheme.onBackground
-        ) {
-            tabTitles.forEachIndexed { index, title ->
-                Tab(
-                    selected = selectedTabIndex == index,
-                    onClick = {
-                        coroutineScope.launch {
-                            selectedTabIndex = index
-                            pagerState.animateScrollToPage(index)
-                        }
-                    },
-                    text = { Text(text = title) }
-                )
-            }
-        }
-
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier.fillMaxSize(),
-            userScrollEnabled = true
-        ) { page ->
-            when (page) {
-                0 -> LostItemsView()
-                1 -> FoundItemsView()
-                2 -> MyPostsView()
-            }
-        }
-    }
-}
-
-@Composable
-private fun LostItemsView() {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(10) { index ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Lost Item $index", style = MaterialTheme.typography.titleMedium)
-                    Text("Description of lost item...")
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun FoundItemsView() {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(10) { index ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Found Item $index", style = MaterialTheme.typography.titleMedium)
-                    Text("Description of found item...")
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun MyPostsView() {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(10) { index ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text("My Post $index", style = MaterialTheme.typography.titleMedium)
-                    Text("Description of my post...")
-                }
-            }
         }
     }
 }

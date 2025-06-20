@@ -1,7 +1,6 @@
 package com.example.citrusapp.Main.Network.FindWorks
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -59,7 +58,7 @@ import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
-fun FindWorksTab(navController: NavController) {
+fun FindWorksScreen(navController: NavController) {
     val listState = rememberLazyListState()
 
     var text by remember { mutableStateOf("") }
@@ -73,11 +72,39 @@ fun FindWorksTab(navController: NavController) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_back),
+                    contentDescription = "Back",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Text(
+                text = "Find Jobs",
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp,
+            )
+        }
+
     LazyColumn(
         state = listState,
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
             .pointerInput(Unit) {
                 detectTapGestures {
                     focusManager.clearFocus()
@@ -92,20 +119,8 @@ fun FindWorksTab(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp)
             ) {
-
-                IconButton(
-                    onClick = { navController.popBackStack() },
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_back),
-                        contentDescription = "Back",
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
 
                 CompositionLocalProvider(LocalTextSelectionColors provides customSelectionColors) {
                     Box(
@@ -210,14 +225,17 @@ fun FindWorksTab(navController: NavController) {
 
         item {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 6.dp),
+                modifier = Modifier.fillMaxWidth().padding(bottom = 6.dp, start = 16.dp, end = 16.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .shadow(8.dp, RoundedCornerShape(16.dp))
-                        .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(16.dp))
+                        .background(
+                            MaterialTheme.colorScheme.surface,
+                            shape = RoundedCornerShape(16.dp)
+                        )
                         .padding(16.dp)
                 ) {
                     Column(
@@ -233,7 +251,7 @@ fun FindWorksTab(navController: NavController) {
                             modifier = Modifier.fillMaxWidth()
                         )
                         Button(
-                            onClick = { /* TODO */ },
+                            onClick = { navController?.navigate("createworks") },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = blue_green,
                                 contentColor = Color.White
@@ -248,14 +266,14 @@ fun FindWorksTab(navController: NavController) {
         }
 
         item {
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp)) {
                 Text(
-                    text = "Find Work Opportunities",
+                    text = "Find Job Opportunities",
                     fontWeight = FontWeight.Bold,
                     fontSize = 22.sp
                 )
                 Text(
-                    text = "Want to make use of your skills? Browse the latest job listings available for your skills and experience!",
+                    text = "Browse the latest job listings available for your skills and experience.",
                     modifier = Modifier.padding(top = 12.dp, bottom = 12.dp),
                     fontSize = 14.sp,
                     lineHeight = 16.sp
@@ -266,7 +284,8 @@ fun FindWorksTab(navController: NavController) {
         items(20) { index ->
             Card(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -299,6 +318,6 @@ fun FindWorksTab(navController: NavController) {
                 }
             }
         }
-
+    }
     }
 }
