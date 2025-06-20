@@ -71,6 +71,8 @@ dependencies {
 
     implementation(libs.androidx.foundation.vversion)
 
+    implementation (libs.accompanist.flowlayout)
+
 
 
 

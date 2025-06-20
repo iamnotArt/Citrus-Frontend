@@ -50,7 +50,9 @@ import com.example.citrusapp.Main.Home.Shortcuts.SchoolMapScreen
 import com.example.citrusapp.Main.Inbox.InboxScreen
 import com.example.citrusapp.Main.LMS.LMSScreen
 import com.example.citrusapp.Main.LMS.MyCourses.AddCourseScreen
+import com.example.citrusapp.Main.Network.FindWorks.FindWorksTab
 import com.example.citrusapp.Main.Network.NetworkScreen
+import com.example.citrusapp.Main.Network.Services.ServicesTab
 import com.example.citrusapp.signup.SignupScreen
 
 sealed class NavItem(val route: String, val label: String, val lottieIcon: String?) {
@@ -114,7 +116,7 @@ fun BottomNavScreen() {
                 LMSScreen(navController = navController)
             }
             composable("network") {
-                NetworkScreen()
+                NetworkScreen(navController = navController)
             }
             composable("inbox") {
                 InboxScreen()
@@ -164,6 +166,15 @@ fun BottomNavScreen() {
             }
             composable("graduate") {
                 GradScreen(navController = navController)
+            }
+
+            //Network routes
+            composable("findworks") {
+                FindWorksTab(navController = navController)
+            }
+
+            composable("services") {
+                ServicesTab()
             }
 
             //LMS routes

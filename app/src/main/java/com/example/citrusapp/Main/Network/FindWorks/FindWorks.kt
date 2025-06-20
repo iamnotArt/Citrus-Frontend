@@ -29,6 +29,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -53,11 +54,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
 
 @Composable
-fun FindWorksTab() {
+fun FindWorksTab(navController: NavController) {
     val listState = rememberLazyListState()
 
     var text by remember { mutableStateOf("") }
@@ -92,6 +94,19 @@ fun FindWorksTab() {
                     .fillMaxWidth()
             ) {
 
+                IconButton(
+                    onClick = { navController.popBackStack() },
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_back),
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+
                 CompositionLocalProvider(LocalTextSelectionColors provides customSelectionColors) {
                     Box(
                         modifier = Modifier
@@ -101,6 +116,7 @@ fun FindWorksTab() {
                             .background(MaterialTheme.colorScheme.surface),
                         contentAlignment = Alignment.CenterStart
                     ) {
+
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
@@ -141,7 +157,7 @@ fun FindWorksTab() {
                     }
                 }
 
-                Spacer(modifier = Modifier.width(12.dp)) // space between field and icon
+                Spacer(modifier = Modifier.width(12.dp))
 
                 var expanded by remember { mutableStateOf(false) }
                 var selectedOption by remember { mutableStateOf("Newest First") }
@@ -189,11 +205,7 @@ fun FindWorksTab() {
                         }
                     }
                 }
-
-
-
             }
-
         }
 
         item {

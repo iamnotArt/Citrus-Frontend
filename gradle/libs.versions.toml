@@ -1,4 +1,5 @@
 [versions]
+accompanistFlowlayout = "0.28.0"
 accompanistNavigationAnimation = "0.34.0"
 agp = "8.10.1"
 androidxFoundation = "<version>"
@@ -16,6 +17,7 @@ material3 = "1.3.2"
 navigationCompose = "2.9.0"
 
 [libraries]
+accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanistFlowlayout" }
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanistNavigationAnimation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
