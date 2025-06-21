@@ -8,20 +8,128 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AccountScreen(navController: NavController? = null) {
+
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
+    var showBottomSheetSwitch by remember { mutableStateOf(false) }
+    var showBottomSheetLogout by remember { mutableStateOf(false) }
+
+    if (showBottomSheetSwitch) {
+        ModalBottomSheet(
+            onDismissRequest = { showBottomSheetSwitch = false },
+            sheetState = sheetState
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(240.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Switch Account",
+                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+            }
+        }
+    }
+
+
+    if (showBottomSheetLogout) {
+        ModalBottomSheet(
+            onDismissRequest = { showBottomSheetLogout = false },
+            sheetState = sheetState
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Are you sure you want to logout?",
+                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                        .clip(MaterialTheme.shapes.medium)
+                        .clickable {
+                            // TODO: Handle logout
+                            showBottomSheetLogout = false
+                        }
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Logout",
+                        color = Color.Red,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                        .clip(MaterialTheme.shapes.medium)
+                        .clickable {
+                            showBottomSheetLogout = false
+                        }
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Cancel",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+            }
+        }
+    }
+
+
+
 
     Column(
         modifier = Modifier
@@ -92,7 +200,7 @@ fun AccountScreen(navController: NavController? = null) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 SettingsItem(title = "Notification", iconResId = R.drawable.ic_notification, onClick = {navController?.navigate("notification")})
-                SettingsItem(title = "Display", iconResId = R.drawable.ic_display, onClick = {navController?.navigate("display")})
+                SettingsItem(title = "Display", iconResId = R.drawable.ic_display, onClick = {  })
             }
         }
 
@@ -149,8 +257,8 @@ fun AccountScreen(navController: NavController? = null) {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                SettingsItem(title = "Switch Account", iconResId = R.drawable.ic_switch, onClick = {navController?.navigate("switchacc")})
-                SettingsItem(title = "Log out", iconResId = R.drawable.ic_logout, onClick = {navController?.navigate("logout")})
+                SettingsItem(title = "Switch Account", iconResId = R.drawable.ic_switch, onClick = {scope.launch { showBottomSheetSwitch = true } })
+                SettingsItem(title = "Log out", iconResId = R.drawable.ic_logout, onClick = {scope.launch { showBottomSheetLogout = true } })
             }
         }
     }

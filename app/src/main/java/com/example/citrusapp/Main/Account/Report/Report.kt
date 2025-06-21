@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.citrusapp.Main.Account.SettingsOtherItem
 import com.example.citrusapp.R
 import com.example.citrusapp.ui.theme.blue_green
 
@@ -68,8 +69,32 @@ fun ReportScreen(navController: NavController) {
         }
 
         Text(
+            text = "Report a problem",
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp),
+            fontSize = 13.sp
+        )
+
+        Surface(
+            tonalElevation = 2.dp,
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                SettingsOtherItem(title = "Support Tickets", onClick = { })
+                SettingsOtherItem(title = "Report an Account", onClick = { })
+                SettingsOtherItem(title = "Report a direct message", onClick = { })
+                SettingsOtherItem(title = "Report a Job/Service post", onClick = { })
+                SettingsOtherItem(title = "Incoming Messages", onClick = { })
+                SettingsOtherItem(title = "Events", onClick = { })
+            }
+        }
+
+        Text(
             text = "Contact Support",
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp),
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 12.dp),
             fontSize = 13.sp
         )
 
@@ -77,13 +102,16 @@ fun ReportScreen(navController: NavController) {
             onClick = {
 
             },
-
+            colors = ButtonDefaults.buttonColors(
+                containerColor = blue_green,
+                contentColor = Color.White
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp)
                 .padding(horizontal = 24.dp)
         ) {
-            Text(text = "Chat with us", color = Color.White)
+            Text(text = "Chat with us")
         }
     }
 }

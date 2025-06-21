@@ -23,7 +23,6 @@ import androidx.navigation.compose.*
 import com.example.citrusapp.Main.Account.AccountEdit.AccountEditScreen
 import com.example.citrusapp.Main.Account.AccountScreen
 import com.example.citrusapp.Main.Account.Contribute.ContributeScreen
-import com.example.citrusapp.Main.Account.Display.DisplayScreen
 import com.example.citrusapp.Main.Account.Logout.LogoutScreen
 import com.example.citrusapp.Main.Account.Notification.NotificationScreen
 import com.example.citrusapp.Main.Account.Privacy.PrivacyScreen
@@ -75,7 +74,6 @@ fun BottomNavScreen() {
         NavItem.Account
     )
 
-    // Track whether bottom nav should be visible
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     val bottomNavRoutes = items.map { it.route }
     val showBottomNav = currentRoute in bottomNavRoutes
@@ -96,7 +94,7 @@ fun BottomNavScreen() {
         // Animate the padding change
         val bottomPadding by animateDpAsState(
             targetValue = if (showBottomNav) 60.dp else 0.dp,
-            animationSpec = tween(durationMillis = 300)
+            animationSpec = tween(durationMillis = 100)
         )
 
         NavHost(
@@ -197,17 +195,14 @@ fun BottomNavScreen() {
             composable("notification") {
                 NotificationScreen(navController = navController)
             }
-            composable("display") {
-                DisplayScreen(navController = navController)
-            }
             composable("report") {
                 ReportScreen(navController = navController)
             }
             composable("support") {
-                SupportScreen()
+                SupportScreen(navController = navController)
             }
             composable("terms") {
-                TermsScreen()
+                TermsScreen(navController = navController)
             }
             composable("contribute") {
                 ContributeScreen()

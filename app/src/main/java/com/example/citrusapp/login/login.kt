@@ -277,7 +277,7 @@ fun LoginScreen(homeClick: () -> Unit,onBoardingClick: () -> Unit, signupClick: 
                         indication = rememberRipple(bounded = true)
                     )
             )
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = "Developed by DCODE",

@@ -5,5 +5,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun ContributeScreen() {
-    Text("Contribute")
+    Text("donate pls :3")
 }
