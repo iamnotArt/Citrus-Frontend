@@ -20,18 +20,17 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
-import com.example.citrusapp.Main.Account.AccountEditScreen
+import com.example.citrusapp.Main.Account.AccountEdit.AccountEditScreen
 import com.example.citrusapp.Main.Account.AccountScreen
-import com.example.citrusapp.Main.Account.ContributeScreen
-import com.example.citrusapp.Main.Account.DisplayScreen
-import com.example.citrusapp.Main.Account.LogoutScreen
-import com.example.citrusapp.Main.Account.NotificationScreen
-import com.example.citrusapp.Main.Account.PrivacyScreen
-import com.example.citrusapp.Main.Account.ReportScreen
-import com.example.citrusapp.Main.Account.SecurityScreen
-import com.example.citrusapp.Main.Account.SupportScreen
-import com.example.citrusapp.Main.Account.SwitchAccountScreen
-import com.example.citrusapp.Main.Account.TermsScreen
+import com.example.citrusapp.Main.Account.Contribute.ContributeScreen
+import com.example.citrusapp.Main.Account.Display.DisplayScreen
+import com.example.citrusapp.Main.Account.Logout.LogoutScreen
+import com.example.citrusapp.Main.Account.Notification.NotificationScreen
+import com.example.citrusapp.Main.Account.Privacy.PrivacyScreen
+import com.example.citrusapp.Main.Account.Report.ReportScreen
+import com.example.citrusapp.Main.Account.Support.SupportScreen
+import com.example.citrusapp.Main.Account.SwitchAccount.SwitchAccountScreen
+import com.example.citrusapp.Main.Account.Terms.TermsScreen
 import com.example.citrusapp.Main.Home.AgriScreen
 import com.example.citrusapp.Main.Home.CCISScreen
 import com.example.citrusapp.Main.Home.CEAScreen
@@ -176,7 +175,6 @@ fun BottomNavScreen() {
                 CreateWorksScreen(navController = navController)
             }
 
-
             composable("services") {
                 ServicesScreen(navController = navController)
             }
@@ -191,22 +189,19 @@ fun BottomNavScreen() {
 
             //Account routes
             composable("accountEdit") {
-                AccountEditScreen()
+                AccountEditScreen(navController = navController)
             }
             composable("privacy") {
-                PrivacyScreen()
-            }
-            composable("security") {
-                SecurityScreen()
+                PrivacyScreen(navController = navController)
             }
             composable("notification") {
-                NotificationScreen()
+                NotificationScreen(navController = navController)
             }
             composable("display") {
-                DisplayScreen()
+                DisplayScreen(navController = navController)
             }
             composable("report") {
-                ReportScreen()
+                ReportScreen(navController = navController)
             }
             composable("support") {
                 SupportScreen()

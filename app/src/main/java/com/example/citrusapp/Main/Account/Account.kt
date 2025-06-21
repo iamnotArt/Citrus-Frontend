@@ -73,8 +73,7 @@ fun AccountScreen(navController: NavController? = null) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 SettingsItem(title = "Account", iconResId = R.drawable.ic_account, onClick = {navController?.navigate("accountEdit")})
-                SettingsItem(title = "Privacy", iconResId = R.drawable.ic_privacy, onClick = {navController?.navigate("privacy")})
-                SettingsItem(title = "Security & permissions", iconResId = R.drawable.ic_security, onClick = {navController?.navigate("security")})
+                SettingsItem(title = "Privacy and Security", iconResId = R.drawable.ic_security, onClick = {navController?.navigate("privacy")})
             }
         }
 
@@ -179,6 +178,37 @@ fun SettingsItem(
                 tint = blue_green
             )
             Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge,
+                fontSize = 16.sp
+            )
+        }
+
+        Icon(
+            painter = painterResource(id = R.drawable.ic_right_arrow),
+            contentDescription = "Go to $title",
+            modifier = Modifier.size(20.dp),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+fun SettingsOtherItem(
+    title: String,
+    onClick: () -> Unit = {}
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(vertical = 12.dp, horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Spacer(modifier = Modifier.width(2.dp))
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,

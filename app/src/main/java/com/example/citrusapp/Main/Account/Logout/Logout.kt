@@ -1,9 +1,9 @@
-package com.example.citrusapp.Main.Account
+package com.example.citrusapp.Main.Account.Logout
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun SupportScreen() {
-    Text("Support")
+fun LogoutScreen() {
+    Text("Logout Screen")
 }
