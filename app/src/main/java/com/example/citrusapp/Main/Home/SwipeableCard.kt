@@ -65,7 +65,6 @@ fun SwipableCardSection(
     onGradClick: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
-    var isLoaded by remember { mutableStateOf(false) }
 
     val cardsWithData = remember {
         listOf(
@@ -123,312 +122,117 @@ fun SwipableCardSection(
     val cardsCount = cardsWithData.size
     var currentIndex by remember { mutableStateOf(0) }
 
-    LaunchedEffect(Unit) {
-        scope.launch {
-            delay(1200)
-            isLoaded = true
-        }
-    }
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(320.dp)
             .padding(horizontal = 16.dp)
     ) {
-        if (!isLoaded) {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(280.dp),
-                shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(8.dp)
-            ) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Image(
-                        painter = painterResource(id = R.drawable.engineering),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .blur(16.dp)
-                    )
+        var offsetX by remember { mutableStateOf(0f) }
+        var rotation by remember { mutableStateOf(0f) }
+        var isAnimating by remember { mutableStateOf(false) }
+        var shouldDismiss by remember { mutableStateOf(false) }
+        var startOffsetX by remember { mutableStateOf(0f) }
+        var startRotation by remember { mutableStateOf(0f) }
+        var cardWidth by remember { mutableStateOf(0) }
+        var nextCardScale by remember { mutableStateOf(0.9f) }
+        var nextCardOffset by remember { mutableStateOf(30f) }
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color(0xFFEF5350).copy(alpha = 0.7f),
-                                        Color(0xFFEF5350).copy(alpha = 0.7f)
-                                    ),
-                                    startY = 0f,
-                                    endY = Float.POSITIVE_INFINITY
-                                )
-                            )
-                            .blur(16.dp)
-                    )
+        val throwOffsetX by animateFloatAsState(
+            targetValue = if (shouldDismiss) (if (offsetX > 0) 2000f else -2000f) else 0f,
+            animationSpec = tween(durationMillis = 250)
+        )
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        OrbitLoadingIndicator(
-                            dotColor = Color.White,
-                            dotSize = 8f,
-                            orbitRadius = 24f,
-                            orbitDurationMillis = 1000,
-                            dotCount = 4
-                        )
-                    }
-                }
-            }
-        } else {
+        val throwRotation by animateFloatAsState(
+            targetValue = if (shouldDismiss) startRotation * 3 else 0f,
+            animationSpec = tween(durationMillis = 250)
+        )
 
-            var offsetX by remember { mutableStateOf(0f) }
-            var offsetY by remember { mutableStateOf(0f) }
-            var rotation by remember { mutableStateOf(0f) }
-            var isAnimating by remember { mutableStateOf(false) }
-            var shouldDismiss by remember { mutableStateOf(false) }
-            var startOffsetX by remember { mutableStateOf(0f) }
-            var startOffsetY by remember { mutableStateOf(0f) }
-            var startRotation by remember { mutableStateOf(0f) }
-            var cardWidth by remember { mutableStateOf(0) }
-            var cardHeight by remember { mutableStateOf(0) }
-            var nextCardScale by remember { mutableStateOf(0.9f) }
-            var nextCardOffset by remember { mutableStateOf(30f) }
-            var cardStackProgress by remember { mutableStateOf(0f) }
-
-            val throwOffsetX by animateFloatAsState(
-                targetValue = if (shouldDismiss) (if (offsetX > 0) 2000f else -2000f) else 0f,
-                animationSpec = tween(durationMillis = 250)
-            )
-
-            val throwRotation by animateFloatAsState(
-                targetValue = if (shouldDismiss) startRotation * 3 else 0f,
-                animationSpec = tween(durationMillis = 250)
-            )
-
-            val returnOffsetX by animateFloatAsState(
-                targetValue = if (isAnimating && !shouldDismiss) 0f else offsetX,
-                animationSpec = tween(durationMillis = 250),
-                finishedListener = {
-                    if (isAnimating && !shouldDismiss) {
-                        isAnimating = false
-                    }
-                }
-            )
-
-            val nextCardScaleAnim by animateFloatAsState(
-                targetValue = if (shouldDismiss) 1f else nextCardScale,
-                animationSpec = tween(durationMillis = 250)
-            )
-
-            val nextCardOffsetAnim by animateFloatAsState(
-                targetValue = if (shouldDismiss) 0f else nextCardOffset,
-                animationSpec = tween(durationMillis = 250)
-            )
-
-            val stackProgressAnim by animateFloatAsState(
-                targetValue = if (shouldDismiss) 1f else 0f,
-                animationSpec = tween(durationMillis = 250),
-                finishedListener = {
-                    cardStackProgress = 0f
-                }
-            )
-
-            // Handle dismissal
-            LaunchedEffect(shouldDismiss) {
-                if (shouldDismiss) {
-                    delay(250)
-                    offsetX = 0f
-                    offsetY = 0f
-                    rotation = 0f
+        val returnOffsetX by animateFloatAsState(
+            targetValue = if (isAnimating && !shouldDismiss) 0f else offsetX,
+            animationSpec = tween(durationMillis = 250),
+            finishedListener = {
+                if (isAnimating && !shouldDismiss) {
                     isAnimating = false
-                    shouldDismiss = false
-                    nextCardScale = 0.9f
-                    nextCardOffset = 30f
-                    currentIndex = (currentIndex + 1) % cardsWithData.size
                 }
             }
+        )
 
-            // Background cards fan
-            val visibleCards = minOf(4, cardsWithData.size - 1)
-            for (i in 0 until visibleCards) {
-                val isNextCard = i == 0
-                val isSecondCard = i == 1
-                val progressFactor = if (isNextCard) stackProgressAnim else if (isSecondCard) stackProgressAnim * 0.8f else stackProgressAnim * 0.6f
-                val cardIndex = (currentIndex + i + 1) % cardsWithData.size
-                val cardData = cardsWithData[cardIndex]
+        val nextCardScaleAnim by animateFloatAsState(
+            targetValue = if (shouldDismiss) 1f else nextCardScale,
+            animationSpec = tween(durationMillis = 250)
+        )
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(280.dp)
-                        .zIndex((visibleCards - i).toFloat())
-                        .graphicsLayer {
-                            scaleX = if (isNextCard) nextCardScaleAnim else 0.9f - (0.03f * i)
-                            scaleY = if (isNextCard) nextCardScaleAnim else 0.9f - (0.03f * i)
-                            rotationZ = if (isNextCard) 0f else 2f * (i + 1)
-                            translationY = if (isNextCard) {
-                                nextCardOffsetAnim * (1 - nextCardScaleAnim)
-                            } else {
-                                (8.dp.toPx() * (i + 1)) - (8.dp.toPx() * progressFactor)
-                            }
-                            translationX = if (isNextCard) {
-                                0f
-                            } else {
-                                (12.dp.toPx() * (i + 1)) - (12.dp.toPx() * progressFactor)
-                            }
-                            transformOrigin = TransformOrigin(0.5f, 0.5f)
-                            if (!isNextCard) {
-                                scaleX += 0.05f * progressFactor
-                                scaleY += 0.05f * progressFactor
-                            }
-                        },
-                    shape = RoundedCornerShape(16.dp),
-                    elevation = CardDefaults.cardElevation(
-                        if (isNextCard) 6.dp else 4.dp - (1.dp * progressFactor)
-                    )
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable { cardData.onClick() }
-                    ) {
-                        Image(
-                            painter = painterResource(id = cardData.imageRes),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .alpha(1f)
-                        )
+        val nextCardOffsetAnim by animateFloatAsState(
+            targetValue = if (shouldDismiss) 0f else nextCardOffset,
+            animationSpec = tween(durationMillis = 250)
+        )
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(
-                                    brush = Brush.verticalGradient(
-                                        colors = listOf(
-                                            cardData.color.copy(alpha = 0.7f),
-                                            cardData.color.copy(alpha = 0.7f)
-                                        ),
-                                        startY = 0f,
-                                        endY = Float.POSITIVE_INFINITY
-                                    )
-                                )
-                        )
+        val stackProgressAnim by animateFloatAsState(
+            targetValue = if (shouldDismiss) 1f else 0f,
+            animationSpec = tween(durationMillis = 250),
+        )
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .graphicsLayer {
-                                    scaleX = 1f / (if (isNextCard) nextCardScaleAnim else 0.9f - (0.03f * i))
-                                    scaleY = 1f / (if (isNextCard) nextCardScaleAnim else 0.9f - (0.03f * i))
-                                }
-                                .padding(32.dp),
-                            contentAlignment = Alignment.CenterStart
-                        ) {
-                            Text(
-                                text = cardData.title,
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                textAlign = TextAlign.Start
-                            )
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(16.dp),
-                            contentAlignment = Alignment.BottomEnd
-                        ) {
-                            Text(
-                                text = "View more >>",
-                                color = Color.White.copy(alpha = 0.8f),
-                                fontSize = 14.sp
-                            )
-                        }
-                    }
-                }
+        // Handle dismissal
+        LaunchedEffect(shouldDismiss) {
+            if (shouldDismiss) {
+                delay(250)
+                offsetX = 0f
+                rotation = 0f
+                isAnimating = false
+                shouldDismiss = false
+                nextCardScale = 0.9f
+                nextCardOffset = 30f
+                currentIndex = (currentIndex + 1) % cardsWithData.size
             }
+        }
 
-            // Main swipable card - modified version
-            val currentCard = cardsWithData[currentIndex]
+        // Background cards fan
+        val visibleCards = minOf(4, cardsWithData.size - 1)
+        for (i in 0 until visibleCards) {
+            val isNextCard = i == 0
+            val isSecondCard = i == 1
+            val progressFactor = if (isNextCard) stackProgressAnim else if (isSecondCard) stackProgressAnim * 0.8f else stackProgressAnim * 0.6f
+            val cardIndex = (currentIndex + i + 1) % cardsWithData.size
+            val cardData = cardsWithData[cardIndex]
+
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(280.dp)
-                    .zIndex(10f)
-                    .onSizeChanged { size ->
-                        cardWidth = size.width
-                        cardHeight = size.height
-                    }
+                    .zIndex((visibleCards - i).toFloat())
                     .graphicsLayer {
-                        if (isAnimating) {
-                            if (shouldDismiss) {
-                                translationX = startOffsetX + throwOffsetX
-                                rotationZ = startRotation + throwRotation
-                                if (abs(throwOffsetX) > cardWidth / 4f) {
-                                    nextCardScale = 1f
-                                    nextCardOffset = 0f
-                                    cardStackProgress = 1f
-                                }
-                            } else {
-                                translationX = returnOffsetX
-                                rotationZ = returnOffsetX / 20f
-                            }
+                        scaleX = if (isNextCard) nextCardScaleAnim else 0.9f - (0.03f * i)
+                        scaleY = if (isNextCard) nextCardScaleAnim else 0.9f - (0.03f * i)
+                        rotationZ = if (isNextCard) 0f else 2f * (i + 1)
+                        translationY = if (isNextCard) {
+                            nextCardOffsetAnim * (1 - nextCardScaleAnim)
                         } else {
-                            translationX = offsetX
-                            rotationZ = rotation
+                            (8.dp.toPx() * (i + 1)) - (8.dp.toPx() * progressFactor)
+                        }
+                        translationX = if (isNextCard) {
+                            0f
+                        } else {
+                            (12.dp.toPx() * (i + 1)) - (12.dp.toPx() * progressFactor)
                         }
                         transformOrigin = TransformOrigin(0.5f, 0.5f)
-                    }
-                    .pointerInput(Unit) {
-                        detectDragGestures(
-                            onDragEnd = {
-                                scope.launch {
-                                    if (abs(offsetX) > cardWidth / 3f) {
-                                        isAnimating = true
-                                        shouldDismiss = true
-                                        startOffsetX = offsetX
-                                        startRotation = rotation
-                                        nextCardScale = 1f
-                                        nextCardOffset = 0f
-                                        cardStackProgress = 1f
-                                    } else {
-                                        isAnimating = true
-                                        offsetX = 0f
-                                        rotation = 0f
-                                    }
-                                }
-                            },
-                            onDrag = { change, dragAmount ->
-                                if (!isAnimating) {
-                                    change.consume()
-                                    // Only track horizontal movement
-                                    offsetX += dragAmount.x
-                                    // Calculate rotation based on horizontal movement
-                                    rotation = offsetX / 20f
-                                }
-                            }
-                        )
+                        if (!isNextCard) {
+                            scaleX += 0.05f * progressFactor
+                            scaleY += 0.05f * progressFactor
+                        }
                     },
                 shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(8.dp)
+                elevation = CardDefaults.cardElevation(
+                    if (isNextCard) 6.dp else 4.dp - (1.dp * progressFactor)
+                )
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clickable { currentCard.onClick() }
+                        .clickable { cardData.onClick() }
                 ) {
                     Image(
-                        painter = painterResource(id = currentCard.imageRes),
+                        painter = painterResource(id = cardData.imageRes),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -442,8 +246,8 @@ fun SwipableCardSection(
                             .background(
                                 brush = Brush.verticalGradient(
                                     colors = listOf(
-                                        currentCard.color.copy(alpha = 0.7f),
-                                        currentCard.color.copy(alpha = 0.7f)
+                                        cardData.color.copy(alpha = 0.7f),
+                                        cardData.color.copy(alpha = 0.7f)
                                     ),
                                     startY = 0f,
                                     endY = Float.POSITIVE_INFINITY
@@ -454,11 +258,15 @@ fun SwipableCardSection(
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
+                            .graphicsLayer {
+                                scaleX = 1f / (if (isNextCard) nextCardScaleAnim else 0.9f - (0.03f * i))
+                                scaleY = 1f / (if (isNextCard) nextCardScaleAnim else 0.9f - (0.03f * i))
+                            }
                             .padding(32.dp),
                         contentAlignment = Alignment.CenterStart
                     ) {
                         Text(
-                            text = currentCard.title,
+                            text = cardData.title,
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
@@ -478,6 +286,126 @@ fun SwipableCardSection(
                             fontSize = 14.sp
                         )
                     }
+                }
+            }
+        }
+
+        // Main swipable card - modified version
+        val currentCard = cardsWithData[currentIndex]
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(280.dp)
+                .zIndex(10f)
+                .onSizeChanged { size ->
+                    cardWidth = size.width
+                }
+                .graphicsLayer {
+                    if (isAnimating) {
+                        if (shouldDismiss) {
+                            translationX = startOffsetX + throwOffsetX
+                            rotationZ = startRotation + throwRotation
+                            if (abs(throwOffsetX) > cardWidth / 4f) {
+                                nextCardScale = 1f
+                                nextCardOffset = 0f
+                            }
+                        } else {
+                            translationX = returnOffsetX
+                            rotationZ = returnOffsetX / 20f
+                        }
+                    } else {
+                        translationX = offsetX
+                        rotationZ = rotation
+                    }
+                    transformOrigin = TransformOrigin(0.5f, 0.5f)
+                }
+                .pointerInput(Unit) {
+                    detectDragGestures(
+                        onDragEnd = {
+                            scope.launch {
+                                if (abs(offsetX) > cardWidth / 3f) {
+                                    isAnimating = true
+                                    shouldDismiss = true
+                                    startOffsetX = offsetX
+                                    startRotation = rotation
+                                    nextCardScale = 1f
+                                    nextCardOffset = 0f
+                                } else {
+                                    isAnimating = true
+                                    offsetX = 0f
+                                    rotation = 0f
+                                }
+                            }
+                        },
+                        onDrag = { change, dragAmount ->
+                            if (!isAnimating) {
+                                change.consume()
+                                // Only track horizontal movement
+                                offsetX += dragAmount.x
+                                // Calculate rotation based on horizontal movement
+                                rotation = offsetX / 20f
+                            }
+                        }
+                    )
+                },
+            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(8.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable { currentCard.onClick() }
+            ) {
+                Image(
+                    painter = painterResource(id = currentCard.imageRes),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .alpha(1f)
+                )
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    currentCard.color.copy(alpha = 0.7f),
+                                    currentCard.color.copy(alpha = 0.7f)
+                                ),
+                                startY = 0f,
+                                endY = Float.POSITIVE_INFINITY
+                            )
+                        )
+                )
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(32.dp),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    Text(
+                        text = currentCard.title,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        textAlign = TextAlign.Start
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.BottomEnd
+                ) {
+                    Text(
+                        text = "View more >>",
+                        color = Color.White.copy(alpha = 0.8f),
+                        fontSize = 14.sp
+                    )
                 }
             }
         }
