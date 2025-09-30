@@ -232,6 +232,8 @@ fun HomeScreen(navController: NavController) {
                             onNursingClick = { navController.navigate("nursing") },
                             onGradClick = { navController.navigate("graduate") }
                         )
+
+                        Spacer(modifier = Modifier.height(50.dp))
                     }
                 }
             }

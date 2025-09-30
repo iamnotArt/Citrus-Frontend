@@ -138,16 +138,13 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit, si
                 modifier = Modifier
                     .padding(top = 4.dp, bottom = 40.dp)
                     .clickable(
-                        onClick = {
-                            signupClick()
-                        },
-                        role = Role.Button
-                    )
-                    .indication(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = rememberRipple(bounded = true)
-                    )
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) {
+                        signupClick()
+                    }
             )
+
         }
     }
 }

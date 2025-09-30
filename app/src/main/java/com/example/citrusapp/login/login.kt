@@ -9,7 +9,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -266,17 +265,9 @@ fun LoginScreen(homeClick: () -> Unit,onBoardingClick: () -> Unit, signupClick: 
                 color = blue_green,
                 modifier = Modifier
                     .padding(top = 4.dp)
-                    .clickable(
-                        onClick = {
-                                signupClick() // TODO: Navigate to Signup
-                        },
-                        role = Role.Button
-                    )
-                    .indication(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = rememberRipple(bounded = true)
-                    )
+                    .clickable { signupClick() }
             )
+
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(

@@ -252,16 +252,13 @@ fun SlideOne(loginClick1: () -> Unit) {
                     color = blue_green,
                     modifier = Modifier
                         .clickable(
-                            onClick = {
-                                loginClick1()// TODO: Navigate to login
-                            },
-                            role = Role.Button
-                        )
-                        .indication(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = rememberRipple(bounded = true)
-                        )
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) {
+                            loginClick1() // TODO: Navigate to login
+                        }
                 )
+
             }
 
             Button(

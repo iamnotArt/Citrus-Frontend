@@ -73,6 +73,7 @@ dependencies {
 
     implementation (libs.accompanist.flowlayout)
 
+    implementation("com.github.smartword-app:compose-swipeable-cards:1.1.4") // swipable cards
 
 
 
